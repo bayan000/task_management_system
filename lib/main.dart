@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:tracker/modules/meetings/meetings.dart';
 import 'package:tracker/shared/constants.dart';
 
-import 'modules/team/team.dart';
 import 'modules/teams/teams.dart';
-import 'modules/user/user.dart';
 
 
 
