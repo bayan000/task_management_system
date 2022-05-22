@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/shared/components.dart';
 
 
 
@@ -6,24 +7,18 @@ import '../../shared/constants.dart';
 import '../add meeting/add_meeting.dart';
 
 
-class Meetings extends StatefulWidget {
-  const Meetings({Key? key}) : super(key: key);
+class Meetings extends StatelessWidget {
 
-  @override
-  _MeetingsState createState() => _MeetingsState();
-}
 
-class _MeetingsState extends State<Meetings> {
-  String? cell;
+
+  final String? cell;
+
+  const Meetings({Key? key, this.cell}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     Size size =MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: appCo,
-        shadowColor: appCo,
-        elevation: 0,
-      ),
+      appBar: trackerBar(),
       body:
 
       SafeArea(
@@ -56,66 +51,11 @@ class _MeetingsState extends State<Meetings> {
                         padding: const EdgeInsets.only(top: 30),
                         //color: Colors.white,
                         child: ListView(
+
                           physics: const BouncingScrollPhysics(),
                           shrinkWrap: true,
                           children: [
-                            Table(
-
-
-                              /* border: TableBorder.symmetric(
-                              inside: const BorderSide(width: 1,),
-                            ),*/
-                              // border: TableBorder.all(),
-                              columnWidths: const {
-                                0: FractionColumnWidth(0.25),
-                                1: FractionColumnWidth(0.25),
-                                2: FractionColumnWidth(0.25),
-                                3: FractionColumnWidth(0.25),
-                              },
-                              children: [
-
-                                buildRow(const ['Date','Status','Start time','with'],isHeader: true),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some guest']),
-                                buildRow(['18/12/2021','done','5:00','some ']),
-
-
-                              ],
-                            ),
-
+                          meetingsTable(),
                           ],
                         ),
                       ),
@@ -149,27 +89,7 @@ class _MeetingsState extends State<Meetings> {
       ),
     );
   }
-  /*TableRow buildRowFirst(List<String> cells) => TableRow(
-      children:[
-        //...
-        //If you want to use the .map function inside ListView children,
-        // you should convert map result - iterable - to list and use the spread operator to spread this list inside children
-        ...cells.map((cell){
-          return Padding(padding: const EdgeInsets.all(12),
-            child: Center(child: Text(cell,style:const TextStyle(fontWeight: fw),overflow: TextOverflow.ellipsis,),),
-          );
-        })]
-  );*/
-  TableRow buildRow(List<String> cells,{bool isHeader=false}) => TableRow(
-      children:[
-        //...
-        //If you want to use the .map function inside ListView children,
-        // you should convert map result - iterable - to list and use the spread operator to spread this list inside children
-        ...cells.map((cell){
-          return Padding(padding: const EdgeInsets.all(12),
-            child: Center(child: Text(cell,style:style(isHeader),overflow: TextOverflow.ellipsis,),),
-          );
-        })]
-  );
+
+
 }
 

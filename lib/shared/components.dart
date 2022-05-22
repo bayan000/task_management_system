@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-
-Widget defaultBottun({double width=double.infinity,
+import 'package:tracker/shared/constants.dart';
+TextEditingController searchController=TextEditingController();
+/// *****************************************************************************/
+/*Widget defaultBottun({double width=double.infinity,
   Color c=const Color.fromARGB(255, 121, 120, 117),
   bool isUpperCase=true,
   double radius=5,
@@ -15,9 +17,9 @@ Widget defaultBottun({double width=double.infinity,
       ),
       decoration: BoxDecoration(color:c,borderRadius: BorderRadius.circular(radius)),
     );
-
+*/
 /// *****************************************************************************/
-
+/*
 Widget defaultTextFormField({
   bool ispass=false,
   required TextEditingController controller,
@@ -45,6 +47,68 @@ Widget defaultTextFormField({
       icon: Icon(suffix),) : null,
     border:const OutlineInputBorder(),
   ),
+);*/
+/// *****************************************************************************/
+
+Table meetingsTable()=>Table(
+
+  /* border: TableBorder.symmetric(
+                              inside: const BorderSide(width: 1,),
+                            ),*/
+  // border: TableBorder.all(),
+  columnWidths: const {
+    0: FractionColumnWidth(0.2),
+    1: FractionColumnWidth(0.15),
+    2: FractionColumnWidth(0.15),
+    3: FractionColumnWidth(0.3),
+    4: FractionColumnWidth(0.3),
+  },
+  children: [
+
+    buildRow(const ['Date','Status','Starts','with'],isHeader: true),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+  ],
 );
-
-
+TableRow buildRow(final List<String> cells,{bool isHeader=false}) => TableRow(
+    children:[
+      //...
+      //If you want to use the .map function inside ListView children,
+      // you should convert map result - iterable - to list and use the spread operator to spread this list inside children
+      ...cells.map((cell){
+        return Padding(padding: const EdgeInsets.all(12),
+          child: Center(child: Text(cell,style:style(isHeader),overflow: TextOverflow.ellipsis,),),
+        );
+      })]
+);
+/// *****************************************************************************/

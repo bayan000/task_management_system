@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:tracker/modules/meetings/meetings.dart';
 import 'package:tracker/shared/constants.dart';
 
+import 'modules/team/team.dart';
+import 'modules/teams/teams.dart';
+import 'modules/user/user.dart';
+
 
 
 
@@ -20,7 +24,7 @@ class MyApp extends StatelessWidget {
 
       debugShowCheckedModeBanner: false,
       title: appName,
-      home: const Meetings(),
+      home:const  Teams(),
       theme: ThemeData(
         // This is the theme of your application.
         //

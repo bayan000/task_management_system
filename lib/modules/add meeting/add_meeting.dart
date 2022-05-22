@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../shared/constants.dart';
+import '../team/team.dart';
 
 
 
@@ -11,9 +12,7 @@ class AddMeeting extends StatelessWidget {
   static const items=[
     'OnGoing','Done','Cancelled'
   ];
-  static const names=[
-    'Doha','Salma','Laila'
-  ];
+
   @override
   Widget build(BuildContext context) {
     Size size =MediaQuery.of(context).size;
@@ -88,7 +87,35 @@ class AddMeeting extends StatelessWidget {
                                 ],
                               ),
                               SizedBox(height:size.height*0.02),
+                           //
                               Row(
+
+
+                                children:[
+                                  const Text(
+                                    'Make meeting',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color:Colors.black26 ,
+                                    ),
+                                  ),
+                                  TextButton(onPressed: (){Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) =>const Team()),
+                                  );
+                                  }, child: const Text(
+                                    'with ',
+                                    style:TextStyle(
+                                      fontSize: 20,
+                                      color:Colors.black38 ,
+                                    ),
+                                  ),
+
+                                  ),
+                                ],
+                              ),
+                              //
+                           /*   Row(
                                 children: [
                                   Text('Meeting with',style: TextStyle(color: Colors.black45,fontSize: size.width*0.045),),
                                   SizedBox(width:size.width*0.08),
@@ -98,7 +125,7 @@ class AddMeeting extends StatelessWidget {
                                       onChanged: (value)=>print('have chosen')),
                                 ],
                               ),//here we'll emit
-                              SizedBox(height:size.height*0.02),
+*/                              SizedBox(height:size.height*0.02),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [

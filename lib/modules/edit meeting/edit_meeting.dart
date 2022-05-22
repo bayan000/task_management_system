@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../shared/constants.dart';
+import '../team/team.dart';
 
 
 
@@ -51,6 +52,7 @@ class AddMeeting extends StatelessWidget {
                             showDatePicker(context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(2020),
+                                // ignore: avoid_print
                                 lastDate: DateTime(2050)).then((date){print('picked');});//emit here meeting's date
                           }),
                       SizedBox(width: size.width*0.08),
@@ -78,6 +80,7 @@ class AddMeeting extends StatelessWidget {
                               elevation:MaterialStateProperty.all(10)),
                           child: Text('time of meeting',style: TextStyle(color: pu,fontSize: size.width*0.04),),
                           onPressed: (){
+                            // ignore: avoid_print
                             showTimePicker(context: context, initialTime: const TimeOfDay(hour: 12, minute: 0)).then((date){print('picked');});
                             //emit here meeting's time
                           }),
@@ -87,13 +90,29 @@ class AddMeeting extends StatelessWidget {
                   ),
                   SizedBox(height:size.height*0.02),
                   Row(
-                    children: [
-                      Text('Meeting with',style: TextStyle(color: Colors.black45,fontSize: size.width*0.045),),
-                      SizedBox(width:size.width*0.08),
-                      DropdownButton<String>(
-                          value: value,
-                          items: names.map(buildMenuItem).toList(),
-                          onChanged: (value)=>print('have chosen')),
+
+
+                    children:[
+                      const Text(
+                        'Make meeting',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color:Colors.black26 ,
+                        ),
+                      ),
+                      TextButton(onPressed: (){Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) =>const Team()),
+                      );
+                      }, child: const Text(
+                        'with ',
+                        style:TextStyle(
+                          fontSize: 20,
+                          color:Colors.black38 ,
+                        ),
+                      ),
+
+                      ),
                     ],
                   ),//here we'll emit
                   SizedBox(height:size.height*0.02),
@@ -118,4 +137,5 @@ class AddMeeting extends StatelessWidget {
       DropdownMenuItem(value:item,child: Text(item));
 
 }
+
 

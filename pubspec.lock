@@ -74,6 +74,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  linked_scroll_controller:
+    dependency: "direct main"
+    description:
+      name: linked_scroll_controller
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
   lints:
     dependency: transitive
     description:
@@ -165,3 +172,4 @@ packages:
     version: "2.1.1"
 sdks:
   dart: ">=2.16.0-35.0.dev <3.0.0"
+  flutter: ">=1.12.13+hotfix.5"

@@ -4,6 +4,11 @@ String appName ='tracker';
 TextStyle style(isHeader)=>TextStyle(
     fontWeight:isHeader? FontWeight.bold:FontWeight.normal
 );
+AppBar trackerBar()=>AppBar(
+  backgroundColor: appCo,
+  shadowColor: appCo,
+  elevation: 0,
+);
 const Color appCo=Colors.yellow;
 const MaterialColor appCol=Colors.yellow;
 const MaterialColor pu=Colors.purple;
