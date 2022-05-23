@@ -12,7 +12,9 @@ class AddMeeting extends StatelessWidget {
   static const items=[
     'OnGoing','Done','Cancelled'
   ];
-
+  static const teams=[
+    'team1','team2','team3'
+  ];
   @override
   Widget build(BuildContext context) {
     Size size =MediaQuery.of(context).size;
@@ -60,7 +62,19 @@ class AddMeeting extends StatelessWidget {
                               SizedBox(height:size.height*0.02),
                               Row(
                                 children: [
-                                  Text('Meeting status',style: TextStyle(color: Colors.black45,fontSize: size.width*0.045),),
+                                  Text('meeting team',style: TextStyle(color: Colors.black45,fontSize: size.width*0.045),),
+                                  SizedBox(width:size.width*0.08),
+                                  DropdownButton<String>(
+
+                                      value: value,
+                                      items: teams.map(buildMenuItem).toList(),
+                                      onChanged: (value)=>print('have chosen')),
+                                ],
+                              ),
+                              SizedBox(height:size.height*0.02),
+                              Row(
+                                children: [
+                                  Text('meeting status',style: TextStyle(color: Colors.black45,fontSize: size.width*0.045),),
                                   SizedBox(width:size.width*0.08),
                                   DropdownButton<String>(
 

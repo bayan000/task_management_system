@@ -1,8 +1,18 @@
+import 'package:comment_box/comment/comment.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/modules/add%20meeting/add_meeting.dart';
+import 'package:tracker/modules/commentBox/commentBox.dart';
+import 'package:tracker/modules/edit%20meeting/edit_meeting.dart';
+import 'package:tracker/modules/edit%20team/edit_team.dart';
+import 'package:tracker/modules/meeting/meeting.dart';
+import 'package:tracker/modules/monthly_calendar/monthly_calendar.dart';
+import 'package:tracker/modules/reports/reports.dart';
 
 import 'package:tracker/shared/constants.dart';
 
-import 'modules/teams/teams.dart';
+import 'modules/add team/add_team.dart';
+import 'modules/meetings/meetings.dart';
+
 
 
 
@@ -21,7 +31,7 @@ class MyApp extends StatelessWidget {
 
       debugShowCheckedModeBanner: false,
       title: appName,
-      home:const  Teams(),
+      home:AddMeeting(),
       theme: ThemeData(
         // This is the theme of your application.
         //

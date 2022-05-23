@@ -19,7 +19,7 @@ TextEditingController searchController=TextEditingController();
     );
 */
 /// *****************************************************************************/
-/*
+
 Widget defaultTextFormField({
   bool ispass=false,
   required TextEditingController controller,
@@ -47,9 +47,13 @@ Widget defaultTextFormField({
       icon: Icon(suffix),) : null,
     border:const OutlineInputBorder(),
   ),
-);*/
+);
 /// *****************************************************************************/
-
+   Widget getTextWidgets(List<String> strings)
+   {
+     return Column(children: strings.map((item) => Text(item,style: const TextStyle(fontSize: 18),)).toList());
+   }
+/// *****************************************************************************/
 Table meetingsTable()=>Table(
 
   /* border: TableBorder.symmetric(

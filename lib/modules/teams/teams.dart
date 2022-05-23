@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/add%20team/add_team.dart';
+
 
 import '../../shared/constants.dart';
+import '../add team/add_team.dart';
 
 class Teams extends StatelessWidget {
   const Teams({Key? key}) : super(key: key);
