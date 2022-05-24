@@ -18,7 +18,13 @@ class Meetings extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size =MediaQuery.of(context).size;
     return Scaffold(
-      appBar: trackerBar(),
+      appBar: AppBar(
+        backgroundColor: appCo,
+        shadowColor: appCo,
+        elevation: 0,
+        title:  Text('  Meetings',
+        style:trackerStyle,
+      )),
       body:
 
       SafeArea(
@@ -35,10 +41,7 @@ class Meetings extends StatelessWidget {
                     Container(
                       color: appCo,
                       height: size.height*0.125,
-                      width: double.infinity,
-                      child:  Text('  Meetings',
-                        style:trackerStyle,
-                      ),),
+                      width: double.infinity,),
                     Container(
                       color: appCo,
                       child: Container(
@@ -76,7 +79,7 @@ class Meetings extends StatelessWidget {
                     elevation: MaterialStateProperty.all(40),
                     shape: MaterialStateProperty.all(const CircleBorder()),
                     padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
-                    foregroundColor: MaterialStateProperty.all(pu.shade300),
+                    foregroundColor: MaterialStateProperty.all(appFo),
                     backgroundColor: MaterialStateProperty.all(appCo), // <-- Button color
                     overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
                       if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color

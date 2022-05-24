@@ -7,11 +7,14 @@ import 'package:tracker/modules/edit%20team/edit_team.dart';
 import 'package:tracker/modules/meeting/meeting.dart';
 import 'package:tracker/modules/monthly_calendar/monthly_calendar.dart';
 import 'package:tracker/modules/reports/reports.dart';
+import 'package:tracker/modules/teams/teams.dart';
+import 'package:tracker/modules/user/user.dart';
 
 import 'package:tracker/shared/constants.dart';
 
 import 'modules/add team/add_team.dart';
 import 'modules/meetings/meetings.dart';
+import 'modules/team/team.dart';
 
 
 
@@ -31,7 +34,7 @@ class MyApp extends StatelessWidget {
 
       debugShowCheckedModeBanner: false,
       title: appName,
-      home:AddMeeting(),
+      home:User(),
       theme: ThemeData(
         // This is the theme of your application.
         //

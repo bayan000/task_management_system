@@ -58,7 +58,7 @@ class AddTeam extends StatelessWidget {
         ),
         SizedBox(height:size.height*0.06),
         TextButton(onPressed: (){}, child: const Text(' Add ',
-          style: TextStyle(fontSize: 20,color:pu,fontWeight: fw),)),
+          style: TextStyle(fontSize: 22,color:appFo,fontWeight: fw),)),
 
       ],
     ),

@@ -19,6 +19,12 @@ class EditMeeting extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size =MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: appCo,
+        shadowColor: appCo,
+        elevation: 0,
+        title: Text('Edit meeting',style: trackerStyle,),
+      ),
         backgroundColor: appCo,
         body: SafeArea(
           child: SingleChildScrollView(
@@ -30,8 +36,8 @@ class EditMeeting extends StatelessWidget {
                 children:  [
 
                   SizedBox(height: size.height*0.049,),
-                  Text('Edit meeting',style: trackerStyle,),
-                  SizedBox(height: size.height*0.03,),
+
+
                   Material(
                     elevation: 15,
                     child: Container(
@@ -56,13 +62,13 @@ class EditMeeting extends StatelessWidget {
                                 lastDate: DateTime(2050)).then((date){print('picked');});//emit here meeting's date
                           }),
                       SizedBox(width: size.width*0.08),
-                      Text(dateTime==null? 'when is your meeting?':dateTime.toString(),style: TextStyle(color: Colors.black45,fontSize: size.width*0.045),),
+                      Text(dateTime==null? 'when is your meeting?':dateTime.toString(),style: TextStyle(color: appFo,fontSize: size.width*0.045),),
                     ],
                   ),
                   SizedBox(height:size.height*0.02),
                   Row(
                     children: [
-                      Text('meeting team',style: TextStyle(color: Colors.black45,fontSize: size.width*0.045),),
+                      Text('meeting team',style: TextStyle(color: appFo,fontSize: size.width*0.045),),
                       SizedBox(width:size.width*0.08),
                       DropdownButton<String>(
 
@@ -74,7 +80,7 @@ class EditMeeting extends StatelessWidget {
                   SizedBox(height:size.height*0.02),
                   Row(
                     children: [
-                      Text('meeting status',style: TextStyle(color: Colors.black45,fontSize: size.width*0.045),),
+                      Text('meeting status',style: TextStyle(color: appFo,fontSize: size.width*0.045),),
                       SizedBox(width:size.width*0.08),
                       DropdownButton<String>(
 
@@ -97,7 +103,7 @@ class EditMeeting extends StatelessWidget {
                             //emit here meeting's time
                           }),
                       SizedBox(width: size.width*0.08),
-                      Text(dateTime==null? 'which hour is it?':dateTime.toString(),style: TextStyle(color: Colors.black45,fontSize: size.width*0.045),),
+                      Text(dateTime==null? 'which hour is it?':dateTime.toString(),style: TextStyle(color: appFo,fontSize: size.width*0.045),),
                     ],
                   ),
                   SizedBox(height:size.height*0.02),
@@ -120,7 +126,7 @@ class EditMeeting extends StatelessWidget {
                         'with ',
                         style:TextStyle(
                           fontSize: 20,
-                          color:Colors.black38 ,
+                          color:appFo,
                         ),
                       ),
 

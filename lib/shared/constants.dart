@@ -10,10 +10,10 @@ AppBar trackerBar()=>AppBar(
   elevation: 0,
 );
 
-const Color appCo=Colors.yellow;
-const MaterialColor appCol=Colors.yellow;
+const Color appCo=Colors.blue;
+const MaterialColor appCol=Colors.blue;
 const MaterialColor pu=Colors.purple;
 const FontWeight fw=FontWeight.bold;
 const Color appFo=Colors.white;
 
-TextStyle trackerStyle=const TextStyle(fontSize: 35,color:pu,fontWeight: fw);
+TextStyle trackerStyle=const TextStyle(fontSize: 25,color:pu,fontWeight: fw);

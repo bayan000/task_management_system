@@ -55,7 +55,7 @@ class Teams extends StatelessWidget {
                         elevation: MaterialStateProperty.all(40),
                         shape: MaterialStateProperty.all(const CircleBorder()),
                         padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
-                        foregroundColor: MaterialStateProperty.all(pu.shade300),
+                        foregroundColor: MaterialStateProperty.all(appFo),
                         backgroundColor: MaterialStateProperty.all(appCo), // <-- Button color
                         overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
                           if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color
