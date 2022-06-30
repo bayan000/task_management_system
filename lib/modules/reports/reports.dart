@@ -14,10 +14,10 @@ class Reports extends StatelessWidget {
     Size size =MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Reports'),
+        title:  Text('Reports',style: trackerStyle,),
         automaticallyImplyLeading: false,
         // centerTitle: true,
-        titleTextStyle: const TextStyle(fontSize: 25,color:pu,fontWeight: fw),
+
         backgroundColor: appCo,
         shadowColor: appCo,
         elevation: 0,
@@ -33,9 +33,9 @@ class Reports extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
 
                 child: Container(
-                  decoration:   const BoxDecoration(
+                  decoration:   BoxDecoration(
                       color: appFo,
-                      borderRadius: BorderRadius.only(topRight: Radius.circular(70),topLeft:Radius.circular(70) )),
+                      borderRadius: BorderRadius.only(topRight: Radius.circular(r),topLeft:Radius.circular(r) )),
                   child: ListView.separated(
                     physics:  const BouncingScrollPhysics(),
                     shrinkWrap: true,
@@ -66,7 +66,7 @@ class Reports extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: h*0.01,),
-                const Text('Task name',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 20,
+                 Text('Task name',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 20,
                     fontWeight: FontWeight.bold,color: pu),),
                 SizedBox(height: h*0.04,),
                 Row(

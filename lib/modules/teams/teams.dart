@@ -12,10 +12,10 @@ class Teams extends StatelessWidget {
     Size size =MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Teams'),
+        title:  Text('Teams',style: trackerStyle,),
         automaticallyImplyLeading: false,
         // centerTitle: true,
-        titleTextStyle: const TextStyle(fontSize: 25,color:pu,fontWeight: fw),
+
         backgroundColor: appCo,
         shadowColor: appCo,
         elevation: 0,
@@ -56,7 +56,7 @@ class Teams extends StatelessWidget {
                         shape: MaterialStateProperty.all(const CircleBorder()),
                         padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
                         foregroundColor: MaterialStateProperty.all(appFo),
-                        backgroundColor: MaterialStateProperty.all(appCo), // <-- Button color
+                        backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
                         overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
                           if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color
                         }),

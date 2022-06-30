@@ -16,7 +16,7 @@ class Meeting extends StatelessWidget {
         backgroundColor: appCo,
         shadowColor: appCo,
         elevation: 0,
-        title:const Text('tracker',style: TextStyle(fontSize: 25,color: pu),),),
+        title: Text(appName,style: trackerStyle),),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

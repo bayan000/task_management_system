@@ -38,14 +38,13 @@ class EditMeeting extends StatelessWidget {
                   SizedBox(height: size.height*0.049,),
 
 
-                  Material(
-                    elevation: 15,
-                    child: Container(
-                        height: size.height*0.25,
-                        decoration: const BoxDecoration(
-                          image:DecorationImage(image: AssetImage("assets/images/puzzle.jpg"),
-                            fit: BoxFit.fill,),)),
-                  ),
+                  Container(
+                      height: size.height*0.25,
+                      decoration:  BoxDecoration(
+                        borderRadius: BorderRadius.only(topRight: Radius.circular(r),topLeft: Radius.circular(r),
+                            bottomLeft:Radius.circular(r),bottomRight:Radius.circular(r) ),
+                        image:const DecorationImage(image: AssetImage("assets/images/puzzle.jpg"),
+                          fit: BoxFit.fill,),)),
                   SizedBox(height: size.height*0.05,),
                   Row(
                     children: [
@@ -115,7 +114,7 @@ class EditMeeting extends StatelessWidget {
                         'Make meeting',
                         style: TextStyle(
                           fontSize: 16,
-                          color:Colors.black26 ,
+                          color:appFo ,
                         ),
                       ),
                       TextButton(onPressed: (){Navigator.push(
@@ -137,8 +136,23 @@ class EditMeeting extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      TextButton(onPressed: (){}, child: const Text(' Edit ',
-                        style: TextStyle(fontSize: 20,color:pu,fontWeight: fw),)),
+                      ElevatedButton(
+                        onPressed: () {Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const EditMeeting()));},
+                        child:  Text('edit',style: TextStyle(color: appFo,fontSize: size.width*0.045)),
+                        style: ButtonStyle(
+                          //elevation: MaterialStateProperty.all(40),
+                          shape: MaterialStateProperty.all(const CircleBorder()),
+                          padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+                          foregroundColor: MaterialStateProperty.all(appFo),
+                          backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
+                          overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
+                            if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color
+                          }),
+                        ),
+                      )
+
                     ],
                   ),
                   //SizedBox(height:size.height*0.02),

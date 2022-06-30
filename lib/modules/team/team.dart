@@ -10,10 +10,10 @@ class Team extends StatelessWidget{
     Size size =MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Team name'),
+          title:  Text('Team name',style: trackerStyle,),
           automaticallyImplyLeading: false,
          // centerTitle: true,
-          titleTextStyle: const TextStyle(fontSize: 25,color:pu,fontWeight: fw),
+
           backgroundColor: appCo,
           shadowColor: appCo,
           elevation: 0,

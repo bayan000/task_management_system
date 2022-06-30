@@ -52,7 +52,7 @@ class _CommentsState extends State<Comments> {
                 child: Container(
                   height: 50.0,
                   width: 50.0,
-                  decoration: const BoxDecoration(
+                  decoration:  BoxDecoration(
                       color: pu,
                       borderRadius: BorderRadius.all(Radius.circular(50))),
                   child: CircleAvatar(
@@ -75,7 +75,7 @@ class _CommentsState extends State<Comments> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Comments",style: TextStyle(color: pu),),
+        title: Text("Comments",style: trackerStyle,),
         backgroundColor: appCo,
         elevation: 0,
       ),

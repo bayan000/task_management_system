@@ -13,7 +13,7 @@ class CalendarMonthly extends StatelessWidget {
         backgroundColor: appCo,
         shadowColor: appCo,
         elevation: 0,
-        title:const Text('My calendar',style: TextStyle(fontSize: 25,color: pu),),),
+        title: Text('My calendar',style: trackerStyle),),
         body:SfCalendar(
           view: CalendarView.month,
           initialSelectedDate: DateTime.now(),

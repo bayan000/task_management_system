@@ -1,27 +1,27 @@
-import 'package:comment_box/comment/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/modules/add%20meeting/add_meeting.dart';
 import 'package:tracker/modules/commentBox/commentBox.dart';
-import 'package:tracker/modules/edit%20meeting/edit_meeting.dart';
 import 'package:tracker/modules/edit%20team/edit_team.dart';
-import 'package:tracker/modules/meeting/meeting.dart';
+import 'package:tracker/modules/meetings/meetings.dart';
 import 'package:tracker/modules/monthly_calendar/monthly_calendar.dart';
 import 'package:tracker/modules/reports/reports.dart';
 import 'package:tracker/modules/teams/teams.dart';
 import 'package:tracker/modules/user/user.dart';
-
+import 'package:provider/provider.dart';
+import 'package:tracker/providers/add_team_provider.dart';
+import 'package:tracker/providers/edit_team_provider.dart';
 import 'package:tracker/shared/constants.dart';
-
 import 'modules/add team/add_team.dart';
-import 'modules/meetings/meetings.dart';
+import 'modules/edit meeting/edit_meeting.dart';
+import 'modules/meeting/meeting.dart';
 import 'modules/team/team.dart';
-
-
-
-
-
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_) =>AddTeamProvider()),
+      ChangeNotifierProvider(create: (_) =>EditTeamProvider()),
+    ],child: MyApp(),)
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -34,7 +34,23 @@ class MyApp extends StatelessWidget {
 
       debugShowCheckedModeBanner: false,
       title: appName,
-      home:User(),
+      //home:const AddTeam(),
+      initialRoute: '/',
+      routes:
+      { '/':(context){return const EditTeam();},
+        '/a':(context){return const AddTeam();},
+        '/add_meeting':(context){return const AddMeeting();},
+        '/comments':(context){return const Comments();},
+        '/edit_meeting':(context){return const EditMeeting();},
+        '/edit_team':(context){return const EditTeam();},
+        '/meeting':(context){return const Meeting();},
+        '/meetings':(context){return const Meetings();},
+        '/monthly_calendar':(context){return const CalendarMonthly();},
+        '/reports':(context){return const Reports();},
+        '/team':(context){return const Team();},
+        '/teams':(context){return const Teams();},
+        '/user':(context){return const User();},
+      },
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -45,7 +61,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: pu,
+        primarySwatch: pur,
         primaryColor: appFo,
       ),
       // home:,// const MyHomePage(title: 'Flutter Demo Home Page'),

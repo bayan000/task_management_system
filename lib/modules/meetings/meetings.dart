@@ -40,26 +40,30 @@ class Meetings extends StatelessWidget {
                   children: [
                     Container(
                       color: appCo,
-                      height: size.height*0.125,
+                      height: size.height*0.06,
                       width: double.infinity,),
                     Container(
                       color: appCo,
-                      child: Container(
-                        height: size.height*0.775,//size.height*0.87,//620,
-                        //constraints: BoxConstraints( maxHeight: double.infinity, ),
-                        decoration:   const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(topRight: Radius.circular(70),topLeft:Radius.circular(70) )),
+                      child: Padding(
+                        padding:  EdgeInsets.only(
+                            top:size.height*0.01,left:size.width*0.025,right: size.width*0.025  ),
+                        child: Container(
+                          height: size.height*0.84,//size.height*0.87,//620,
+                          //constraints: BoxConstraints( maxHeight: double.infinity, ),
+                          decoration:    BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(topRight: Radius.circular(r),topLeft:Radius.circular(r) )),
 
-                        padding: const EdgeInsets.only(top: 30),
-                        //color: Colors.white,
-                        child: ListView(
+                          padding: const EdgeInsets.only(top: 30),
+                          //color: Colors.white,
+                          child: ListView(
 
-                          physics: const BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          children: [
-                          meetingsTable(),
-                          ],
+                            physics: const BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            children: [
+                            meetingsTable(),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -80,7 +84,7 @@ class Meetings extends StatelessWidget {
                     shape: MaterialStateProperty.all(const CircleBorder()),
                     padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
                     foregroundColor: MaterialStateProperty.all(appFo),
-                    backgroundColor: MaterialStateProperty.all(appCo), // <-- Button color
+                    backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
                     overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
                       if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color
                     }),

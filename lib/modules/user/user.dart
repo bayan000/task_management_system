@@ -8,6 +8,16 @@ class User extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size =MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        title:  Text(appName,style: trackerStyle,),
+        automaticallyImplyLeading: false,
+        // centerTitle: true,
+        titleTextStyle:  const TextStyle(fontSize: 25,color:appFo,fontWeight: fw),
+        backgroundColor: appCo,
+        shadowColor: appCo,
+        elevation: 0,
+
+      ),
       backgroundColor: appFo,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -68,7 +78,7 @@ class User extends StatelessWidget {
       SizedBox(height: size.height*0.01,),
       Row(
         children: [
-          const Text('member '+'at '),
+          const Text('member ''at '),
           SizedBox(width: size.width*0.03,),
           const Text('detecting team',style:TextStyle(fontSize: 16,color: Colors.grey) ,),
         ],
