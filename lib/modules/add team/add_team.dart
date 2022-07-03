@@ -5,7 +5,7 @@ import 'package:tracker/shared/components.dart';
 import 'package:http/http.dart' as http;
 //import 'dart:convert';
 import '../../shared/constants.dart';
-import 'package:tracker/providers/add_team_provider.dart';
+import 'package:tracker/controllers/add_team_provider.dart';
 
 class AddTeam extends StatefulWidget {
   const AddTeam({Key? key}) : super(key: key);
@@ -34,7 +34,6 @@ class _AddTeamState extends State<AddTeam> {
   else if(response.body.isEmpty) {
     print("empty");
   }
-//hangin out t
   }
   @override
   Widget build(BuildContext context) {

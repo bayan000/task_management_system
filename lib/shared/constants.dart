@@ -11,7 +11,7 @@ AppBar trackerBar()=>AppBar(
   shadowColor: appCo,
   elevation: 0,
 );
-double r=30;
+double r=30;//boreder radious
 const Color appCo=Colors.blue;
 const MaterialColor appCol=Colors.blue;
  Color pu=Colors.purple;

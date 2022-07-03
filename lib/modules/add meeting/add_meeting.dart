@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../shared/constants.dart';
 import '../team/team.dart';
+import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 
-
-class AddMeeting extends StatelessWidget {
+class AddMeeting extends StatefulWidget {
   const AddMeeting({Key? key, this.dateTime, this.value}) : super(key: key);
    final DateTime? dateTime;
   final String? value ;
@@ -15,6 +17,13 @@ class AddMeeting extends StatelessWidget {
   static const teams=[
     'team1','team2','team3'
   ];
+
+  @override
+  State<AddMeeting> createState() => _AddMeetingState();
+}
+
+class _AddMeetingState extends State<AddMeeting> {
+
   @override
   Widget build(BuildContext context) {
     Size size =MediaQuery.of(context).size;
@@ -61,7 +70,7 @@ class AddMeeting extends StatelessWidget {
                                                    lastDate: DateTime(2050)).then((date){print('picked');});//emit here meeting's date
                                               }),
                                   SizedBox(width: size.width*0.08),
-                                  Text(dateTime==null? 'when is your meeting?':dateTime.toString(),
+                                  Text(widget.dateTime==null? 'when is your meeting?':widget.dateTime.toString(),
                                     style: TextStyle(color: appFo,fontSize: size.width*0.045),),
                                 ],
                               ),
@@ -72,8 +81,8 @@ class AddMeeting extends StatelessWidget {
                                   SizedBox(width:size.width*0.08),
                                   DropdownButton<String>(
 
-                                      value: value,
-                                      items: teams.map(buildMenuItem).toList(),
+                                      value: widget.value,
+                                      items: AddMeeting.teams.map(buildMenuItem).toList(),
                                       onChanged: (value)=>print('have chosen')),
                                 ],
                               ),
@@ -84,8 +93,8 @@ class AddMeeting extends StatelessWidget {
                                   SizedBox(width:size.width*0.08),
                                   DropdownButton<String>(
 
-                                      value: value,
-                                      items: items.map(buildMenuItem).toList(),
+                                      value: widget.value,
+                                      items: AddMeeting.items.map(buildMenuItem).toList(),
                                       onChanged: (value)=>print('have chosen')),
                                 ],
                               ),//emit meeting status
@@ -103,7 +112,7 @@ class AddMeeting extends StatelessWidget {
                                           //emit here meeting's time
                                       }),
                                   SizedBox(width: size.width*0.08),
-                                  Text(dateTime==null? 'which hour is it?':dateTime.toString(),
+                                  Text(widget.dateTime==null? 'which hour is it?':widget.dateTime.toString(),
                                     style: TextStyle(color: appFo,fontSize: size.width*0.045),),
                                 ],
                               ),
@@ -179,8 +188,8 @@ class AddMeeting extends StatelessWidget {
           ),
         ));
   }
+
   DropdownMenuItem<String> buildMenuItem(String item) =>
       DropdownMenuItem(value:item,child: Text(item));
-
 }
 
