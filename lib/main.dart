@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:tracker/modules/add%20meeting/add_meeting.dart';
 import 'package:tracker/modules/comments/comments.dart';
 import 'package:tracker/modules/edit%20team/edit_team.dart';
@@ -12,18 +14,34 @@ import 'package:tracker/controllers/add_team_provider.dart';
 import 'package:tracker/controllers/edit_team_provider.dart';
 import 'package:tracker/shared/constants.dart';
 import 'modules/add team/add_team.dart';
+import 'modules/dashboard.dart';
 import 'modules/edit meeting/edit_meeting.dart';
+import 'modules/login_screen.dart';
 import 'modules/meeting/meeting.dart';
+import 'modules/tasks_screen.dart';
 import 'modules/team/team.dart';
-void main() {
- /* runApp(
-    MultiProvider(controllers: [
+void main() async {
+  await GetStorage.init();
+  runApp(
+    MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) =>AddTeamProvider()),
       ChangeNotifierProvider(create: (_) =>EditTeamProvider()),
-    ],child: MyApp(),)
-  );*/
-  runApp(MyApp());
+    ],
+    child: MyApp(),)
+  );
+  // runApp(MyApp());
+ // runApp(const MyApp());
 }
+
+  /*runApp(
+    MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_) =>AddTeamProvider()),
+      ChangeNotifierProvider(create: (_) =>EditTeamProvider()),
+    ],
+    child: MyApp(),)
+  );*/
+ // runApp(MyApp());
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -35,10 +53,16 @@ class MyApp extends StatelessWidget {
 
       debugShowCheckedModeBanner: false,
       title: appName,
-      home:const AddMeeting(),
-      /*initialRoute: '/',
+
+      initialRoute: GetStorage().hasData('token') ?'/' : '/login',
+
+      builder: EasyLoading.init(),
       routes:
-      { '/':(context){return const AddMeeting();},
+      {
+        '/login': (context) => Login(),
+        '/Dashboard': (context) => Dashboard(),
+        '/Tasks': (context) => Task(),
+        '/':(context){return const AddTeam();},
         '/a':(context){return const AddTeam();},
         '/add_meeting':(context){return const AddMeeting();},
         '/comments':(context){return const Comments();},
@@ -51,7 +75,7 @@ class MyApp extends StatelessWidget {
         '/team':(context){return const Team();},
         '/teams':(context){return const Teams();},
         '/user':(context){return const User();},
-      },*/
+      },
       theme: ThemeData(
         // This is the theme of your application.
         //

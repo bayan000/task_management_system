@@ -1,6 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/config/server_config.dart';
+import 'package:tracker/services/team_service.dart';
 import 'package:tracker/shared/components.dart';
 import 'package:http/http.dart' as http;
 //import 'dart:convert';
@@ -15,29 +20,11 @@ class AddTeam extends StatefulWidget {
 }
 
 class _AddTeamState extends State<AddTeam> {
-  addTeam(String name) async {
-  var url="http://192.168.43.139:8000/api/admin/department/add";
-  var token="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNWI3YmZlYTk5YTQzYjhjNDVlNjFlMTNlM2Q3MjBmYzFhMmY3NDQ1YTcxYmU4NDFjYTY2ZWQ5NzRmNTE1Nzk0OWFhZmUwNWE1OGZiZmY2NTciLCJpYXQiOjE2NTU5Nzk3MzMuMDM5NjAzLCJuYmYiOjE2NTU5Nzk3MzMuMDM5NjEsImV4cCI6MTY4NzUxNTczMi45ODQyNDcsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.wVyZI0Nepr8dGcHBU8rQx04xCgtRHiSh3NLKs6dw_xw7pCpd2XrsqfGbdd6DIMJqXer225gp41uUoO0T3plqGL2UlOwUW1IYeAfFZWbAehFsqS69248T5I55a6KY3lktG5YkmGinKhFYwkYs8qfLfuizH4T4idy1NpSk49LILOKKJUvv7xc6tCcOfjNVgvqfE9Rupc7WhAuCa5W8yOqeKdqS94xTT1_wYeTdDbs_rdh5qEdX-ecQw3l8nbPTCGms_N22VEgp5QMSzDbRlm4asjtGP6slpqdAv8Arxv-J_9snkCqxcnAHaq-fpoGoOOLiCNc6kCv_C2NV9w4ZyxicQ-jw3sK81syn4RY0mio4gQIMLmAvpsKobvNfUJdYf05BJXG3UuykP9l9PS0v6IvgRyOrUI4EP8wq2hNCIM64O6xaF_5d5Ju91RD09SJ0OTMybmsrMzdT7mAMRR1d3KhKC-iok0IyLvv1g3Z2wKNY81Noky2i_7iXAtQhiT9zQO9AF47tQly6aYWpCIbK1sRrc0TVGRec6o6ESTu9ikJXYFto8BgTpQ52g5150vk6fVH2BMlFwpDcstdZ32QD_IAsacwWwF2jewhAxQGTDjGcpv0ADpKu0VGS5VJRmYxMG9XL-FNiNve1maay5WvKRgZvK4Ox4RMn-lIX2sd_GBqkupA";
-  //used parse to generate URI obj out of my string url
-  var response =await http.post(Uri.parse(url),headers: {'Accept':'application/json',
-'auth':'Bearer $token',
-  },body: {
-    "name":name
-  });
-  //var responsebody= jsonDecode(response.body);
-  if(response.body.isNotEmpty) {
-    json.decode(response.body);
-    var responsebody= jsonDecode(response.body);
-    print (responsebody);
-    return responsebody;
-  }
-  else if(response.body.isEmpty) {
-    print("empty");
-  }
-  }
+  AddTeamProvider addteamprovider=AddTeamProvider();
   @override
   Widget build(BuildContext context) {
-    TextEditingController teamNameController=TextEditingController();
+
+
     //var formKey = GlobalKey<FormState>();
     Size size =MediaQuery.of(context).size;
     return Scaffold(
@@ -77,7 +64,9 @@ class _AddTeamState extends State<AddTeam> {
             child: Padding(
               padding:const EdgeInsets.only(right: 20,left:20,top: 20),
              // padding: const EdgeInsets.all(8.0),
-              child: defaultTextFormField(controller: teamNameController,
+              child: defaultTextFormField(controller:addteamprovider.teamName,
+
+                  hint: 'Team name',
                   type: TextInputType.name,
                   validate: (value){
                 // ignore: avoid_print
@@ -98,9 +87,20 @@ class _AddTeamState extends State<AddTeam> {
        /* TextButton(onPressed: (){}, child:  Text('add',
           style: TextStyle(fontSize: 22,color:pu,fontWeight: fw),)),*/
         ElevatedButton(
-          onPressed: (){
-            context.read<AddTeamProvider>().setTeamName(teamNameController.toString());
-            addTeam(AddTeamProvider().teamName);
+          onPressed: ()async{
+            EasyLoading.show(status: 'Loading....');
+
+            await addteamprovider.onAddTeam();
+           if (addteamprovider.modelTeam != null)
+             {
+               EasyLoading.showSuccess('team added successfully');
+               Navigator.pushReplacementNamed(
+                   context, '/teams');
+             }
+           else if (addteamprovider.modelTeam == null)
+             {
+               EasyLoading.showError('Error !');
+             }
             },
           child:  Text('add',style: TextStyle(color: appFo,fontSize: size.width*0.045)),
           style: ButtonStyle(
@@ -111,7 +111,7 @@ class _AddTeamState extends State<AddTeam> {
             backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
             overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
               if (
-              states.contains(MaterialState.pressed)) return pu; // <-- Splash color
+              states.contains(MaterialState.pressed)) return appFo; // <-- Splash color
             }),
           ),
         )
