@@ -56,18 +56,57 @@ class Teams extends StatelessWidget {
                       future: TeamService.showTeams(),
                     builder: (context,snapshot){
                         if(snapshot.data==null)
-                          {return Container(child: Center(child: Column(children: [
-                            CircularProgressIndicator(),Text('loading...'),],)),);}
+                          {return Column(
+                            children: [
+                              SizedBox(height: size.height*0.37,),
+                              Container(
+                                alignment: AlignmentDirectional.bottomCenter,
+                                child: Center(child: Column(children: [
+                                CircularProgressIndicator(),
+                                  SizedBox(height: size.height*0.01,),
+                                  Text('loading...'),],)),),
+                            ],
+                          );}
                         else
                          {
-return ListView.separated(
-                      physics:  const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) => buildTeamItem(size.height*0.3,size.width*0.9,'${TeamService.teams[index].name}'),
-                      separatorBuilder: (context, index) =>
-                      Container(width: size.width,height: size.height*0.001,color:Colors.grey,),
-                      itemCount:  TeamService.teams.length,
-                    );
+return Column(
+  children: [
+        ListView.separated(
+
+                          physics:  const BouncingScrollPhysics(),
+
+                          shrinkWrap: true,
+
+                          itemBuilder: (context, index) => buildTeamItem(size.height*0.3,size.width*0.9,'${TeamService.teams[index].name}'),
+
+                          separatorBuilder: (context, index) =>
+
+                          Container(width: size.width,height: size.height*0.001,color:Colors.grey,),
+
+                          itemCount:  TeamService.teams.length,
+
+                        ),
+    Padding(
+      padding:  EdgeInsets.all(size.width*0.07),
+      child: ElevatedButton(
+        onPressed: () {Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddTeam()));},
+        child: const Icon(Icons.add),
+        style: ButtonStyle(
+          elevation: MaterialStateProperty.all(40),
+          shape: MaterialStateProperty.all(const CircleBorder()),
+          padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+          foregroundColor: MaterialStateProperty.all(appFo),
+          backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
+          overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
+            if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color
+          }),
+        ),
+      ),
+    )
+  ],
+);
                           /* return ListView.builder(
                           itemCount: TeamService.teams.length ,
                             itemBuilder: (context,i){
@@ -83,25 +122,7 @@ return ListView.separated(
                     ),],
                   ),
                 ),
-                  Padding(
-                    padding:  EdgeInsets.all(size.width*0.07),
-                    child: ElevatedButton(
-                      onPressed: () {Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const AddTeam()));},
-                      child: const Icon(Icons.add),
-                      style: ButtonStyle(
-                        elevation: MaterialStateProperty.all(40),
-                        shape: MaterialStateProperty.all(const CircleBorder()),
-                        padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
-                        foregroundColor: MaterialStateProperty.all(appFo),
-                        backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
-                        overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
-                          if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color
-                        }),
-                      ),
-                    ),
-                  )
+
                 ],
 
               )
