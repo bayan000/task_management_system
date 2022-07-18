@@ -93,13 +93,13 @@ class _AddTeamState extends State<AddTeam> {
             await addteamprovider.onAddTeam();
            if (addteamprovider.modelTeam != null)
              {
-               EasyLoading.showSuccess('team added successfully');
+               EasyLoading.showSuccess(addteamprovider.message);
                Navigator.pushReplacementNamed(
                    context, '/teams');
              }
            else if (addteamprovider.modelTeam == null)
              {
-               EasyLoading.showError('Error !');
+               EasyLoading.showError('oops!'+addteamprovider.message);
              }
             },
           child:  Text('add',style: TextStyle(color: appFo,fontSize: size.width*0.045)),

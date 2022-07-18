@@ -6,11 +6,12 @@ import 'package:tracker/models/team_model.dart';
 import '../config/server_config.dart';
 import 'package:http/http.dart' as http;
 class TeamService{
+ static var message;
+ static var emessage;
   //add team function *********************************
   static Future   addTeam(TeamModel teamModel) async {
 
     var url=ServerConfig.domainName+ServerConfig.addTeam;
-    // var token="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNWI3YmZlYTk5YTQzYjhjNDVlNjFlMTNlM2Q3MjBmYzFhMmY3NDQ1YTcxYmU4NDFjYTY2ZWQ5NzRmNTE1Nzk0OWFhZmUwNWE1OGZiZmY2NTciLCJpYXQiOjE2NTU5Nzk3MzMuMDM5NjAzLCJuYmYiOjE2NTU5Nzk3MzMuMDM5NjEsImV4cCI6MTY4NzUxNTczMi45ODQyNDcsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.wVyZI0Nepr8dGcHBU8rQx04xCgtRHiSh3NLKs6dw_xw7pCpd2XrsqfGbdd6DIMJqXer225gp41uUoO0T3plqGL2UlOwUW1IYeAfFZWbAehFsqS69248T5I55a6KY3lktG5YkmGinKhFYwkYs8qfLfuizH4T4idy1NpSk49LILOKKJUvv7xc6tCcOfjNVgvqfE9Rupc7WhAuCa5W8yOqeKdqS94xTT1_wYeTdDbs_rdh5qEdX-ecQw3l8nbPTCGms_N22VEgp5QMSzDbRlm4asjtGP6slpqdAv8Arxv-J_9snkCqxcnAHaq-fpoGoOOLiCNc6kCv_C2NV9w4ZyxicQ-jw3sK81syn4RY0mio4gQIMLmAvpsKobvNfUJdYf05BJXG3UuykP9l9PS0v6IvgRyOrUI4EP8wq2hNCIM64O6xaF_5d5Ju91RD09SJ0OTMybmsrMzdT7mAMRR1d3KhKC-iok0IyLvv1g3Z2wKNY81Noky2i_7iXAtQhiT9zQO9AF47tQly6aYWpCIbK1sRrc0TVGRec6o6ESTu9ikJXYFto8BgTpQ52g5150vk6fVH2BMlFwpDcstdZ32QD_IAsacwWwF2jewhAxQGTDjGcpv0ADpKu0VGS5VJRmYxMG9XL-FNiNve1maay5WvKRgZvK4Ox4RMn-lIX2sd_GBqkupA";
     //used parse to generate URI obj out of my string url
     var response =await http.post(Uri.parse(url),body: {
       "name":teamModel.name
@@ -20,6 +21,7 @@ class TeamService{
     },);
     Map<String, dynamic> ateam = jsonDecode(response.body);
     print(response.statusCode);
+    message=ateam['message'];
     return TeamModel.fromJson(ateam['tha department:']);
     }
 
@@ -35,6 +37,33 @@ class TeamService{
     },);
     Map<String, dynamic> eteam = jsonDecode(response.body);
     print(response.statusCode);
+    emessage=eteam['message'];
     return TeamModel.fromJson(eteam['0']);
   }
+
+//show teams function *********************************
+  static List<TeamModel> teams=[];
+static Future showTeams() async{
+    var url=ServerConfig.domainName+ServerConfig.showTeams;
+    var response=await http.get(Uri.parse(url));
+    var jsonData=jsonDecode(response.body);
+   // List<TeamModel>? teams=[];
+    for (var t in jsonData)
+    {
+      TeamModel team=TeamModel(name: t["name"],id: t["id"],created_at: t["created_at"],updated_at: t["updated_at"]);
+      teams.add(team);
+    }
+    return teams;
+}
   }
+
+
+
+
+
+
+
+
+
+
+

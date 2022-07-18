@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:intl/intl.dart';
+import 'package:tracker/controllers/add_meeting_controller.dart';
 
 import '../../shared/constants.dart';
 import '../team/team.dart';
@@ -11,21 +14,24 @@ class AddMeeting extends StatefulWidget {
   const AddMeeting({Key? key, this.dateTime, this.value}) : super(key: key);
    final DateTime? dateTime;
   final String? value ;
-  static const items=[
+
+
+ /* static const items=[
     'OnGoing','Done','Cancelled'
   ];
   static const teams=[
     'team1','team2','team3'
-  ];
+  ];*/
 
   @override
   State<AddMeeting> createState() => _AddMeetingState();
 }
 
 class _AddMeetingState extends State<AddMeeting> {
-
+AddMeetingProvider addMeetingProvider=AddMeetingProvider();
   @override
   Widget build(BuildContext context) {
+    DateTime _date;
     Size size =MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -67,15 +73,42 @@ class _AddMeetingState extends State<AddMeeting> {
                                                     initialDate: DateTime.now(),
                                                    firstDate: DateTime(2020),
                                                    // ignore: avoid_print
-                                                   lastDate: DateTime(2050)).then((date){print('picked');});//emit here meeting's date
-                                              }),
+                                                   lastDate: DateTime(2050),
+    builder: (context,picker){
+    return Theme(data:ThemeData.light().copyWith(colorScheme: ColorScheme.light(primary: pu
+    )),
+    child:picker!,);}).then((date){
+      if(date!=null)
+      {
+        //addMeetingProvider.dateOfMeeting.text = date.toString();
+        _date=date;
+        addMeetingProvider.dateOfMeetingg=_date.year.toString()+"-"+_date.month.toString()+"-"+_date.day.toString();
+        print(addMeetingProvider.dateOfMeetingg);
+      /*  addMeetingProvider.dateOfMeeting
+          ..text = DateFormat.yMMMd().format(_date)
+          ..selection = TextSelection.fromPosition(TextPosition(
+              offset: addMeetingProvider.dateOfMeeting.text.length,
+              affinity: TextAffinity.upstream
+
+          ));*/
+        /* _selectedDate = newSelectedDate;
+      _textEditingController
+        ..text = DateFormat.yMMMd().format(_selectedDate)
+        ..selection = TextSelection.fromPosition(TextPosition(
+            offset: _textEditingController.text.length,
+            affinity: TextAffinity.upstream));*/
+
+      }
+    });
+                              }
+                             ),
                                   SizedBox(width: size.width*0.08),
                                   Text(widget.dateTime==null? 'when is your meeting?':widget.dateTime.toString(),
                                     style: TextStyle(color: appFo,fontSize: size.width*0.045),),
                                 ],
                               ),
                               SizedBox(height:size.height*0.02),
-                              Row(
+                              /*Row(
                                 children: [
                                   Text('meeting team',style: TextStyle(color: appFo,fontSize: size.width*0.045),),
                                   SizedBox(width:size.width*0.08),
@@ -98,7 +131,7 @@ class _AddMeetingState extends State<AddMeeting> {
                                       onChanged: (value)=>print('have chosen')),
                                 ],
                               ),//emit meeting status
-                              SizedBox(height:size.height*0.02),
+                              SizedBox(height:size.height*0.02),*/
                               Row(
                                 children: [
                                   ElevatedButton(
@@ -108,8 +141,32 @@ class _AddMeetingState extends State<AddMeeting> {
                                       child: Text('time of meeting',style: TextStyle(color: pu,fontSize: size.width*0.04),),
                                       onPressed: (){
                                         // ignore: avoid_print
-                                        showTimePicker(context: context, initialTime: const TimeOfDay(hour: 12, minute: 0)).then((date){print('picked');});
-                                          //emit here meeting's time
+                                        showTimePicker(context: context,
+                                            initialTime:
+                                            const TimeOfDay(hour: 12, minute: 0),
+                                            builder: (context,picker){
+                                              return Theme(data:ThemeData.light().copyWith(colorScheme: ColorScheme.light(primary: pu
+                                              )),
+                                                child:picker!,);}
+
+                                        ).then((date){
+                                          if(date!=null)
+                                          {
+                                            if(date.minute.toString().length==2 && date.hour.toString().length==2)
+                                            addMeetingProvider.timeOfMeeting= date.hour.toString()+":"+date.minute.toString();
+                                            else{
+                                              if(date.minute.toString().length==1 && date.hour.toString().length==1)
+                                                addMeetingProvider.timeOfMeeting= "0"+date.hour.toString()+":"+"0"+date.minute.toString();
+                                              if(date.hour.toString().length==1)
+                                                addMeetingProvider.timeOfMeeting="0"+ date.hour.toString()+":"+date.minute.toString();
+                                              if(date.minute.toString().length==1)
+                                                addMeetingProvider.timeOfMeeting= date.hour.toString()+":"+"0"+date.minute.toString();
+                                            }
+                                            print(addMeetingProvider.timeOfMeeting);
+                                          }
+                                        });
+
+
                                       }),
                                   SizedBox(width: size.width*0.08),
                                   Text(widget.dateTime==null? 'which hour is it?':widget.dateTime.toString(),
@@ -160,9 +217,22 @@ class _AddMeetingState extends State<AddMeeting> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   ElevatedButton(
-                                    onPressed: () {Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => const AddMeeting()));},
+                                    onPressed: ()async{
+                                      EasyLoading.show(status: 'Loading....');
+
+                                      await addMeetingProvider.onAddMeeting();
+                                      if (addMeetingProvider.modelMeeting != null)
+                                      {
+                                        EasyLoading.showSuccess(addMeetingProvider.message);
+                                        Navigator.pushReplacementNamed(
+                                            context, '/meetings');
+                                      }
+                                      else if (addMeetingProvider.modelMeeting == null)
+                                      {
+                                        EasyLoading.showError('oops!'+addMeetingProvider.message);
+
+                                      }
+                                    },
                                     child:  Text('add',style: TextStyle(color: appFo,fontSize: size.width*0.045)),
                                     style: ButtonStyle(
                                       //elevation: MaterialStateProperty.all(40),
@@ -171,7 +241,7 @@ class _AddMeetingState extends State<AddMeeting> {
                                       foregroundColor: MaterialStateProperty.all(appFo),
                                       backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
                                       overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
-                                        if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color
+                                        if (states.contains(MaterialState.pressed)) return appFo; // <-- Splash color
                                       }),
                                     ),
                                   )
@@ -188,8 +258,8 @@ class _AddMeetingState extends State<AddMeeting> {
           ),
         ));
   }
-
+/*
   DropdownMenuItem<String> buildMenuItem(String item) =>
-      DropdownMenuItem(value:item,child: Text(item));
+      DropdownMenuItem(value:item,child: Text(item));*/
 }
 

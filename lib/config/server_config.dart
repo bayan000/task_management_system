@@ -11,5 +11,7 @@ class ServerConfig{
 
   static String addTeam='api/admin/department/add';
   static String editTeam='api/admin/department/update/';
+  static String addMeeting='api/admin/meeting/add';
+  static String showTeams='api/admin/department/show/team';
 
 }

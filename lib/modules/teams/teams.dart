@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:tracker/services/team_service.dart';
 
 
 import '../../shared/constants.dart';
@@ -9,13 +11,14 @@ class Teams extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     Size size =MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         title:  Text('Teams',style: trackerStyle,),
         automaticallyImplyLeading: false,
         // centerTitle: true,
-
         backgroundColor: appCo,
         shadowColor: appCo,
         elevation: 0,
@@ -32,7 +35,8 @@ class Teams extends StatelessWidget {
                 children: [SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   // physics: const NeverScrollableScrollPhysics(),
-                  child: Column(
+
+                  /*child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [ListView.separated(
                       physics:  const BouncingScrollPhysics(),
@@ -41,6 +45,41 @@ class Teams extends StatelessWidget {
                       separatorBuilder: (context, index) =>
                       Container(width: size.width,height: size.height*0.001,color:Colors.grey,),
                       itemCount: 10,
+                    ),],
+                  ),*/
+
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      FutureBuilder(
+                      future: TeamService.showTeams(),
+                    builder: (context,snapshot){
+                        if(snapshot.data==null)
+                          {return Container(child: Center(child: Column(children: [
+                            CircularProgressIndicator(),Text('loading...'),],)),);}
+                        else
+                         {
+return ListView.separated(
+                      physics:  const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) => buildTeamItem(size.height*0.3,size.width*0.9,'${TeamService.teams[index].name}'),
+                      separatorBuilder: (context, index) =>
+                      Container(width: size.width,height: size.height*0.001,color:Colors.grey,),
+                      itemCount:  TeamService.teams.length,
+                    );
+                          /* return ListView.builder(
+                          itemCount: TeamService.teams.length ,
+                            itemBuilder: (context,i){
+                            return ListTile(title: Text(
+                                '${TeamService.teams[i].name}'
+                               // snapshot.data[i].name
+                            ),);
+                            });*/
+                         }
+
+                    },
+
                     ),],
                   ),
                 ),
@@ -72,7 +111,7 @@ class Teams extends StatelessWidget {
         )
     );
   }
-  Widget buildTeamItem(double h,double w) =>
+  Widget buildTeamItem(double h,double w,String name) =>
       Row(
         children: [
       Stack(
@@ -88,7 +127,7 @@ class Teams extends StatelessWidget {
                 SizedBox(
                   height: h*0.2,
                     width: w,
-                    child: const Text('Team name ',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 20,
+                    child:  Text('$name',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 20,
                         fontWeight: FontWeight.bold,color: Colors.black87),))
                 ,Container(
                   height: h*0.85,

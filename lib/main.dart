@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:tracker/controllers/login_controller.dart';
+import 'package:tracker/controllers/task_controller.dart';
+import 'package:tracker/controllers/user_controller.dart';
 import 'package:tracker/modules/add%20meeting/add_meeting.dart';
 import 'package:tracker/modules/comments/comments.dart';
 import 'package:tracker/modules/edit%20team/edit_team.dart';
@@ -26,6 +29,8 @@ void main() async {
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) =>AddTeamProvider()),
       ChangeNotifierProvider(create: (_) =>EditTeamProvider()),
+      ChangeNotifierProvider(create: (_)=> LoginController()),
+
     ],
     child: MyApp(),)
   );
@@ -46,7 +51,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -54,7 +59,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: appName,
 
-      initialRoute: GetStorage().hasData('token') ?'/' : '/login',
+      initialRoute: GetStorage().hasData('token') ?'/teams' : '/login',
 
       builder: EasyLoading.init(),
       routes:

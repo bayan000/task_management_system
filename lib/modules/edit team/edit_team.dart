@@ -95,13 +95,13 @@ EditTeamProvider editTeamProvider=EditTeamProvider();
                           await editTeamProvider.onEditTeam();
                           if (editTeamProvider.modelTeam != null)
                           {
-                            EasyLoading.showSuccess('team edited successfully');
+                            EasyLoading.showSuccess(editTeamProvider.message);
                             Navigator.pushReplacementNamed(
                                 context, '/teams');
                           }
                           else if (editTeamProvider.modelTeam == null)
                           {
-                            EasyLoading.showError('Something is wrong');
+                            EasyLoading.showError('oops!'+editTeamProvider.message);
                           }
                         },
                         child:  Text('edit',style: TextStyle(color: appFo,fontSize: size.width*0.045)),
