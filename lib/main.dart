@@ -78,23 +78,14 @@ class MyApp extends StatelessWidget {
         '/monthly_calendar':(context){return const CalendarMonthly();},
         '/reports':(context){return const Reports();},
         '/team':(context){return const Team();},
-        '/teams':(context){return const Teams();},
+        '/teams':(context){return  Teams();},
         '/user':(context){return const User();},
       },
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: pur,
         primaryColor: appFo,
       ),
-      // home:,// const MyHomePage(title: 'Flutter Demo Home Page'),
+
     );
   }
 }

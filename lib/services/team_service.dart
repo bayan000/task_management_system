@@ -42,17 +42,27 @@ class TeamService{
   }
 
 //show teams function *********************************
-  static List<TeamModel> teams=[];
-static Future showTeams() async{
+  //static List<TeamModel> teams=[];
+  static var message1;
+
+static Future<List<TeamModel>> showTeams() async{
+  List<TeamModel> teams=[];
     var url=ServerConfig.domainName+ServerConfig.showTeams;
-    var response=await http.get(Uri.parse(url));
-    var jsonData=jsonDecode(response.body);
+    var response=await http.get(Uri.parse(url),headers: {
+      'Authorization':'Bearer  ${GetStorage().read('token')}',
+      'Accept':'application/json',
+    });
+  print(response.statusCode);
+    var body=jsonDecode(response.body);
+    print(body);
    // List<TeamModel>? teams=[];
-    for (var t in jsonData)
+    for (var i=0; i<body.length ;i++)//var t in jsonData
     {
-      TeamModel team=TeamModel(name: t["name"],id: t["id"],created_at: t["created_at"],updated_at: t["updated_at"]);
-      teams.add(team);
+      teams.add(TeamModel.fromJson(body[i]));
+     // TeamModel team=TeamModel(name: t["name"],id: t["id"],created_at: t["created_at"],updated_at: t["updated_at"]);
+     // teams.add(team);
     }
+
     return teams;
 }
   }

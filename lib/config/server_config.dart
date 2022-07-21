@@ -2,7 +2,7 @@
 
 class ServerConfig{
 
-  static String  domainName='http://127.0.0.1:8000/';
+  static String  domainName='http://192.168.43.139:8000/';
   static String login='api/auth/login';
 
   static String logout='api/logout';
