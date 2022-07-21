@@ -32,10 +32,10 @@ class AuthService {
 //print('the user');
 //print(json['the user:']['user']);
 
-      await GetStorage().write('token', json['the user:']['token']);
+      await GetStorage().write('token', json['token']);
 
       print(await GetStorage().read('token'));
-      return User.fromJson(json['the user:']['user']);
+      return User.fromJson(json['user']);
 //return true;
     } else if (response.statusCode == 422 || response.statusCode == 402) {
 

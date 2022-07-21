@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: appName,
 
-      initialRoute: GetStorage().hasData('token') ?'/teams' : '/login',
+      initialRoute:GetStorage().hasData('token') ?'/teams' : '/login',
 
       builder: EasyLoading.init(),
       routes:
