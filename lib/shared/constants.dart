@@ -20,6 +20,7 @@ const MaterialColor pur=Colors.purple;
 //const MaterialColor pu=Colors.purple;
 const FontWeight fw=FontWeight.bold;
 const Color appFo=Colors.white;
+const Color myGray=Colors.blueGrey;
 //
 const Color  kred=Color(0xff992149);
 const Color korange=Color(0xfffa4c4c);
