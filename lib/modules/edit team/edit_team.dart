@@ -7,15 +7,20 @@ import 'package:provider/src/provider.dart';
 import 'package:tracker/controllers/edit_team_provider.dart';
 import '../../shared/components.dart';
 import '../../shared/constants.dart';
+import '../team/team.dart';
 
 class EditTeam extends StatefulWidget {
-  const EditTeam({Key? key}) : super(key: key);
+
+  var id,name;
+   EditTeam({ this.id,this.name}) ;
 
   @override
-  State<EditTeam> createState() => _EditTeamState();
+  State<EditTeam> createState() => _EditTeamState(id,name);
 }
 
 class _EditTeamState extends State<EditTeam> {
+  var id,name;
+  _EditTeamState(this.id,this.name);
 EditTeamProvider editTeamProvider=EditTeamProvider();
   @override
   Widget build(BuildContext context) {
@@ -23,6 +28,18 @@ EditTeamProvider editTeamProvider=EditTeamProvider();
     Size size =MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+
+            onPressed: () {
+              Navigator.of(context).pushReplacement(                                                         //new
+                  new MaterialPageRoute(                                                                       //new
+                      settings: const RouteSettings(name: '/team'),                                              //new
+                      builder: (context) => new Team(id: id,) //new
+                  )                                                                                            //new
+              );
+            },
+          ),
           title:  Text('Edit team',style: trackerStyle,),
           automaticallyImplyLeading: false,
           // centerTitle: true,
@@ -54,9 +71,7 @@ EditTeamProvider editTeamProvider=EditTeamProvider();
                             ),
                             Container(
                               color: appFo,
-                              child: Column(
-                                children: [
-                                  Padding(
+                              /*Padding(
                                     padding:EdgeInsets.only(right: 20,left:20,top: 20),
                                     // padding: const EdgeInsets.all(8.0),
                                     child: defaultTextFormField(controller: editTeamProvider.teamId,
@@ -65,18 +80,17 @@ EditTeamProvider editTeamProvider=EditTeamProvider();
                                         validate: (value){
                                           if(value!=null){print(value);}
                                         }, label: 'Team id', prefix: Icons.group),
-                                  ),
-                                  Padding(
-                                    padding:EdgeInsets.only(right: 20,left:20,top: 20),
-                                    // padding: const EdgeInsets.all(8.0),
-                                    child: defaultTextFormField(controller: editTeamProvider.teamName,
-                                        type: TextInputType.name,
-                                        hint: 'Team name',
-                                        validate: (value){
-                                          if(value!=null){print(value);}
-                                        }, label: 'Team name', prefix: Icons.group),
-                                  ),
-                                ],
+                                  ),*/
+                              child: Padding(
+                                padding:EdgeInsets.only(right: 20,left:20,top: 20),
+                                // padding: const EdgeInsets.all(8.0),
+                                child: defaultTextFormField(controller: editTeamProvider.teamName,
+                                    type: TextInputType.name,
+                                    hint: 'New team name',
+                                    validate: (value){
+                                      if(value!=null){print(value);}
+                                    }, label:this.name as String,// 'Team name',
+                                    prefix: Icons.group),
                               ),
                             ),]
                       ),
@@ -91,7 +105,7 @@ EditTeamProvider editTeamProvider=EditTeamProvider();
                       ElevatedButton(
                         onPressed: ()async{
                           EasyLoading.show(status: 'Loading....');
-
+                          editTeamProvider.setTeamId(this.id);
                           await editTeamProvider.onEditTeam();
                           if (editTeamProvider.modelTeam != null)
                           {

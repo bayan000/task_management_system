@@ -6,9 +6,12 @@ class EditTeamProvider extends ChangeNotifier{
   TeamModel? modelTeam;
   var message;
   TextEditingController teamName=TextEditingController();
-  TextEditingController teamId=TextEditingController();
+  var teamId;
+  void setTeamId(var id ){
+    teamId=id;
+  }
   Future onEditTeam()async{
-    TeamModel teamModel =TeamModel(name: teamName.text,id: teamId.text );
+    TeamModel teamModel =TeamModel(name: teamName.text,id: teamId);
     modelTeam= await TeamService.editTeam(teamModel);
     message =await TeamService.emessage;
   }

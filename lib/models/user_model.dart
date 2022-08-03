@@ -1,18 +1,10 @@
 
-import 'package:flutter/cupertino.dart';
-/*
-"first_name": "samer",
-        "last_name": "Khdeelr",
-        "email": "samerkh4@gmail.com",
-        "employee_identical": "430219",
-        "password": "$2y$10$f1I7rX1H8bGhzc1DKaKdQ.jZ1GMF/rCBHZpnBhKLAZi/Bo5oOcuiq",
-        "role_id": "3",
-        "team_id": "1",
-        "updated_at": "2022-07-03T20:26:03.000000Z",
-        "created_at": "2022-07-03T20:26:03.000000Z",
-        "id": 13
- */
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'user_model.g.dart';
+
+@JsonSerializable()
 class User{
   String? first_name;
   String? last_name;
@@ -22,6 +14,7 @@ class User{
   var role_id;
   String? team_id;
   var id;
+  String? img_profile;
 
   User({
     this.first_name,
@@ -31,10 +24,12 @@ class User{
     this.password,
     this.role_id,
     this.team_id,
-    this.id
+    this.id,
+    this.img_profile
   });
-
-
+  factory User.fromJson(Map <String,dynamic> json) => _$UserFromJson(json);
+  Map<String, dynamic> toJson() => _$UserToJson(this);
+/*
   factory  User.fromJson(Map<String,dynamic> json)=>
       User(
           first_name: json['first_name'],
@@ -46,7 +41,7 @@ class User{
           team_id:json['team_id'],
           id: json['id']
       );
-
+*/
 
 
 

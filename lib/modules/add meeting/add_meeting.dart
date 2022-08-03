@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:tracker/controllers/add_meeting_controller.dart';
+import 'package:tracker/modules/users.dart';
 
 import '../../shared/constants.dart';
 import '../team/team.dart';
@@ -11,8 +12,8 @@ import 'package:http/http.dart' as http;
 
 
 class AddMeeting extends StatefulWidget {
-  const AddMeeting({Key? key, this.dateTime, this.value}) : super(key: key);
-   final DateTime? dateTime;
+   AddMeeting({Key? key, this.dateTime, this.value}) : super(key: key);
+   late final DateTime? dateTime;
   final String? value ;
 
 
@@ -80,58 +81,22 @@ AddMeetingProvider addMeetingProvider=AddMeetingProvider();
     child:picker!,);}).then((date){
       if(date!=null)
       {
-        //addMeetingProvider.dateOfMeeting.text = date.toString();
+        widget.dateTime=date;
         _date=date;
         addMeetingProvider.dateOfMeetingg=_date.year.toString()+"-"+_date.month.toString()+"-"+_date.day.toString();
         print(addMeetingProvider.dateOfMeetingg);
-      /*  addMeetingProvider.dateOfMeeting
-          ..text = DateFormat.yMMMd().format(_date)
-          ..selection = TextSelection.fromPosition(TextPosition(
-              offset: addMeetingProvider.dateOfMeeting.text.length,
-              affinity: TextAffinity.upstream
-
-          ));*/
-        /* _selectedDate = newSelectedDate;
-      _textEditingController
-        ..text = DateFormat.yMMMd().format(_selectedDate)
-        ..selection = TextSelection.fromPosition(TextPosition(
-            offset: _textEditingController.text.length,
-            affinity: TextAffinity.upstream));*/
-
       }
     });
                               }
                              ),
                                   SizedBox(width: size.width*0.08),
-                                  Text(widget.dateTime==null? 'when is your meeting?':widget.dateTime.toString(),
-                                    style: TextStyle(color: appFo,fontSize: size.width*0.045),),
+
+                                /*  Text(widget.dateTime==null? 'when is your meeting?':widget.dateTime.toString(),
+                                    style: TextStyle(color: appFo,fontSize: size.width*0.045),),*/
                                 ],
                               ),
                               SizedBox(height:size.height*0.02),
-                              /*Row(
-                                children: [
-                                  Text('meeting team',style: TextStyle(color: appFo,fontSize: size.width*0.045),),
-                                  SizedBox(width:size.width*0.08),
-                                  DropdownButton<String>(
 
-                                      value: widget.value,
-                                      items: AddMeeting.teams.map(buildMenuItem).toList(),
-                                      onChanged: (value)=>print('have chosen')),
-                                ],
-                              ),
-                              SizedBox(height:size.height*0.02),
-                              Row(
-                                children: [
-                                  Text('meeting status',style: TextStyle(color: appFo,fontSize: size.width*0.045),),
-                                  SizedBox(width:size.width*0.08),
-                                  DropdownButton<String>(
-
-                                      value: widget.value,
-                                      items: AddMeeting.items.map(buildMenuItem).toList(),
-                                      onChanged: (value)=>print('have chosen')),
-                                ],
-                              ),//emit meeting status
-                              SizedBox(height:size.height*0.02),*/
                               Row(
                                 children: [
                                   ElevatedButton(
@@ -188,7 +153,7 @@ AddMeetingProvider addMeetingProvider=AddMeetingProvider();
                                   ),
                                   TextButton(onPressed: (){Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) =>const Team()),
+                                    MaterialPageRoute(builder: (context) => Users()),
                                   );
                                   }, child: const Text(
                                     'with ',

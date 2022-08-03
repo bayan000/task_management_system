@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:tracker/models/showTeamModel.dart';
 import 'package:tracker/modules/team/team.dart';
 import 'package:tracker/services/team_service.dart';
 import 'package:tracker/models/team_model.dart';
@@ -22,6 +23,7 @@ class _TeamsState extends State<Teams> {
   Widget build(BuildContext context) {
     TeamsController teamsController=TeamsController();
 var team;
+var team_id;
     Size size =MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -61,15 +63,7 @@ var team;
                   );}
                   if(snapshot.hasError)
                     {
-                      return Column(
-                        children: [
-                          SizedBox(height: size.height*0.37,),
-                          Container(
-                            height: size.height*0.5,
-                            alignment: AlignmentDirectional.bottomCenter,
-                            child: Center(child: Text('Error',style: TextStyle(fontSize: 20),)),),
-                        ],
-                      );
+                      return Center(child: Text('Error !',style: TextStyle(fontSize: 20),),);
                     }
                   else{
                     return Stack(
@@ -84,8 +78,8 @@ var team;
                         shrinkWrap:true,
                               itemBuilder: (context, index) {
                                   team=snapshot.data?[index];
-                                return buildTeamItem(size.height*0.3,size.width*0.9,
-                                  '${team?.name}',
+                                return buildTeamItem(context,size.height*0.3,size.width*0.9,
+                                  '${team?.name}',team?.id,teamsController
 
                                   // '${snapshot.data.teams[index].name}',
                                 );},
@@ -103,9 +97,13 @@ var team;
                         Padding(
                             padding:  EdgeInsets.all(size.width*0.07),
                             child: ElevatedButton(
-                                onPressed: () {Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => const AddTeam()));},
+                                onPressed: ()async {
+                                 Navigator.pushReplacementNamed(
+                                context, '/add_team');
+                               /*  await TeamService.showTeam(1);
+                                  ShowTeamModel show=TeamService.showTeamModel as ShowTeamModel;
+                                  EasyLoading.show(status: show.teamModel?.name as String);*/
+                                },
                                 child: const Icon(Icons.add),
                                 style: ButtonStyle(
                                   elevation: MaterialStateProperty.all(40),
@@ -134,11 +132,18 @@ var team;
     );
   }
 
-  Widget buildTeamItem(double h,double w,String name) =>
+  Widget buildTeamItem(BuildContext context,double h,double w,String name,int id,TeamsController teamsController) =>
       GestureDetector(
-        onTap: (){Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Team()));},
+        onTap: (){
+          Navigator.of(context).pushReplacement(                                                         //new
+            new MaterialPageRoute(                                                                       //new
+              settings: const RouteSettings(name: '/team'),                                              //new
+              builder: (context) => new Team(id: id,) //new
+            )                                                                                            //new
+          );
+         /* Navigator.pushReplacementNamed(
+            context, '/team'
+          );*/},
         child: Row(
           children: [
         Stack(
@@ -151,17 +156,26 @@ var team;
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: h*0.05,),
-                  SizedBox(
-                    height: h*0.2,
-                      width: w,
-                      child:  Center(
-                        child: Text('$name',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 20,
-                            fontWeight: FontWeight.bold,color: myGray//Colors.black87
-                        ),),
-                      ))
+                  Row(
+                    children: [
+                      SizedBox(width: w*0.1,),
+                      SizedBox(
+                        height: h*0.2,
+                        width: w*0.81,
+                        child: Center(
+                          child: Text('$name',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 20,
+                              fontWeight: FontWeight.bold,color: myGray//Colors.black87
+                          ),),
+                        ),
+                      ),
+                      SizedBox(width: w*0.009,),
+                      IconButton(color:pu,onPressed: /* showAlertDialog(*/()async=>{
+                        await showAlertDialog(context,w,teamsController,id)}, icon: Icon(Icons.delete))
+                    ],
+                  )
                   ,Container(
                     height: h*0.85,
-                    width: w,
+                    width: w*0.9,
 
                     decoration: const BoxDecoration(color: appFo,
                       image:DecorationImage(image: AssetImage("assets/images/team.jpg"),
@@ -179,6 +193,60 @@ var team;
           ],
         ),
       );
+  showAlertDialog(BuildContext context,double w,TeamsController teamsController,int id) {
 
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed:  () =>{Navigator.pushReplacementNamed(
+      context, '/teams')},
+    );
+    Widget continueButton = TextButton(
+      child: Text("Delete"),
+      onPressed:  ()async {await teamsController.deletion(id);
+      if (teamsController.message=="200" || teamsController.message=="201")
+      {
+        EasyLoading.showSuccess("team deleted successfully");
+        Navigator.pushReplacementNamed(
+            context, '/teams');
+      }
+      else
+      {
+        EasyLoading.showError('oops! error'+teamsController.message.toString());
+
+      }
+      },
+      /*if (editMeetingProvider.message=="200" || editMeetingProvider.message=="201")
+                          {
+                          EasyLoading.showSuccess("Meeting added successfully");
+                          Navigator.pushReplacementNamed(
+                          context, '/meetings');
+                          }
+                          else
+                          {
+                            EasyLoading.showError('oops! error'+editMeetingProvider.message);
+
+                          }*/
+
+    );
+    Widget iconty=Icon(Icons.delete,size: w*0.1,);
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title:iconty,// Text("Delete this team"),
+      content: Text("Do you really want to delete this team ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
 }

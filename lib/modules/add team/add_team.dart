@@ -29,6 +29,15 @@ class _AddTeamState extends State<AddTeam> {
     Size size =MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+
+          onPressed: () {
+            // handle the ess
+            Navigator.pushReplacementNamed(
+                context, '/teams');
+          },
+        ),
         title:  Text('Add team',style:trackerStyle),
         automaticallyImplyLeading: false,
         backgroundColor: appCo,

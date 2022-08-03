@@ -77,7 +77,7 @@ class Meetings extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const AddMeeting()));},
+                      MaterialPageRoute(builder: (context) =>  AddMeeting()));},
                   child: const Icon(Icons.group),
                   style: ButtonStyle(
                     elevation: MaterialStateProperty.all(40),

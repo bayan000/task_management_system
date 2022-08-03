@@ -63,16 +63,18 @@ Table meetingsTable()=>Table(
                             ),*/
   // border: TableBorder.all(),
   columnWidths: const {
-    0: FractionColumnWidth(0.2),
-    1: FractionColumnWidth(0.15),
+    0: FractionColumnWidth(0.15),
+    1: FractionColumnWidth(0.2),
     2: FractionColumnWidth(0.15),
     3: FractionColumnWidth(0.3),
     4: FractionColumnWidth(0.3),
   },
   children: [
-
+   /*  TableRow(
+      children:[TableRowInkWell(child: Center(child: Icon(Icons.edit),)),]
+    ),*/
     buildRow(const ['Date','Status','Starts','with'],isHeader: true),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
+    buildRow(const ['12/3/2020','Upcoming','6:30','all lovely people']),
     buildRow(const ['12/3/2020','done','6:30','all lovely people']),
     buildRow(const ['12/3/2020','done','6:30','all lovely people']),
     buildRow(const ['12/3/2020','done','6:30','all lovely people']),

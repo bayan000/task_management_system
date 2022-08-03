@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:get_storage/get_storage.dart';
+import 'package:tracker/models/showTeamModel.dart';
 import 'package:tracker/models/team_model.dart';
+import 'package:tracker/models/user_model.dart';
 
 import '../config/server_config.dart';
 import 'package:http/http.dart' as http;
@@ -55,16 +57,66 @@ static Future<List<TeamModel>> showTeams() async{
   print(response.statusCode);
     var body=jsonDecode(response.body);
     print(body);
-   // List<TeamModel>? teams=[];
     for (var i=0; i<body.length ;i++)//var t in jsonData
     {
       teams.add(TeamModel.fromJson(body[i]));
-     // TeamModel team=TeamModel(name: t["name"],id: t["id"],created_at: t["created_at"],updated_at: t["updated_at"]);
-     // teams.add(team);
-    }
 
+    }
+ // print(teams[0].id);
     return teams;
 }
+//deletion*********************************
+  static Future deleteTeam(int id) async{
+
+    var url=ServerConfig.domainName+ServerConfig.deleteTeam+id.toString();
+    var response=await http.delete(Uri.parse(url),headers: {
+      'Authorization':'Bearer  ${GetStorage().read('token')}',
+      'Accept':'application/json',
+    });
+    print(response.statusCode);
+    var body=jsonDecode(response.body);
+    print(body);
+    return response.statusCode.toString();
+
+  }
+  //show certain team***********************
+  static var showTeamModel;
+  static Future<ShowTeamModel> showTeam(int id) async{
+    //List<User> leader =[];
+    //ShowTeamModel teamModel;
+    //List<User> tMembers =[];
+
+    TeamModel team;
+    List<User> leader;
+    List<User> tMembers;
+    var url=ServerConfig.domainName+ServerConfig.showAteam+id.toString();
+    var response=await http.get(Uri.parse(url),headers: {
+      'Authorization':'Bearer  ${GetStorage().read('token')}',
+      'Accept':'application/json',
+    });
+    print(response.statusCode);
+    var body=jsonDecode(response.body);
+    team=TeamModel.fromJson(body["the team"]);
+    leader=(body["leader"] as List).map((i) =>
+        User.fromJson(i)).toList();
+    tMembers=(body["members"] as List).map((i) =>
+        User.fromJson(i)).toList();
+    showTeamModel=ShowTeamModel(teamModel: team,teamLeader: leader,teamMembers: tMembers);
+    print(body);
+    //teamModel=ShowTeamModel.fromJson(body["the team"]);
+    //leader=ShowTeamModel.fromJson(body["leader"]) as List<User>;
+    //tMembers=ShowTeamModel.fromJson(body["members"]) as List<User>;
+//كل ليست لحالا بالطريقة يلي قريتا على ستاك اوفر فلو بعدين بساوي شوتيم مودل كامل وبردو
+    return showTeamModel;
+     //return ShowTeamModel.fromJson(body) ;
+    // print(teams[0].id);
+/*List<MyModel> myModels;
+var response = await http.get("myUrl");
+
+myModels=(json.decode(response.body) as List).map((i) =>
+              MyModel.fromJson(i)).toList();*/
+  }
+
   }
 
 

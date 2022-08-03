@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:tracker/controllers/add_meeting_controller.dart';
+import 'package:tracker/controllers/edit_meeting_controller.dart';
 import 'package:tracker/controllers/login_controller.dart';
+import 'package:tracker/controllers/show_team_controller.dart';
 import 'package:tracker/controllers/task_controller.dart';
+import 'package:tracker/controllers/teams_controller.dart';
 import 'package:tracker/controllers/user_controller.dart';
 import 'package:tracker/modules/add%20meeting/add_meeting.dart';
 import 'package:tracker/modules/comments/comments.dart';
@@ -30,6 +34,10 @@ void main() async {
       ChangeNotifierProvider(create: (_) =>AddTeamProvider()),
       ChangeNotifierProvider(create: (_) =>EditTeamProvider()),
       ChangeNotifierProvider(create: (_)=> LoginController()),
+      ChangeNotifierProvider(create: (_)=> AddMeetingProvider()),
+      ChangeNotifierProvider(create: (_)=> TeamsController()),
+      ChangeNotifierProvider(create: (_)=> EditMeetingProvider()),
+      ChangeNotifierProvider(create: (_)=> ShowTeamController()),
 
     ],
     child: MyApp(),)
@@ -67,17 +75,18 @@ class MyApp extends StatelessWidget {
         '/login': (context) => Login(),
         '/Dashboard': (context) => Dashboard(),
         '/Tasks': (context) => Task(),
-        '/':(context){return const AddTeam();},
-        '/a':(context){return const AddTeam();},
-        '/add_meeting':(context){return const AddMeeting();},
+       // '/':(context){return const AddTeam();},
+        '/add_team':(context){return const AddTeam();},
+        '/add_meeting':(context){return AddMeeting();},
         '/comments':(context){return const Comments();},
-        '/edit_meeting':(context){return const EditMeeting();},
-        '/edit_team':(context){return const EditTeam();},
+        '/edit_meeting':(context){return EditMeeting();},
+        '/edit_team':(context){return EditTeam();},
         '/meeting':(context){return const Meeting();},
         '/meetings':(context){return const Meetings();},
         '/monthly_calendar':(context){return const CalendarMonthly();},
         '/reports':(context){return const Reports();},
-        '/team':(context){return const Team();},
+       '/team':(context){return Team();},
+        //'/team': (BuildContext context) => new Team(),
         '/teams':(context){return  Teams();},
         '/user':(context){return const User();},
       },
