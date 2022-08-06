@@ -17,7 +17,8 @@ class ServerConfig{
   static String editMeeting='api/admin/meeting/update/';
   static String meetingStates='api/show1';
   static String showAteam='api/admin/department/show/team/';
-
-
+  static String showMeetings='api/show/MyMeeting';
+  static String stateName='api/show1/name/';
+  static String deleteMeeting='api/admin/meeting/delete/';
 
 }

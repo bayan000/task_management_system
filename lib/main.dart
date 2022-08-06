@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: appName,
 
-      initialRoute:GetStorage().hasData('token') ?'/teams' : '/login',
+      initialRoute:GetStorage().hasData('token') ?'/meeting' : '/login',
 
       builder: EasyLoading.init(),
       routes:
@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
         '/edit_meeting':(context){return EditMeeting();},
         '/edit_team':(context){return EditTeam();},
         '/meeting':(context){return const Meeting();},
-        '/meetings':(context){return const Meetings();},
+        '/meetings':(context){return  Meetings();},
         '/monthly_calendar':(context){return const CalendarMonthly();},
         '/reports':(context){return const Reports();},
        '/team':(context){return Team();},

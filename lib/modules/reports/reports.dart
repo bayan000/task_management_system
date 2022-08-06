@@ -39,7 +39,7 @@ class Reports extends StatelessWidget {
                   child: ListView.separated(
                     physics:  const BouncingScrollPhysics(),
                     shrinkWrap: true,
-                    itemBuilder: (context, index) => buildReportItem(size.height*0.35,size.width*0.9,members,subtasks,status),
+                    itemBuilder: (context, index) => buildReportItem(size,size.height*0.35,size.width*0.9,members,subtasks,status),
                     separatorBuilder: (context, index) =>
                         Container(width: size.width,height: size.height*0.001,color:Colors.grey,),
                     itemCount: 6,
@@ -52,7 +52,7 @@ class Reports extends StatelessWidget {
         )
     );
   }
-  Widget buildReportItem(double h,double w,List<String> members,List<String> subtasks,List<String> status) =>
+  Widget buildReportItem(Size size,double h,double w,List<String> members,List<String> subtasks,List<String> status) =>
       SizedBox(
 
         height: h,
@@ -82,7 +82,7 @@ class Reports extends StatelessWidget {
                 const Text('members',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
                     fontWeight: FontWeight.bold,color: Colors.black87),),
                 SizedBox(height: h*0.04,),
-                getTextWidgets(members),
+                //getTextWidgets(members,size),
                 SizedBox(height: h*0.04,),
                 Row(
                   children: [
@@ -115,7 +115,7 @@ class Reports extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              getTextWidgets(subtasks),
+                              //getTextWidgets(subtasks,size),
                             ],
                           ),
                         ),
@@ -125,7 +125,7 @@ class Reports extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              getTextWidgets(status),
+                             // getTextWidgets(status,size),
                             ],
                           ),
                         )

@@ -50,13 +50,9 @@ Widget defaultTextFormField({
     border:const OutlineInputBorder(),
   ),
 );
+
 /// *****************************************************************************/
-   Widget getTextWidgets(List<String> strings)
-   {
-     return Column(children: strings.map((item) => Text(item,style: const TextStyle(fontSize: 18),)).toList());
-   }
-/// *****************************************************************************/
-Table meetingsTable()=>Table(
+/*Table meetingsTable()=>Table(
 
   /* border: TableBorder.symmetric(
                               inside: const BorderSide(width: 1,),
@@ -107,7 +103,7 @@ Table meetingsTable()=>Table(
     buildRow(const ['12/3/2020','done','6:30','all lovely people']),
     buildRow(const ['12/3/2020','done','6:30','all lovely people']),
   ],
-);
+);*/
 TableRow buildRow(final List<String> cells,{bool isHeader=false}) => TableRow(
     children:[
       //...

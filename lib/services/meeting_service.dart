@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:tracker/models/meetingModel.dart';
+import 'package:tracker/models/meetingStates.dart';
 
 import '../config/server_config.dart';
 import 'package:http/http.dart' as http;
@@ -11,7 +12,6 @@ class MeetingService{
   static var message;
   static var emessage;
   //****************
- // static var partiNames = <dynamic, dynamic>{};
   static List<String>? names;
   static int id=0;
   static var meeting_states;
@@ -34,11 +34,9 @@ class MeetingService{
     return MeetingModel.fromJson(ameeting['0']);
   }
 
-//edit meeting function *********************************
+//edit meeting function **********************************
 static MeetingModel? mm;
-//  static Meeting? mee;
   static Future   editMeeting(MeetingModel meetingModel) async {
-//meetingModel.participants?[0]=User(id:1);
     meetingModel.id=8;
     var url=ServerConfig.domainName+ServerConfig.editMeeting+meetingModel.id.toString();
     var response =await http.post(Uri.parse(url),body: {
@@ -52,28 +50,139 @@ static MeetingModel? mm;
     },);
     Map<String, dynamic> emeeting = jsonDecode(response.body);
     print(response.statusCode);
-
-   // message=emeeting['message'];
-    //print(message);
-
     print(emeeting['Updating successfully']);
     print(emeeting['with']);
-   // mee=Meeting.fromJson(emeeting['Updating successfully']);
 
     return response.statusCode.toString();
   }
 
-  //get meeeing states*********
-static Future meetingStates() async{
+  //get meeting states************************************
+ static Map<dynamic,String> map={};
+static Future<List<MeetingStates>> meetingStates() async{
+  List<MeetingStates> states=[];
   var url=ServerConfig.domainName+ServerConfig.meetingStates;
-  var response =await http.post(Uri.parse(url),headers: {
+  var response =await http.get(Uri.parse(url),headers: {
     'Authorization':'Bearer  ${GetStorage().read('token')}',
     'Accept':'application/json',
   },);
-  Map<String, dynamic> smeeting = jsonDecode(response.body);
+  List<dynamic> smeeting = jsonDecode(response.body);
   print(response.statusCode);
-  message=smeeting['message'];
-  print(message);
-  return MeetingModel.fromJson(smeeting['0']);
+ // message=smeeting['message'];
+  print(smeeting[0]["id"]);
+  for (var i=0; i<smeeting.length ;i++)//var t in jsonData
+      {
+    states.add( MeetingStates.fromJson(smeeting[i]));
+    map[states[i].id]=states[i].name!;
+  }
+  print(map[0]);
+
+  return states;
 }
+//get meeting state****************************************
+  static var stateNamee;
+  static Future<String> meetingState(var id) async{
+    var namee;
+    var url=ServerConfig.domainName+ServerConfig.stateName+id.toString();
+    var response =await http.get(Uri.parse(url),headers: {
+      'Authorization':'Bearer  ${GetStorage().read('token')}',
+      'Accept':'application/json',
+    },);
+    Map<String,dynamic> body= jsonDecode(response.body);
+    print(response.statusCode);
+    namee =MeetingStates.fromJson(body);
+    print(namee.name);
+    stateNamee=namee.name;
+   // print(stateNamee);
+    return namee.name;
+
+  }
+//get meetings*********************************************
+static Future<List<MeetingModel>> showMeetings() async{
+  List<MeetingModel> meetings=[];
+  User user;
+  List<User> mMembers=[];
+  MeetingModel meetingModel;
+    var url=ServerConfig.domainName+ServerConfig.showMeetings;
+    var response=await http.get(Uri.parse(url),headers: {
+      'Authorization':'Bearer  ${GetStorage().read('token')}',
+      'Accept':'application/json',
+    });
+  print(response.statusCode);
+    var body=jsonDecode(response.body);
+    print(body);
+
+    for (var i=0; i<body.length ;i++)//var t in jsonData
+    {
+      for (var j=0; j<body[i]["users"].length ;j++)
+        {
+          if(body[i]["users"][j]["leaders"].length !=0)
+          {
+              if(body[i]["users"][j]["leaders"][0]["img_profile"] !=null)
+                {
+                  user=User(first_name: body[i]["users"][j]["first_name"] as String,
+                    last_name: body[i]["users"][j]["last_name"] as String,
+                    img_profile: body[i]["users"][j]["leaders"][0]["img_profile"] as String,
+                  );
+                  mMembers.add(user);
+                }
+              else if(body[i]["users"][j]["leaders"][0]["img_profile"] ==null)
+           {
+             user=User(first_name: body[i]["users"][j]["first_name"] as String,
+               last_name: body[i]["users"][j]["last_name"] as String,
+             );
+             mMembers.add(user);
+           }
+          }
+          else if(body[i]["users"][j]["members"].length !=0)
+          {
+
+            if(body[i]["users"][j]["members"][0]["img_profile"] !=null)
+              {
+                user=User(first_name: body[i]["users"][j]["first_name"] as String,
+                  last_name: body[i]["users"][j]["last_name"] as String,
+                  img_profile: body[i]["users"][j]["members"][0]["img_profile"] as String,
+                );
+                mMembers.add(user);
+              }
+            else if(body[i]["users"][j]["members"][0]["img_profile"] ==null)
+              {
+                user=User(first_name: body[i]["users"][j]["first_name"] as String,
+                  last_name: body[i]["users"][j]["last_name"] as String,
+                );
+                mMembers.add(user);
+              }
+
+
+          }
+
+
+        }
+
+      meetingModel=MeetingModel(
+
+        meeting_date: body[i]["meeting_date"] as String,
+        start_at:  body[i]["start_at"] as String,
+        meeting_status: body[i]["meeting_statuses_id"],
+        id:body[i]["id"],
+        participants: mMembers
+      );
+
+      meetings.add(meetingModel);
+      mMembers=[];
+    }
+    return meetings;
+}
+//delete a meeting*****************************************
+static Future deleteMeeting(int id) async{
+
+    var url=ServerConfig.domainName+ServerConfig.deleteMeeting+id.toString();
+    var response=await http.delete(Uri.parse(url),headers: {
+      'Authorization':'Bearer  ${GetStorage().read('token')}',
+      'Accept':'application/json',
+    });
+    print(response.statusCode);
+    var body=jsonDecode(response.body);
+    print(body);
+    return response.statusCode.toString();
+  }
   }

@@ -42,89 +42,77 @@ var team_id;
               padding:  EdgeInsets.only(
                 //  top:size.height*0.01,
                   left:size.width*0.025,right: size.width*0.025  ),//.all(size.width*0.025),
-              child:Stack(
-                //alignment: Alignment.bottomRight,
-                children:[ FutureBuilder<List<TeamModel>>(
-                future: teamsController.fetchTeams(),
-                  builder: (context,snapshot){
-                  if(snapshot.connectionState==ConnectionState.waiting)
-                  {return Column(
-                   // SizedBox(height: size.height*0.3),
-                    children: [
-                      SizedBox(height: size.height*0.37,),
-                      Container(
-                        height: size.height*0.5,
-                        alignment: AlignmentDirectional.bottomCenter,
-                        child: Center(child: Column(children: [
-                          CircularProgressIndicator(),
-                          SizedBox(height: size.height*0.01,),
-                          Text('loading...',style: TextStyle(fontSize: 15),),],)),),
-                    ],
-                  );}
-                  if(snapshot.hasError)
-                    {
-                      return Center(child: Text('Error !',style: TextStyle(fontSize: 20),),);
-                    }
-                  else{
-                    return Stack(
-                      alignment: Alignment.bottomRight,
-                      children: [SingleChildScrollView(
-                        physics: const BouncingScrollPhysics(),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ListView.separated(
-                              physics: const BouncingScrollPhysics(),
-                        shrinkWrap:true,
-                              itemBuilder: (context, index) {
-                                  team=snapshot.data?[index];
-                                return buildTeamItem(context,size.height*0.3,size.width*0.9,
-                                  '${team?.name}',team?.id,teamsController
-
-                                  // '${snapshot.data.teams[index].name}',
-                                );},
-                              separatorBuilder: (context, index) =>
-
-                                  Container(width: size.width,height: size.height*0.0005,color:Colors.grey,),
-
-                              itemCount:snapshot.data?.length ??0, //snapshot.data.length //TeamService.teams.length,
-                            ),
-
-                          ],
-                        ),
-
-                      ),
-                        Padding(
-                            padding:  EdgeInsets.all(size.width*0.07),
-                            child: ElevatedButton(
-                                onPressed: ()async {
-                                 Navigator.pushReplacementNamed(
-                                context, '/add_team');
-                               /*  await TeamService.showTeam(1);
-                                  ShowTeamModel show=TeamService.showTeamModel as ShowTeamModel;
-                                  EasyLoading.show(status: show.teamModel?.name as String);*/
-                                },
-                                child: const Icon(Icons.add),
-                                style: ButtonStyle(
-                                  elevation: MaterialStateProperty.all(40),
-                                  shape: MaterialStateProperty.all(const CircleBorder()),
-                                  padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
-                                  foregroundColor: MaterialStateProperty.all(appFo),
-                                  backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
-                                  overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
-                                    if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color
-                                  }),)))
-                    ]);
+              child:FutureBuilder<List<TeamModel>>(
+              future: teamsController.fetchTeams(),
+                builder: (context,snapshot){
+                if(snapshot.connectionState==ConnectionState.waiting)
+                {return Column(
+                  children: [
+                    SizedBox(height: size.height*0.37,),
+                    Container(
+                      height: size.height*0.5,
+                      alignment: AlignmentDirectional.bottomCenter,
+                      child: Center(child: Column(children: [
+                        CircularProgressIndicator(),
+                        SizedBox(height: size.height*0.01,),
+                        Text('loading...',style: TextStyle(fontSize: 15),),],)),),
+                  ],
+                );}
+                if(snapshot.hasError)
+                  {
+                    return Center(child: Text('Error !',style: TextStyle(fontSize: 20),),);
                   }
+                else{
+                  return Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListView.separated(
+                            physics: const BouncingScrollPhysics(),
+                      shrinkWrap:true,
+                            itemBuilder: (context, index) {
+                                team=snapshot.data?[index];
+                              return buildTeamItem(context,size.height*0.3,size.width*0.9,
+                                '${team?.name}',team?.id,teamsController
+                              );},
+                            separatorBuilder: (context, index) =>
+
+                                Container(width: size.width,height: size.height*0.0005,color:Colors.grey,),
+
+                            itemCount:snapshot.data?.length ??0, //snapshot.data.length //TeamService.teams.length,
+                          ),
+
+                        ],
+                      ),
+
+                    ),
+                      Padding(
+                          padding:  EdgeInsets.all(size.width*0.07),
+                          child: ElevatedButton(
+                              onPressed: () {
+                               Navigator.pushReplacementNamed(
+                              context, '/add_team');
+                              },
+                              child: const Icon(Icons.add),
+                              style: ButtonStyle(
+                                elevation: MaterialStateProperty.all(40),
+                                shape: MaterialStateProperty.all(const CircleBorder()),
+                                padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+                                foregroundColor: MaterialStateProperty.all(appFo),
+                                backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
+                                overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
+                                  if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color
+                                }),)))
+                  ]);
+                }
 
     }
 
 
-                  ),
-//fontWeight:isHeader? FontWeight.bold:FontWeight.normal,
-
-           // Battounnn(b(team), size)
-                ])
+                )
 
 
           )
@@ -141,13 +129,10 @@ var team_id;
               builder: (context) => new Team(id: id,) //new
             )                                                                                            //new
           );
-         /* Navigator.pushReplacementNamed(
-            context, '/team'
-          );*/},
+       },
         child: Row(
           children: [
         Stack(
-
           alignment: Alignment.topLeft,
           children:[Row(
             children: [
@@ -195,7 +180,7 @@ var team_id;
       );
   showAlertDialog(BuildContext context,double w,TeamsController teamsController,int id) {
 
-    // set up the buttons
+
     Widget cancelButton = TextButton(
       child: Text("Cancel"),
       onPressed:  () =>{Navigator.pushReplacementNamed(
@@ -216,23 +201,12 @@ var team_id;
 
       }
       },
-      /*if (editMeetingProvider.message=="200" || editMeetingProvider.message=="201")
-                          {
-                          EasyLoading.showSuccess("Meeting added successfully");
-                          Navigator.pushReplacementNamed(
-                          context, '/meetings');
-                          }
-                          else
-                          {
-                            EasyLoading.showError('oops! error'+editMeetingProvider.message);
-
-                          }*/
 
     );
     Widget iconty=Icon(Icons.delete,size: w*0.1,);
-    // set up the AlertDialog
+
     AlertDialog alert = AlertDialog(
-      title:iconty,// Text("Delete this team"),
+      title:iconty,
       content: Text("Do you really want to delete this team ?"),
       actions: [
         cancelButton,
@@ -240,7 +214,6 @@ var team_id;
       ],
     );
 
-    // show the dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {

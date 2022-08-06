@@ -82,10 +82,6 @@ static Future<List<TeamModel>> showTeams() async{
   //show certain team***********************
   static var showTeamModel;
   static Future<ShowTeamModel> showTeam(int id) async{
-    //List<User> leader =[];
-    //ShowTeamModel teamModel;
-    //List<User> tMembers =[];
-
     TeamModel team;
     List<User> leader;
     List<User> tMembers;
@@ -103,18 +99,7 @@ static Future<List<TeamModel>> showTeams() async{
         User.fromJson(i)).toList();
     showTeamModel=ShowTeamModel(teamModel: team,teamLeader: leader,teamMembers: tMembers);
     print(body);
-    //teamModel=ShowTeamModel.fromJson(body["the team"]);
-    //leader=ShowTeamModel.fromJson(body["leader"]) as List<User>;
-    //tMembers=ShowTeamModel.fromJson(body["members"]) as List<User>;
-//كل ليست لحالا بالطريقة يلي قريتا على ستاك اوفر فلو بعدين بساوي شوتيم مودل كامل وبردو
     return showTeamModel;
-     //return ShowTeamModel.fromJson(body) ;
-    // print(teams[0].id);
-/*List<MyModel> myModels;
-var response = await http.get("myUrl");
-
-myModels=(json.decode(response.body) as List).map((i) =>
-              MyModel.fromJson(i)).toList();*/
   }
 
   }

@@ -127,14 +127,21 @@ actions: [
             alignment: AlignmentDirectional.bottomEnd,
             children:  [
               showTeamModel.teamLeader?[0]?.img_profile==null?
-              CircleAvatar(
-                radius: 30.0,
-                  backgroundImage: AssetImage('assets/images/avatary.jpg'
-                  )
-              ):
-              CircleAvatar(
+              Positioned(
+                left: 65,
+                bottom: 0,
+                child: CircleAvatar(
                   radius: 30.0,
-                  backgroundImage: NetworkImage(showTeamModel.teamLeader?[0]?.img_profile as String)
+                    backgroundImage: AssetImage('assets/images/avatary.jpg'
+                    )
+                ),
+              ):
+              Positioned(left: 65,
+                bottom: 0,
+                child: CircleAvatar(
+                    radius: 30.0,
+                    backgroundImage: NetworkImage(showTeamModel.teamLeader?[0]?.img_profile as String)
+                ),
               )
 
             ],
