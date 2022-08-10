@@ -39,6 +39,15 @@ AddMeetingProvider addMeetingProvider=AddMeetingProvider();
         backgroundColor: appCo,
         shadowColor: appCo,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+
+          onPressed: () {
+
+            Navigator.pushReplacementNamed(
+                context, '/meetings');
+          },
+        ),
         title: Text('Add meeting',style: trackerStyle,),
       ),
         backgroundColor: appCo,
@@ -90,6 +99,10 @@ AddMeetingProvider addMeetingProvider=AddMeetingProvider();
                               }
                              ),
                                   SizedBox(width: size.width*0.08),
+
+                                  // editMeetingProvider.datoO(size),
+
+                                  Text( 'when is your meeting?',style: TextStyle(color: appFo,fontSize: size.width*0.045),),
 
                                 /*  Text(widget.dateTime==null? 'when is your meeting?':widget.dateTime.toString(),
                                     style: TextStyle(color: appFo,fontSize: size.width*0.045),),*/

@@ -14,7 +14,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
     employee_identical: json['employee_identical'] as String?,
     password: json['password'] as String?,
     role_id: json['role_id'],
-    team_id: json['team_id'] as String?,
+    team_id: json['team_id'],
     id: json['id'],
     img_profile: json['img_profile'] as String?,
   );

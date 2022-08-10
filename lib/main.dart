@@ -8,18 +8,21 @@ import 'package:tracker/controllers/show_team_controller.dart';
 import 'package:tracker/controllers/task_controller.dart';
 import 'package:tracker/controllers/teams_controller.dart';
 import 'package:tracker/controllers/user_controller.dart';
+import 'package:tracker/modules/acheivers/acheivers.dart';
 import 'package:tracker/modules/add%20meeting/add_meeting.dart';
 import 'package:tracker/modules/comments/comments.dart';
 import 'package:tracker/modules/edit%20team/edit_team.dart';
 import 'package:tracker/modules/meetings/meetings.dart';
 import 'package:tracker/modules/monthly_calendar/monthly_calendar.dart';
 import 'package:tracker/modules/reports/reports.dart';
+import 'package:tracker/modules/selectUsers.dart';
 import 'package:tracker/modules/teams/teams.dart';
 import 'package:tracker/modules/user/user.dart';
 import 'package:provider/provider.dart';
 import 'package:tracker/controllers/add_team_provider.dart';
 import 'package:tracker/controllers/edit_team_provider.dart';
 import 'package:tracker/shared/constants.dart';
+import 'controllers/meetings_controller.dart';
 import 'modules/add team/add_team.dart';
 import 'modules/dashboard.dart';
 import 'modules/edit meeting/edit_meeting.dart';
@@ -27,6 +30,7 @@ import 'modules/login_screen.dart';
 import 'modules/meeting/meeting.dart';
 import 'modules/tasks_screen.dart';
 import 'modules/team/team.dart';
+import 'modules/users.dart';
 void main() async {
   await GetStorage.init();
   runApp(
@@ -38,6 +42,8 @@ void main() async {
       ChangeNotifierProvider(create: (_)=> TeamsController()),
       ChangeNotifierProvider(create: (_)=> EditMeetingProvider()),
       ChangeNotifierProvider(create: (_)=> ShowTeamController()),
+      ChangeNotifierProvider(create: (_)=> MeetingsController()),
+      ChangeNotifierProvider(create: (_)=> UserController()),
 
     ],
     child: MyApp(),)
@@ -67,28 +73,31 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: appName,
 
-      initialRoute:GetStorage().hasData('token') ?'/meeting' : '/login',
-
+      initialRoute:GetStorage().hasData('token') ?'/meetings' : '/login',
       builder: EasyLoading.init(),
       routes:
       {
+
         '/login': (context) => Login(),
         '/Dashboard': (context) => Dashboard(),
         '/Tasks': (context) => Task(),
+        '/users':(context) => Users(),
        // '/':(context){return const AddTeam();},
         '/add_team':(context){return const AddTeam();},
         '/add_meeting':(context){return AddMeeting();},
         '/comments':(context){return const Comments();},
         '/edit_meeting':(context){return EditMeeting();},
         '/edit_team':(context){return EditTeam();},
-        '/meeting':(context){return const Meeting();},
+        '/meeting':(context){return Meeting();},
         '/meetings':(context){return  Meetings();},
         '/monthly_calendar':(context){return const CalendarMonthly();},
         '/reports':(context){return const Reports();},
        '/team':(context){return Team();},
         //'/team': (BuildContext context) => new Team(),
         '/teams':(context){return  Teams();},
-        '/user':(context){return const User();},
+        '/acheivers':(context){return  Acheivers();},
+        '/select_users':(context){return  SelectUsers();},
+        '/user':(context){return  UserScreen();},
       },
       theme: ThemeData(
         primarySwatch: pur,

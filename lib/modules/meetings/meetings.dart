@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:provider/provider.dart';
 import 'package:tracker/controllers/meetings_controller.dart';
 import 'package:tracker/models/meetingModel.dart';
 import 'package:tracker/services/meeting_service.dart';
 import 'package:tracker/shared/components.dart';
 import '../../shared/constants.dart';
 import '../add meeting/add_meeting.dart';
+import '../meeting/meeting.dart';
 class Meetings extends StatelessWidget {
   var status;
    Meetings({Key? key}) : super(key: key);
@@ -15,9 +17,6 @@ class Meetings extends StatelessWidget {
 
   Widget build(BuildContext context) {
     var meeting;
-
-    MeetingsController meetingsController=MeetingsController();
-
     Size size =MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -28,130 +27,135 @@ class Meetings extends StatelessWidget {
         style:trackerStyle,
       )),
       body:
+ Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        SingleChildScrollView(
 
-      SafeArea(
-
-        child: FutureBuilder<List<MeetingModel>> (
-          future: meetingsController.fetchMeetings(),
-            builder: (context,snapshot){
-              if(snapshot.connectionState==ConnectionState.waiting)
-              {return Column(
+                          physics: const NeverScrollableScrollPhysics(),
+                          child: Column(
+                            children: [
+                              Container(
+                                color: appCo,
+                                height: size.height*0.06,
+                                width: double.infinity,),
+                              Container(
+                                color: appCo,
+                                child: Padding(
+                                  padding:  EdgeInsets.only(
+                                      top:size.height*0.01,left:size.width*0.025,right: size.width*0.025  ),
+                                  child: Container(
+                                    height: size.height*0.84,
+                                    decoration:    BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.only(topRight: Radius.circular(r),topLeft:Radius.circular(r) )),
+                                    padding: const EdgeInsets.only(top: 30),
+                                    child: SingleChildScrollView(
+                                      physics: const BouncingScrollPhysics(),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Consumer<MeetingsController>(
+                                            builder: (context,meetingsController,child) {
+                                              return FutureBuilder<List<MeetingModel>>(
+                                                future: meetingsController.fetchMeetings(),
+                builder: (context,snapshot){
+                if(snapshot.connectionState==ConnectionState.waiting)
+                {return Column(
                 children: [
-                  SizedBox(height: size.height*0.37,),
-                  Container(
-                    height: size.height*0.5,
-                    alignment: AlignmentDirectional.bottomCenter,
-                    child: Center(child: Column(children: [
-                      CircularProgressIndicator(),
-                      SizedBox(height: size.height*0.01,),
-                      Text('loading...',style: TextStyle(fontSize: 15),),],)),),
+                SizedBox(height: size.height*0.37,),
+                Container(
+                height: size.height*0.5,
+                alignment: AlignmentDirectional.bottomCenter,
+                child: Center(child: Column(children: [
+                CircularProgressIndicator(),
+                SizedBox(height: size.height*0.01,),
+                Text('loading...',style: TextStyle(fontSize: 15),),],)),),
                 ],
-              );}
-              if(snapshot.hasError)
-              {
+                );}
+                if(snapshot.hasError)
+                {
                 return Center(child: Text('Error !',style: TextStyle(fontSize: 20),),);
-              }
-              else{
-                return Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      SingleChildScrollView(
+                }
+                else{
+                return ListView.separated (
+                physics: const BouncingScrollPhysics(),
+                shrinkWrap:true,
+                itemBuilder: (context, index) {
 
-                        physics: const NeverScrollableScrollPhysics(),
-                        child: Column(
-                          children: [
-                            Container(
-                              color: appCo,
-                              height: size.height*0.06,
-                              width: double.infinity,),
-                            Container(
-                              color: appCo,
-                              child: Padding(
-                                padding:  EdgeInsets.only(
-                                    top:size.height*0.01,left:size.width*0.025,right: size.width*0.025  ),
-                                child: Container(
-                                  height: size.height*0.84,
-                                  decoration:    BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.only(topRight: Radius.circular(r),topLeft:Radius.circular(r) )),
-                                  padding: const EdgeInsets.only(top: 30),
-                                  child: SingleChildScrollView(
-                                    physics: const BouncingScrollPhysics(),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        ListView.separated (
-                                            physics: const BouncingScrollPhysics(),
-                                            shrinkWrap:true,
-                                            itemBuilder: (context, index) {
+                meeting=snapshot.data?[index];
+                return buildMeetingItem(context,size,meeting,meetingsController,
+                meetingsController.statesMap[meeting?.meeting_status]);
+                },
+                separatorBuilder: (context, index) =>index%2==0?
 
-                                              meeting=snapshot.data?[index];
-                                              //print(meeting?.meeting_status);
-                                             // print(meetingsController.statesMap[meeting?.meeting_status]);
-                                            return  buildMeetingItem(context,size,meeting,meetingsController,
-                                                meetingsController.statesMap[meeting?.meeting_status]);
-                                            },
-                                            separatorBuilder: (context, index) =>index%2==0?
+                Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(width: size.width,height: size.height*0.005,color:appCo,),
+                ):
+                Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(width: size.width,height: size.height*0.005,color:pu,),
+                ),
 
-                                            Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Container(width: size.width,height: size.height*0.005,color:appCo,),
-                                            ):
-                                            Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Container(width: size.width,height: size.height*0.005,color:pu,),
-                                            ),
+                itemCount:snapshot.data?.length ??0
+                );}}
+                );
+                                            }
+                                          ),
 
-                                            itemCount:snapshot.data?.length ??0
-                                        ),
+                                        ],
+                                      ),
 
-                                      ],
                                     ),
 
                                   ),
-
                                 ),
                               ),
-                            ),
 
-                          ],
+                            ],
 
-                        ),
-                      ),
-                      Padding(
-                        padding:  EdgeInsets.all(size.width*0.07),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushReplacementNamed(
-                                context, '/add_meeting');
-                          },
-                          child: const Icon(Icons.group),
-                          style: ButtonStyle(
-                            elevation: MaterialStateProperty.all(40),
-                            shape: MaterialStateProperty.all(const CircleBorder()),
-                            padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
-                            foregroundColor: MaterialStateProperty.all(appFo),
-                            backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
-                            overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
-                              if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color
-                            }),
                           ),
                         ),
-                      )
-                    ]
-                );
+                        Padding(
+                          padding:  EdgeInsets.all(size.width*0.07),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(
+                                  context, '/add_meeting');
+                            },
+                            child: const Icon(Icons.group),
+                            style: ButtonStyle(
+                              elevation: MaterialStateProperty.all(40),
+                              shape: MaterialStateProperty.all(const CircleBorder()),
+                              padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+                              foregroundColor: MaterialStateProperty.all(appFo),
+                              backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
+                              overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
+                                if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color
+                              }),
+                            ),
+                          ),
+                        )
+                      ]
+                  )
+    );}
+
               }
 
-            }
-        )
-      ),
-    );
-  }
 
 Widget buildMeetingItem(BuildContext context,Size size,MeetingModel meetingModel,
     MeetingsController meetingsController,String status)=>
 
     GestureDetector(
+      onTap: (){
+  Navigator.of(context).pushReplacement(                                                         //new
+  new MaterialPageRoute(                                                                       //new
+  settings: const RouteSettings(name: '/meeting'),                                              //new
+  builder: (context) => new Meeting(id: meetingModel.id,) //new
+  )                                                                                            //new
+  );
+},
       child:Padding(
         padding:  EdgeInsets.all(size.width*0.04),
         child: Container(
@@ -268,30 +272,25 @@ Widget buildMeetingItem(BuildContext context,Size size,MeetingModel meetingModel
         ),
       ) ,
     );
-String getTheHour(String l) {
-  var pos = l.lastIndexOf(':');
-  String result = (pos != -1)? l.substring(0, pos): l;
 
-return result;
-
-}
 
   showAlertDialog(BuildContext context,double w,MeetingsController meetingsController,int id) {
 
 
     Widget cancelButton = TextButton(
       child: Text("Cancel"),
-      onPressed:  () =>{Navigator.pushReplacementNamed(
-          context, '/meetings')},
+      onPressed:  () =>{ Navigator.pop(context)},
     );
     Widget continueButton = TextButton(
       child: Text("Delete"),
       onPressed:  ()async {await meetingsController.deletion(id);
       if (meetingsController.message=="200" || meetingsController.message=="201")
       {
-        EasyLoading.showSuccess("meeting deleted successfully");
-        Navigator.pushReplacementNamed(
-            context, '/meetings');
+       // EasyLoading.showSuccess("meeting deleted successfully");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('meeting deleted successfully'),
+        ));
+        Navigator.pop(context);
       }
       else
       {
@@ -319,5 +318,5 @@ return result;
       },
     );
   }
-}
+
 

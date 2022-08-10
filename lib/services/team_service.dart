@@ -44,7 +44,6 @@ class TeamService{
   }
 
 //show teams function *********************************
-  //static List<TeamModel> teams=[];
   static var message1;
 
 static Future<List<TeamModel>> showTeams() async{

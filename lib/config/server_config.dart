@@ -3,6 +3,9 @@
 class ServerConfig{
 
   static String  domainName='http://192.168.43.139:8000/';
+  static String editUser='api/admin/user/update/';
+  static String deleteUser='api/admin/user/delete/';
+  static String showUsers='api/admin/user/show/users';
 
   static String login='api/auth/login';
   static String logout='api/logout';
@@ -20,5 +23,6 @@ class ServerConfig{
   static String showMeetings='api/show/MyMeeting';
   static String stateName='api/show1/name/';
   static String deleteMeeting='api/admin/meeting/delete/';
+  static String showMeeting='api/show/OneMeeting/';
 
 }

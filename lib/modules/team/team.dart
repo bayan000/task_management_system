@@ -10,7 +10,7 @@ import '../../shared/constants.dart';
 class Team extends StatelessWidget{
   var id;
   Team({Key? key, this.id}) : super(key: key);
-  //Team({this.id});
+
   @override
   Widget build(BuildContext context) {
     var length;
@@ -127,21 +127,14 @@ actions: [
             alignment: AlignmentDirectional.bottomEnd,
             children:  [
               showTeamModel.teamLeader?[0]?.img_profile==null?
-              Positioned(
-                left: 65,
-                bottom: 0,
-                child: CircleAvatar(
-                  radius: 30.0,
-                    backgroundImage: AssetImage('assets/images/avatary.jpg'
-                    )
-                ),
+              CircleAvatar(
+                radius: 30.0,
+                  backgroundImage: AssetImage('assets/images/avatary.jpg'
+                  )
               ):
-              Positioned(left: 65,
-                bottom: 0,
-                child: CircleAvatar(
-                    radius: 30.0,
-                    backgroundImage: NetworkImage(showTeamModel.teamLeader?[0]?.img_profile as String)
-                ),
+              CircleAvatar(
+                  radius: 30.0,
+                  backgroundImage: NetworkImage(showTeamModel.teamLeader?[0]?.img_profile as String)
               )
 
             ],

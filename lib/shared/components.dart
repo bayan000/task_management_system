@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tracker/shared/constants.dart';
 TextEditingController searchController=TextEditingController();
 /// *****************************************************************************/
@@ -52,58 +53,35 @@ Widget defaultTextFormField({
 );
 
 /// *****************************************************************************/
-/*Table meetingsTable()=>Table(
+String formatTimeOfDay(TimeOfDay tod) {
+  final now = new DateTime. now();
+  final dt =DateTime(now. year, now. month, now. day, tod. hour, tod. minute);
+  final format = DateFormat("hh:mm");
+  return format. format(dt);
+}
+/// *****************************************************************************/
 
-  /* border: TableBorder.symmetric(
-                              inside: const BorderSide(width: 1,),
-                            ),*/
-  // border: TableBorder.all(),
-  columnWidths: const {
-    0: FractionColumnWidth(0.15),
-    1: FractionColumnWidth(0.2),
-    2: FractionColumnWidth(0.15),
-    3: FractionColumnWidth(0.3),
-    4: FractionColumnWidth(0.3),
-  },
-  children: [
-   /*  TableRow(
-      children:[TableRowInkWell(child: Center(child: Icon(Icons.edit),)),]
-    ),*/
-    buildRow(const ['Date','Status','Starts','with'],isHeader: true),
-    buildRow(const ['12/3/2020','Upcoming','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-    buildRow(const ['12/3/2020','done','6:30','all lovely people']),
-  ],
-);*/
+String getTheRightTime(String l) {
+ if(l.contains("AM"))
+  l= l.replaceAll("AM", "");
+ if(l.contains("PM"))
+   l= l.replaceAll("PM", "");
+ return l;
+}
+/// *****************************************************************************/
+String getTheHour(String l) {
+  var pos = l.lastIndexOf(':');
+  var x;
+  String result = (pos != -1)? l.substring(0, pos): l;
+  x=l.substring(0, l.indexOf(':'));
+  x = int. parse(x);
+  if(x>=12)
+  result+=" pm";
+  else if(x<12)
+    result+=" am";
+  return result;
+
+}/*
 TableRow buildRow(final List<String> cells,{bool isHeader=false}) => TableRow(
     children:[
       //...
@@ -114,7 +92,7 @@ TableRow buildRow(final List<String> cells,{bool isHeader=false}) => TableRow(
           child: Center(child: Text(cell,style:style(isHeader),overflow: TextOverflow.ellipsis,),),
         );
       })]
-);
+);*/
 /// *****************************************************************************/
 class CustomButton extends StatelessWidget {
   // اذا كان فاينل ما بصير هيئ الو قيمة هون

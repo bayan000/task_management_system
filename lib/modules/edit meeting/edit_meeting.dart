@@ -1,34 +1,47 @@
+import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:tracker/controllers/edit_meeting_controller.dart';
+import 'package:tracker/modules/selectUsers.dart';
+import 'package:tracker/shared/components.dart';
 
 import '../../shared/constants.dart';
+import '../meeting/meeting.dart';
 import '../team/team.dart';
 
 
 
-class EditMeeting extends StatefulWidget with ChangeNotifier {
-  EditMeeting({Key? key, this.dateTime}) : super(key: key);
+class EditMeeting extends StatefulWidget  {
+  var id;
+
+  EditMeeting({ this.id}) ;
+  @override
+  State<EditMeeting> createState() => _EditMeetingState(id);
   late DateTime? dateTime;
+  late String? stat;
+
   String? time;
 
 
-  static const items=[
-    'Upcoming','Finished','Delayed'
-  ];
 
-  @override
-  State<EditMeeting> createState() => _EditMeetingState();
 }
 
 class _EditMeetingState extends State<EditMeeting> {
-  String? value ;
-  String? dato;
-  String? taymo;
+  int id;
+  _EditMeetingState(this.id);
+
   EditMeetingProvider editMeetingProvider=EditMeetingProvider();
+  String? sta;
+  String? value ;
+  static var dato;
+  static var taymo;
+ static var selected;
+  static List<int> l=[];
   @override
   Widget build(BuildContext context) {
+
+//editMeetingProvider.onEditMeeting(1);
     DateTime _date;
     Size size =MediaQuery.of(context).size;
     return Scaffold(
@@ -36,6 +49,19 @@ class _EditMeetingState extends State<EditMeeting> {
         backgroundColor: appCo,
         shadowColor: appCo,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+
+          onPressed: () {
+            this.id=id;
+            Navigator.of(context).pushReplacement(                                                         //new
+                new MaterialPageRoute(                                                                       //new
+                    settings: const RouteSettings(name: '/meeting'),                                              //new
+                    builder: (context) =>  Meeting(id:id,) //new
+                )                                                                                            //new
+            );
+          },
+        ),
         title: Text('Edit meeting',style: trackerStyle,),
       ),
         backgroundColor: appCo,
@@ -62,6 +88,7 @@ class _EditMeetingState extends State<EditMeeting> {
 
                   Consumer<EditMeetingProvider>(builder: (context,emp,child)
                     {
+
                       return Row(
                         children: [
                           ElevatedButton(
@@ -71,12 +98,15 @@ class _EditMeetingState extends State<EditMeeting> {
                               child: Text('Date of meeting',style: TextStyle(color: pu,fontSize: size.width*0.04),),
                               onPressed: (){
                                 showDatePicker(context: context,
+                                    initialDatePickerMode: DatePickerMode.day,
+                                    initialEntryMode: DatePickerEntryMode.calendarOnly,
                                     initialDate: DateTime.now(),
-                                    firstDate: DateTime(2020),
+                                    firstDate:  DateTime.now(),
                                     // ignore: avoid_print
                                     lastDate: DateTime(2050),
                                     builder: (context,picker){
-                                      return Theme(data:ThemeData.light().copyWith(colorScheme: ColorScheme.light(primary: pu
+                                      return Theme(data:ThemeData.light().copyWith(
+                                          colorScheme: ColorScheme.light(primary: pu
                                       )),
                                         child:picker!,);}).then((date){
                                   if(date!=null)
@@ -101,47 +131,47 @@ class _EditMeetingState extends State<EditMeeting> {
                     },)
 
                   ,SizedBox(height:size.height*0.02),
-                  Row(
-                    children: [
-                      Text('meeting status',style: TextStyle(color: appFo,fontSize: size.width*0.045),),
-                      SizedBox(width:size.width*0.08),
-                      DropdownButton<String>(
-                        dropdownColor: pu,
-                        style: TextStyle(color: appFo,fontSize: size.width*0.045),
-/* widget.dateTime=date;
-                            _date=date;
-                            editMeetingProvider.dateOfMeetingg=_date.year.toString()+"-"+_date.month.toString()+"-"+_date.day.toString();
-                            print(editMeetingProvider.dateOfMeetingg);*/
-                      icon: Icon(Icons.arrow_drop_down,color: appFo,),
-                          value: value,
-                          items: EditMeeting.items.map(buildMenuItem).toList(),
-                          onChanged: (value)=>
-                        setState(() {
-                          this.value=value;
-                          if(value=="Upcoming")
-                          {
-                            editMeetingProvider.meetingStatus =1;
-                        }
-                          else if(value=="Finished")
-                            editMeetingProvider.meetingStatus =2;
-                          if(value=="Delayed")
-                            editMeetingProvider.meetingStatus =3;
-                        })
-                        /*{
-                          if(value=="Upcoming")
-                            {
-                              editMeetingProvider.meetingStatus =1,
-                              this.value=value,
+                  Consumer<EditMeetingProvider>(
+                     builder: (context,emp,child) {
+                      //  emp.fetchMeetingStates();
+                       return FutureBuilder<Map>(
+                         future:emp.fetchMeetingStates(),
+                           builder: (context,snapshot){return Row(
+                              children: [
+                                Text('meeting status',style: TextStyle(color: appFo,fontSize: size.width*0.045),),
+                                SizedBox(width:size.width*0.08),
+                                DropdownButton<String>(
+                                  dropdownColor: pu,
+                                  style: TextStyle(color: appFo,fontSize: size.width*0.045),
+                                icon: Icon(Icons.arrow_drop_down,color: appFo,),
+                                    value: emp.meetingStatus,
+                                    items: EditMeetingProvider.st.map(buildMenuItem).toList(),
+                                    onChanged: (String? value)=>setState(() {
+                                      this.value=value;
 
-                            }
-                         else if(value=="Finished")
-                          editMeetingProvider.meetingStatus =2,
-                          if(value=="Delayed")
-                          editMeetingProvider.meetingStatus =3,
-                          }*/),
-                    ],
-                  ),//emit meeting status
-                  SizedBox(height:size.height*0.02),
+                                      editMeetingProvider.stateeee=emp.stateId[this.value];
+                                      emp.meetingStatus=this.value;
+                                      emp.stateeee= emp.stateId[this.value];
+                                      emp.changeStatus(emp.stateId[this.value]);
+                                      selected=emp.stateeee;
+                                      editMeetingProvider.stateeee=emp.stateeee;
+                                      print(emp.stateeee.toString());
+                                      print(editMeetingProvider.stateeee);
+
+                                      print(emp.meetingStatus);
+                                       print(emp.stateId[this.value].toString()//editMeetingProvider.stateeee
+                                       );
+                                      print('here i am');
+                                    })
+
+                                 )
+
+                              ],
+                            );}
+                       );
+                     }
+                   )//emit meeting status
+                  ,SizedBox(height:size.height*0.02),
                   Consumer<EditMeetingProvider>(builder: (context,emp,child){
                     return Row(
                       children: [
@@ -153,6 +183,8 @@ class _EditMeetingState extends State<EditMeeting> {
                             onPressed: (){
                               // ignore: avoid_print
                               showTimePicker(context: context,
+
+                                  initialEntryMode: TimePickerEntryMode.dial,
                                   initialTime:
                                   const TimeOfDay(hour: 12, minute: 0),
                                   builder: (context,picker){
@@ -163,19 +195,11 @@ class _EditMeetingState extends State<EditMeeting> {
                               ).then((date){
                                 if(date!=null)
                                 {
-                                  if(date.minute.toString().length==2 && date.hour.toString().length==2)
-                                    editMeetingProvider.timeOfMeeting= date.hour.toString()+":"+date.minute.toString();
-                                  else{
-                                    if(date.minute.toString().length==1 && date.hour.toString().length==1)
-                                      editMeetingProvider.timeOfMeeting= "0"+date.hour.toString()+":"+"0"+date.minute.toString();
-                                    if(date.hour.toString().length==1)
-                                      editMeetingProvider.timeOfMeeting="0"+ date.hour.toString()+":"+date.minute.toString();
-                                    if(date.minute.toString().length==1)
-                                      editMeetingProvider.timeOfMeeting= date.hour.toString()+":"+"0"+date.minute.toString();
-                                  }
-                                  print(editMeetingProvider.timeOfMeeting);
+                                  editMeetingProvider.timeOfMeeting=formatTimeOfDay(date);
+editMeetingProvider.timeOfMeeting=getTheRightTime(editMeetingProvider.timeOfMeeting.toString());
 taymo=editMeetingProvider.timeOfMeeting;
 emp.changeTOM(taymo);
+
                                 }
                               });
 
@@ -199,50 +223,74 @@ emp.changeTOM(taymo);
                           color:appFo ,
                         ),
                       ),
-                      TextButton(onPressed: (){Navigator.pushReplacementNamed(
-                          context, '/team');
-                      }, child: const Text(
-                        'with ',
-                        style:TextStyle(
-                          fontSize: 20,
-                          color:appFo,
-                        ),
-                      ),
+                      Consumer<EditMeetingProvider>(
+                        builder: (context,emp,child) {
+                          return TextButton(onPressed: (){
+                            if(emp.l.length!=0)
+                              emp.l.length=0;
+                            Navigator.of(context).pushReplacement(                                                         //new
+                                new MaterialPageRoute(                                                                       //new
+                                    settings: const RouteSettings(name: '/select_users'),                                              //new
+                                    builder: (context) => new SelectUsers(id: this.id ,) //new
+                                )                                                                                            //new
+                            );
+                          }, child: const Text(
+                            'with ',
+                            style:TextStyle(
+                              fontSize: 20,
+                              color:appFo,
+                            ),
+                          ),
 
+                          );
+                        }
                       ),
                     ],
-                  ),//here we'll emit
+                  ),
                   SizedBox(height:size.height*0.02),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      ElevatedButton(
-                        onPressed: () async{
-                          EasyLoading.show(status: 'Loading....');
-                          await editMeetingProvider.onEditMeeting();
-                          if (editMeetingProvider.message=="200" || editMeetingProvider.message=="201")
-                          {
-                          EasyLoading.showSuccess("Meeting added successfully");
-                          Navigator.pushReplacementNamed(
-                          context, '/meetings');
-                          }
-                          else
-                          {
-                            EasyLoading.showError('oops! error'+editMeetingProvider.message);
+                      Consumer<EditMeetingProvider>(
+                        builder: (context,emp,child) {
+                          return ElevatedButton(
+                            onPressed:/*(){
+                              print('hi');
+                            } */() async{
 
-                          }
-                          }
-                        ,child:  Text('edit',style: TextStyle(color: appFo,fontSize: size.width*0.045)),
-                        style: ButtonStyle(
-                          //elevation: MaterialStateProperty.all(40),
-                          shape: MaterialStateProperty.all(const CircleBorder()),
-                          padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
-                          foregroundColor: MaterialStateProperty.all(appFo),
-                          backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
-                          overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
-                            if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color
-                          }),
-                        ),
+                          print(emp.l.length);
+                              print('iwillwin');
+                              EasyLoading.show(status: 'Loading....');
+                              editMeetingProvider.stateeee=selected.toString();
+                              editMeetingProvider.dateOfMeetingg=dato.toString();
+                              editMeetingProvider.timeOfMeeting=taymo.toString();
+                              editMeetingProvider.l=emp.l;
+                              await editMeetingProvider.onEditMeeting(this.id);
+                              if (editMeetingProvider.message=="200" || editMeetingProvider.message=="201")
+                              {
+                              EasyLoading.showSuccess("Meeting edited successfully");
+                              Navigator.pushReplacementNamed(
+                              context, '/meetings');
+                              }
+                              else
+                              {
+                                EasyLoading.showError('oops! error');
+
+                              }
+                              }
+                            ,child:  Text('edit',style: TextStyle(color: appFo,fontSize: size.width*0.045)),
+                            style: ButtonStyle(
+                              //elevation: MaterialStateProperty.all(40),
+                              shape: MaterialStateProperty.all(const CircleBorder()),
+                              padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+                              foregroundColor: MaterialStateProperty.all(appFo),
+                              backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
+                              overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
+                                if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color
+                              }),
+                            ),
+                          );
+                        }
                       )
 
                     ],

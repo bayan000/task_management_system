@@ -11,11 +11,21 @@ class MeetingsController extends ChangeNotifier{
 
   var meetingState;
 var statesMap;
+var meeting;
+  List<MeetingModel> meet=[];
   Future<List<MeetingModel>> fetchMeetings() async
   {
     await fetchMeetingStates();
-    statesMap=await MeetingService.map;
+    meet=await MeetingService.showMeetings();
     return await MeetingService.showMeetings();
+
+  }
+  Future<MeetingModel> fetchMeeting(var id) async
+  {
+    await fetchMeetingStates();
+    statesMap=await MeetingService.map;
+    meeting=await MeetingService.showMeeting(id);
+    return meeting;
 
   }
 
@@ -26,11 +36,20 @@ var statesMap;
 
   Future<List<MeetingStates>> fetchMeetingStates() async
   {
+    await MeetingService.meetingStates();
+    statesMap=await MeetingService.map;
     return await MeetingService.meetingStates();
   }
 
  Future deletion(int id) async{
     message= await MeetingService.deleteMeeting(id);
+    for (var m in meet) {
+      if (m.id == id) {
+        meet.remove(id);
+        notifyListeners();
+        break;
+      }
+    }
     return message;
   }
 }

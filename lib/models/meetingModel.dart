@@ -13,11 +13,12 @@ String? updated_at;
 String? created_at;
 var id;
 
-//List<int>? participant_list;
+
+List<int>? participant_list;
 List<User?>? participants;
 
 MeetingModel({this.meeting_date,this.start_at,this.meeting_status,this.updated_at,
-  this.created_at,this.id,this.participants
+  this.created_at,this.id,this.participants,this.participant_list
 });
 factory MeetingModel.fromJson(Map <String,dynamic> json) => _$MeetingModelFromJson(json);
 Map<String, dynamic> toJson() => _$MeetingModelToJson(this);

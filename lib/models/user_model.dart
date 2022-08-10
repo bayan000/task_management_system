@@ -12,8 +12,9 @@ class User{
   String? employee_identical;
   String? password;
   var role_id;
-  String? team_id;
+  var team_id;
   var id;
+  //bool? isSelected;
   String? img_profile;
 
   User({
@@ -25,8 +26,18 @@ class User{
     this.role_id,
     this.team_id,
     this.id,
-    this.img_profile
+    this.img_profile,
+   // this.isSelected=false
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is User && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
+
   factory User.fromJson(Map <String,dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
 /*
