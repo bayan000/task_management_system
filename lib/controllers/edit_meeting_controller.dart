@@ -26,7 +26,6 @@ class EditMeetingProvider extends ChangeNotifier{
   List<int> l=[];
   static List<String> st=[];
 Map<String,String> map={};
-
   savingSelectedItems(HashSet<User> selectedItem){
 
   if(selectedItem.length!=0)

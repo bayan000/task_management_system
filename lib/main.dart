@@ -14,7 +14,9 @@ import 'package:tracker/modules/comments/comments.dart';
 import 'package:tracker/modules/edit%20team/edit_team.dart';
 import 'package:tracker/modules/meetings/meetings.dart';
 import 'package:tracker/modules/monthly_calendar/monthly_calendar.dart';
+import 'package:tracker/modules/page_one.dart';
 import 'package:tracker/modules/reports/reports.dart';
+import 'package:tracker/modules/second_page.dart';
 import 'package:tracker/modules/selectUsers.dart';
 import 'package:tracker/modules/teams/teams.dart';
 import 'package:tracker/modules/user/user.dart';
@@ -73,7 +75,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: appName,
 
-      initialRoute:GetStorage().hasData('token') ?'/meetings' : '/login',
+      initialRoute:GetStorage().hasData('token') ?'/pag2' : '/login',
       builder: EasyLoading.init(),
       routes:
       {
@@ -98,6 +100,8 @@ class MyApp extends StatelessWidget {
         '/acheivers':(context){return  Acheivers();},
         '/select_users':(context){return  SelectUsers();},
         '/user':(context){return  UserScreen();},
+        '/pag':(context){return  PageOne();},
+        '/pag2':(context){return  SecondPage();},
       },
       theme: ThemeData(
         primarySwatch: pur,
