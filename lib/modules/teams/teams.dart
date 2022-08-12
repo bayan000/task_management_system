@@ -28,6 +28,14 @@ var team_id;
     Size size =MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+
+          onPressed: () {
+            Navigator.pushReplacementNamed(
+                context, '/Dashboard');
+          },
+        ),
         title:  Text('Teams',style: trackerStyle,),
         automaticallyImplyLeading: false,
         // centerTitle: true,

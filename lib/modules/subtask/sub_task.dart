@@ -7,6 +7,7 @@ import 'package:tracker/config/server_config.dart';
 import '../../controllers/show_subtask_controlller.dart';
 import '../../models/subtask_model.dart';
 import '../../models/user_model.dart';
+import '../../shared/constants.dart';
 
 class SubTask extends StatelessWidget {
   const SubTask({Key? key}) : super(key: key);
@@ -116,10 +117,18 @@ class SubTask extends StatelessWidget {
                                       CircleAvatar(
                                         radius: 18,
                                         backgroundColor: Colors.grey[100],
-                                        child: Icon(
-                                          Icons.more_horiz_outlined,
+                                        child: IconButton(
+                                          icon:Icon(Icons.more_horiz_outlined,),
                                           color: Colors.black,
-                                          size: 20,
+                                         // size: 20,
+                                          onPressed: () {  leading: IconButton(
+                                            icon: const Icon(Icons.arrow_back),
+
+                                            onPressed: () {
+                                              Navigator.pushReplacementNamed(
+                                                  context, '/leeditsubtask');
+                                            },
+                                          );},
                                         ),
                                       ),
                                     ],
@@ -330,7 +339,7 @@ Container(
                                               fontWeight: FontWeight.bold),
                                           textAlign: TextAlign.center,
                                         )),
-
+                                   
 
                                   ],),
 
@@ -358,7 +367,7 @@ Container(
               )):
           CircleAvatar(
               radius: 20,
-              backgroundImage: NetworkImage(users[i].img_profile as String)
+              backgroundImage: NetworkImage(ServerConfig.domainName+'${users[i].img_profile as String}')
           ),
 
        ],

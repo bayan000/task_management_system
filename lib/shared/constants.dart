@@ -1,6 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+AppBar buildAppBar({IconData? prefixIcon,var onPressedPre,var onPressedSuf,required double fontsize ,required String text,required IconData suffixIcon}) {
+  return AppBar(
+    elevation: 0,
+    centerTitle: true,
+    backgroundColor: Colors.transparent,
+    leading: prefixIcon == null ?Container():GestureDetector(child: Icon(prefixIcon),
+      onTap: onPressedPre ,
 
+    ),
+    title: Text(
+      text,
+      style: TextStyle(
+          color: Colors.white, fontSize: fontsize, fontWeight: FontWeight.bold),
+    ),
+    actions: [
+      IconButton(
+        icon:
+        Icon(suffixIcon, size: 28, color: Colors.white),
+        onPressed: onPressedSuf,
+      ),
+    ],
+  );
+}
 String appName ='tracker';
 TextStyle style(isHeader)=>TextStyle(
     fontWeight:isHeader? FontWeight.bold:FontWeight.normal,

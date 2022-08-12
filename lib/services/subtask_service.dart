@@ -12,6 +12,7 @@ class  SubTaskService {
   static Map<dynamic,String> priority={};
   static Map<dynamic,String> suStatu={};
   static Map<String,int> idMap={};
+  static Map<String,int> idMapp={};
   static List<String> st=[];
   static List<String> stt=[];
   static Future<List<StatusModel>> subSt() async{
@@ -28,7 +29,7 @@ class  SubTaskService {
         {
       states.add( StatusModel.fromJson(s[i]));
       suStatu[states[i].id]=states[i].name!;
-      idMap[states[i].name!]=states[i].id;
+      idMapp[states[i].name!]=states[i].id;
       if(!stt.contains(states[i].name!))
         stt.add(states[i].name!);
     }
@@ -112,5 +113,45 @@ static Future<ModelSubTask> showSubtask(var sId) async{
       return modelSubTask;
 
 }
+  static ModelSubTask? s;
+  static Map<String,String> ss={};
+  static Future   addSub(ModelSubTask modelSubTask) async {
+var id =0;
+
+    ss["title"]=modelSubTask.title.toString() ;
+    ss ["description"]=modelSubTask.description.toString() ;
+    ss ["end_at"]=modelSubTask.end_at.toString();
+    ss [ "start_at"]=modelSubTask.start_at.toString();
+    //ss [ "description"]=modelSubTask.
+    print('hi');
+    ss["priority_id"]=modelSubTask.priority_id;
+    ss["status_id"]=modelSubTask.status_id;
+    ss["user_list[$id]"]="4";
+    /*if(meetingModel.participant_list?.length!=0)
+    {
+      for(int i=0;i<meetingModel.participant_list!.length;i++)
+      {
+        ss["participant_list[$i]"]=meetingModel.participant_list![i].toString();
+      }
+    }*/
+
+   // print(ss["participant_list[$id]"]);
+   // print(meetingModel.participant_list?.length.toString());
+    var url=ServerConfig.domainName+'api/leader/task/1/subtask/create';
+    var response =await http.post(Uri.parse(url),
+      body: ss,
+      headers: {
+        'Authorization':'Bearer  ${GetStorage().read('token')}',
+        'Accept':'application/json',
+      },);
+    Map<String, dynamic> a = jsonDecode(response.body);
+    print(response.statusCode);
+    print(a['message']);
+   // print(emeeting['with']);
+    if(response.statusCode==422)
+      print(a['errors']);
+    return response.statusCode.toString();
+  }
+
 
 }

@@ -17,8 +17,11 @@ static var emp="0";
       'Authorization':'Bearer  ${GetStorage().read('token')}',
       'Accept':'application/json',
     });
+//print(GetStorage().read('token'));
     var body=jsonDecode(response.body);
     print(response.statusCode.toString());
+    if(response.statusCode==401)
+    print(body['message']);
     print(body["Bronze"][0][0]["id"] );
     print(["Bronze"][0][1].length.toString());
     print('hi');
@@ -41,6 +44,9 @@ var u;
                   img_profile: body["Bronze"][0][i]["img_profile"] as String ,
                 ) ;
                 bronzers.add(user);
+                print(bronzers.length);
+                print(bronzers[0].img_profile);
+                print('hii');
               }
 
             else if( body["Bronze"][0][i]["img_profile"]==null)
@@ -51,10 +57,14 @@ var u;
               )as User ;
               print(user.first_name);
               bronzers.add(user);
+              print('o');
               //print(bronzers[0].first_name);
             }
           }
+
       }
+
+   // print(silvers);
 
   }
 

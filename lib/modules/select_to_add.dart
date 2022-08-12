@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
+import 'package:tracker/config/server_config.dart';
 
 import '../controllers/add_meeting_controller.dart';
 import '../controllers/user_controller.dart';
@@ -251,7 +252,7 @@ class _SelectToAddUsersState extends State<SelectToAddUsers> {
                     )):
                 CircleAvatar(
                     radius: 25.0,
-                    backgroundImage: NetworkImage(users[index].img_profile as String)
+                    backgroundImage: NetworkImage(ServerConfig.domainName+'${users[index].img_profile as String}')
                 ),
                 SizedBox(
                   width: 10,

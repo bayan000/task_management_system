@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/config/server_config.dart';
 import 'package:tracker/controllers/show_team_controller.dart';
 import 'package:tracker/models/showTeamModel.dart';
 import 'package:tracker/modules/edit%20team/edit_team.dart';
@@ -134,7 +135,7 @@ actions: [
               ):
               CircleAvatar(
                   radius: 30.0,
-                  backgroundImage: NetworkImage(showTeamModel.teamLeader?[0]?.img_profile as String)
+                  backgroundImage: NetworkImage(ServerConfig.domainName+'${showTeamModel.teamLeader?[0]?.img_profile as String}')
               )
 
             ],
@@ -179,7 +180,7 @@ actions: [
           ):
           CircleAvatar(
               radius: 30.0,
-              backgroundImage:  NetworkImage(showTeamModel.teamMembers?[index-1]?.img_profile as String)
+              backgroundImage:  NetworkImage(ServerConfig.domainName+'${showTeamModel.teamMembers?[index-1]?.img_profile as String}')
           )
 
         ],

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tracker/services/user_service.dart';
 import 'package:tracker/models/user_model.dart';
 import 'package:provider/provider.dart';
-import '../models/all_users_model.dart';
+import '../models/all_u_models.dart';
+
 
 class UserController extends ChangeNotifier {
   AllUsersModel? allUsersModel;
@@ -31,9 +32,14 @@ class UserController extends ChangeNotifier {
   TextEditingController passwordController = TextEditingController();
   String? choosRoleId;
   String? choosteamId;
+  Future updateUser(UserModel userModel) async{
+    await UserService.updateUser(userModel);
+    getAllUsers();
 
+  }
   //--------------AddUser---------------------
-
+  String role_id =  '';
+  String team_id = '';
   onClickAddUser() async {
     User user = User(
         first_name: fnameController.text,
@@ -41,11 +47,11 @@ class UserController extends ChangeNotifier {
         email: emailController.text,
         employee_identical: idController.text,
         password: passwordController.text,
-        role_id: choosRoleId,
-        team_id: choosteamId);
-    addedUser = await UserService.addUser(user);
-    list_of_Users.add(addedUser);
-    notifyListeners();
+        role_id: role_id,
+        team_id: team_id);
+
+
+    await UserService.addUser(user);
   }
 
 //--------------EditeUser---------------------
@@ -76,19 +82,11 @@ class UserController extends ChangeNotifier {
 
 //--------------DeleteUser---------------------
 
-  onClickDeleteUser() async {
-    print(id_user);
-
-    await UserService.deleteUser(id_user);
-    //int index,int id
-    for (var us in list_of_Users) {
-      if (us.id == id_user) {
-        list_of_Users.remove(us);
-        notifyListeners();
-        break;
-      }
-    }
+  Future deleteUser(int id) async{
+    await UserService.deleteUser(id);
+    getAllUsers();
   }
+
 
 
 //---------------------ShowAllUsers---------------

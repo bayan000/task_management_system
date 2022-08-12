@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../controllers/report_controller.dart';
+import '../../models/report_model.dart';
 import '../../shared/components.dart';
 import '../../shared/constants.dart';
 
@@ -13,17 +15,25 @@ class Reports extends StatelessWidget {
     List<String> status=['done','done','done',];
     Size size =MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title:  Text('Reports',style: trackerStyle,),
-        automaticallyImplyLeading: false,
-        // centerTitle: true,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
 
+            onPressed: () {
+              Navigator.pushReplacementNamed(
+                  context, '/Dashboard');
+            },
+          ),
+          title:  Text('Reports',style: trackerStyle,),
+          automaticallyImplyLeading: false,
+          // centerTitle: true,
+
+          backgroundColor: appCo,
+          shadowColor: appCo,
+          elevation: 0,
+
+        ),
         backgroundColor: appCo,
-        shadowColor: appCo,
-        elevation: 0,
-
-      ),
-      backgroundColor: appCo,
         body: SafeArea(
           child:Padding(
 
@@ -36,13 +46,22 @@ class Reports extends StatelessWidget {
                   decoration:   BoxDecoration(
                       color: appFo,
                       borderRadius: BorderRadius.only(topRight: Radius.circular(r),topLeft:Radius.circular(r) )),
-                  child: ListView.separated(
-                    physics:  const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) => buildReportItem(size,size.height*0.35,size.width*0.9,members,subtasks,status),
-                    separatorBuilder: (context, index) =>
-                        Container(width: size.width,height: size.height*0.001,color:Colors.grey,),
-                    itemCount: 6,
+                  child: FutureBuilder<List<ReoprtModel>>(
+                      future: ReportController.reports(),
+                      builder: (context,snapShot) {
+                        if(snapShot.hasData)
+                          return ListView.separated(
+                            physics:  const BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) => buildReportItem(size,size.height*0.35,size.width*0.9,snapShot.data![index]),
+                            separatorBuilder: (context, index) =>
+                                Container(width: size.width,height: size.height*0.001,color:Colors.grey,),
+                            itemCount: snapShot.data!.length,
+                          );
+                        if(snapShot.hasError)
+                          return Center(child: Text('Error!! ${snapShot.error}'),);
+                        return Center(child: Text('Loading...'),);
+                      }
                   ),
                 ),
               )
@@ -52,7 +71,7 @@ class Reports extends StatelessWidget {
         )
     );
   }
-  Widget buildReportItem(Size size,double h,double w,List<String> members,List<String> subtasks,List<String> status) =>
+  Widget buildReportItem(Size size,double h,double w,ReoprtModel model) =>
       SizedBox(
 
         height: h,
@@ -66,21 +85,24 @@ class Reports extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: h*0.01,),
-                 Text('Task name',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 20,
+                Text('Task name : ${model.theTask[0].title}',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 20,
                     fontWeight: FontWeight.bold,color: pu),),
                 SizedBox(height: h*0.04,),
                 Row(
                   children: [
-                    const Text('Team',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
+                    const Text('Team :',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
                         fontWeight: FontWeight.bold,color: Colors.black87),),
                     SizedBox(width: w*0.03,),
-                    const Text('Team name',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
+                    Text(model.theTask[0].teamId.toString(),style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
                         fontWeight: FontWeight.bold,color: Colors.black54),),
                   ],
                 ),
                 SizedBox(height: h*0.04,),
                 const Text('members',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
                     fontWeight: FontWeight.bold,color: Colors.black87),),
+                for(var s in model.theTask[0].subtasks)
+                  for(var s2 in s.members)
+                    Text(s2.firstName + ' ' + s2.lastName),
                 SizedBox(height: h*0.04,),
                 //getTextWidgets(members,size),
                 SizedBox(height: h*0.04,),
@@ -89,8 +111,13 @@ class Reports extends StatelessWidget {
                     const Text('Dead line',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
                         fontWeight: FontWeight.bold,color: Colors.black87),),
                     SizedBox(width: w*0.03,),
-                    const Text('1/1/2023',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
-                        fontWeight: FontWeight.bold,color: Colors.black54),),
+                    Builder(
+                        builder: (context) {
+                          var dl = model.theTask[0].endDate;
+                          return Text('${dl.day}/${dl.month}/${dl.year}',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
+                              fontWeight: FontWeight.bold,color: Colors.black54),);
+                        }
+                    ),
                   ],
                 ),
                 SizedBox(height: h*0.04,),
@@ -99,7 +126,7 @@ class Reports extends StatelessWidget {
                     const Text('Task status',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
                         fontWeight: FontWeight.bold,color: Colors.black87),),
                     SizedBox(width: w*0.03,),
-                    const Text('done',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
+                    Text('done ${model.thePercentage}%',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
                         fontWeight: FontWeight.bold,color: Colors.black54),),
 
                   ],
@@ -119,13 +146,13 @@ class Reports extends StatelessWidget {
                             ],
                           ),
                         ),
-                       // SizedBox(width: w*0.1,),
+                        // SizedBox(width: w*0.1,),
                         SizedBox(
                           width: w*0.4,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                             // getTextWidgets(status,size),
+                              // getTextWidgets(status,size),
                             ],
                           ),
                         )
@@ -140,7 +167,7 @@ class Reports extends StatelessWidget {
           ),
         ),
       );
-  //list of text widgets for members/subtasks/status
+//list of text widgets for members/subtasks/status
 
 
 

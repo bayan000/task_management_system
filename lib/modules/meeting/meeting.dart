@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tracker/config/server_config.dart';
 import 'package:tracker/controllers/meetings_controller.dart';
 
 import '../../models/meetingModel.dart';
@@ -166,7 +167,7 @@ MeetingsController meetingsController=MeetingsController();
            )):
              CircleAvatar(
              radius: 25.0,
-             backgroundImage: NetworkImage(users[i].img_profile as String)
+             backgroundImage: NetworkImage(ServerConfig.domainName+'${users[i].img_profile as String}' )
          ),
          SizedBox(width: size.width*0.03),
          Text('${users[i].first_name as String }'+" "+'${users[i].last_name as String }',style: const TextStyle(fontSize: 18),),

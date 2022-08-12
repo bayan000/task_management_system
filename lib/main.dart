@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:tracker/controllers/add_meeting_controller.dart';
+import 'package:tracker/controllers/add_subtask_controller.dart';
 import 'package:tracker/controllers/edit_meeting_controller.dart';
 import 'package:tracker/controllers/login_controller.dart';
 import 'package:tracker/controllers/show_team_controller.dart';
@@ -10,8 +11,10 @@ import 'package:tracker/controllers/teams_controller.dart';
 import 'package:tracker/controllers/user_controller.dart';
 import 'package:tracker/modules/acheivers/acheivers.dart';
 import 'package:tracker/modules/add%20meeting/add_meeting.dart';
+import 'package:tracker/modules/add_subtask.dart';
 import 'package:tracker/modules/comments/comments.dart';
 import 'package:tracker/modules/edit%20team/edit_team.dart';
+import 'package:tracker/modules/le_edit_subtask.dart';
 import 'package:tracker/modules/meeting/MeetingForLeader.dart';
 import 'package:tracker/modules/meetings/leaders_meetings.dart';
 import 'package:tracker/modules/meetings/meetings.dart';
@@ -50,6 +53,7 @@ void main() async {
       ChangeNotifierProvider(create: (_)=> ShowTeamController()),
       ChangeNotifierProvider(create: (_)=> MeetingsController()),
       ChangeNotifierProvider(create: (_)=> UserController()),
+      ChangeNotifierProvider(create: (_)=> AddSubtaskProvider()),
 
     ],
     child: MyApp(),)
@@ -87,8 +91,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => Login(),
         '/Dashboard': (context) => Dashboard(),
         '/Tasks': (context) => Task(),
-        '/users':(context) => Users(),
-       // '/':(context){return const AddTeam();},
+        '/Users':(context) => Users(),
         '/add_team':(context){return const AddTeam();},
         '/add_meeting':(context){return AddMeeting();},
         '/comments':(context){return const Comments();},
@@ -99,9 +102,11 @@ class MyApp extends StatelessWidget {
         '/meeting_for_leader':(context){return MeetingForLeaderOm();},
         '/leaders_meetings':(context){return  LeadersOmMeetings();},
         '/monthly_calendar':(context){return const CalendarMonthly();},
-        '/reports':(context){return const Reports();},
+        '/Report':(context){return const Reports();},
        '/team':(context){return Team();},
         '/subtask':(context){return SubTask();},
+        '/addsubtask':(context){return AddSubtask();},
+        '/leeditsubtask':(context){return LeAddSubtask();},
         //for member or leader
         '/myTeamM':(context){return TeamM();},
         '/myTeamL':(context){return TeamL();},

@@ -6,12 +6,12 @@ class ServerConfig{
   static String editUser='api/admin/user/update/';
   static String deleteUser='api/admin/user/delete/';
   static String showUsers='api/admin/user/show/users';
-
+  static String updateUser = "api/admin/user/update/";
   static String login='api/auth/login';
   static String logout='api/logout';
   static String addUser='api/admin/user/add';
   static String addTask='api/admin/task/add';
-
+  static String showReports='api/show/report/';
   static String addTeam='api/admin/department/add';
   static String editTeam='api/admin/department/update/';
   static String deleteTeam='api/admin/department/delete/';

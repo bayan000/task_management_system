@@ -15,13 +15,14 @@ class AddMeetingProvider extends ChangeNotifier{
   var stateeee;
   var message;
   String? dateOfMeetingg;
+  static List<String> st=[];
+
   TextEditingController dateOfMeeting=TextEditingController();
   //TextEditingController meetingTeam=TextEditingController();
   String? timeOfMeeting;
   var meetingStatus;
   List<User?> meetingWith=[];
   List<int> l=[];
-  static List<String> st=[];
   Map<String,String> map={};
   changeDOM(var dodo)
   {
