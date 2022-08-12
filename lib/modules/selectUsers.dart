@@ -66,7 +66,7 @@ if(emp.l.length!=0)
                                   print(emp.l.length);
                                   Navigator.of(context).pushReplacement(                                                         //new
                                       new MaterialPageRoute(                                                                       //new
-                                          settings: const RouteSettings(name: '/meeting'),                                              //new
+                                          settings: const RouteSettings(name: '/edit_meeting'),                                              //new
                                           builder: (context) =>  EditMeeting(id:id,) //new
                                       )                                                                                            //new
                                   );
@@ -118,10 +118,7 @@ if(emp.l.length!=0)
                                         return ListView.builder(
                                           physics: const BouncingScrollPhysics(),
                                           itemCount: snapShot.data!.length,
-                                          itemBuilder: (context, index) {/*
-if (snapShot.data?[index].isSelected ?? false) {
-  snapShot.data?[index].isSelected = false;
-    }*/
+                                          itemBuilder: (context, index) {
                                           return    userItem(snapShot.data!,index,editMeetingController,
                                               );}
                                         );
@@ -170,8 +167,9 @@ Column(
                     ));
                     this.id=id;
                     Navigator.of(context).pushReplacement(                                                         //new
-                        new MaterialPageRoute(                                                                       //new
-                            settings: const RouteSettings(name: '/meeting'),                                              //new
+                        new MaterialPageRoute(
+                          //**//new
+                            settings: const RouteSettings(name: '/edit_meeting'),                                              //new
                             builder: (context) =>  EditMeeting(id:id,) //new
                         )                                                                                            //new
                     );
@@ -223,7 +221,7 @@ Column(
         ]));
   }
   String getSelectedItemsCount(){
-    return selectedItem.isNotEmpty?selectedItem.length.toString()+" user selected":"Select users";
+    return selectedItem.isNotEmpty?selectedItem.length.toString()+" users selected":"Select users";
   }
 void doMultiSelection(User user){
     if(multiSelectionEnabled){
@@ -314,15 +312,9 @@ onTap: (){
                   SizedBox(
                     width: 30,
                   ),
-                 // editMeetingProvider.drawIt(users[index].id)
-/*
-                editMeetingProvider.map[users[index].id]==true?*/
 Visibility(visible:multiSelectionEnabled,child:selectedItem.contains(users[index])?  Icon(
 
   Icons.check_circle,color: pu,):Icon(Icons.check_circle_outlined,color: Colors.grey,)),
-                //    Icon(Icons.check_circle,color: pu,):
-
-
 
                 ],
               ),
@@ -331,35 +323,7 @@ Visibility(visible:multiSelectionEnabled,child:selectedItem.contains(users[index
         ),
       ),],
     )
-   /* onTap: (){
-      /*setState(() {
 
-       // users[index].isSelected=editMeetingProvider.setSelection(users[index].isSelected);
-        //String m='${users[index].isSelected}';
-        //print(m);
-/*
-        if(users[index].isSelected==true)
-        {
-          editMeetingProvider.addAparticipant('${users[index].first_name}','${users[index].last_name}',
-              users[index].id);
-          //print('hey boy');
-          //selectedParticipants.add(User(first_name:'${users[index].first_name}',last_name: '${users[index].last_name}',
-          //id:users[index].id,isSelected: true
-          //));
-          //editMeetingProvider.meetingWith.add(users[index]);
-        }
-        else if (users[index].isSelected==false)
-        {
-          editMeetingProvider.deleteAparticipant(users, index, users[index].id);
-          //selectedParticipants.removeWhere((element) => element?.id==users[index].id);
-          //editMeetingProvider.meetingWith.removeWhere((element) => element?.id==users[index].id);
-        }
-        print(editMeetingProvider.map[users[index].id]);
-       // print(editMeetingProvider.l);
-        //print(users[index].isSelected.toString());
-        //  print(editMeetingProvider.meetingWith[index]?.isSelected.toString());*/
-      });*/
-    },*/
   );
 }
 }

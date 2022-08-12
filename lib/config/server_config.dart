@@ -24,5 +24,7 @@ class ServerConfig{
   static String stateName='api/show1/name/';
   static String deleteMeeting='api/admin/meeting/delete/';
   static String showMeeting='api/show/OneMeeting/';
-
+  static String myTeam='api/show/MyTeam';
+  static String acheivers='api/achiever/show/';
+  static String showSubtask='api/show/one/subtask/';
 }

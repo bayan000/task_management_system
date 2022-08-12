@@ -22,9 +22,9 @@ class _EditTeamState extends State<EditTeam> {
   var id,name;
   _EditTeamState(this.id,this.name);
 EditTeamProvider editTeamProvider=EditTeamProvider();
+  var formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-   // var formKey = GlobalKey<FormState>();
     Size size =MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
@@ -56,82 +56,79 @@ EditTeamProvider editTeamProvider=EditTeamProvider();
                     top:size.height*0.01,left:size.width*0.025,right: size.width*0.025  ),//.all(size.width*0.025),
                 child:SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      SizedBox(height: size.height*0.10,),
-                      Stack(
-                          alignment: AlignmentDirectional.bottomCenter,
-                          children:[
-                            Container(
-                                height: size.height*0.4,
-                                decoration: const BoxDecoration(borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
-                                  image:DecorationImage(image: AssetImage("assets/images/teamy.jpg"),
-                                    fit: BoxFit.fill,),)
-                            ),
-                            Container(
-                              color: appFo,
-                              /*Padding(
-                                    padding:EdgeInsets.only(right: 20,left:20,top: 20),
-                                    // padding: const EdgeInsets.all(8.0),
-                                    child: defaultTextFormField(controller: editTeamProvider.teamId,
-                                        type: TextInputType.name,
-                                        hint: 'Team id',
-                                        validate: (value){
-                                          if(value!=null){print(value);}
-                                        }, label: 'Team id', prefix: Icons.group),
-                                  ),*/
-                              child: Padding(
-                                padding:EdgeInsets.only(right: 20,left:20,top: 20),
-                                // padding: const EdgeInsets.all(8.0),
-                                child: defaultTextFormField(controller: editTeamProvider.teamName,
-                                    type: TextInputType.name,
-                                    hint: 'New team name',
-                                    validate: (value){
-                                      if(value!=null){print(value);}
-                                    }, label:this.name as String,// 'Team name',
-                                    prefix: Icons.group),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        SizedBox(height: size.height*0.10,),
+                        Stack(
+                            alignment: AlignmentDirectional.bottomCenter,
+                            children:[
+                              Container(
+                                  height: size.height*0.4,
+                                  decoration: const BoxDecoration(borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
+                                    image:DecorationImage(image: AssetImage("assets/images/teamy.jpg"),
+                                      fit: BoxFit.fill,),)
                               ),
-                            ),]
-                      ),
-                      Container(
-
-                          height: size.height*0.08,
-                          decoration:  BoxDecoration( color: appFo,borderRadius: BorderRadius.only(
-                              bottomLeft:Radius.circular(r),bottomRight:Radius.circular(r)),
-                          )
-                      ),
-                      SizedBox(height:size.height*0.06),
-                      ElevatedButton(
-                        onPressed: ()async{
-                          EasyLoading.show(status: 'Loading....');
-                          editTeamProvider.setTeamId(this.id);
-                          await editTeamProvider.onEditTeam();
-                          if (editTeamProvider.modelTeam != null)
-                          {
-                            EasyLoading.showSuccess(editTeamProvider.message);
-                            Navigator.pushReplacementNamed(
-                                context, '/teams');
-                          }
-                          else if (editTeamProvider.modelTeam == null)
-                          {
-                            EasyLoading.showError('oops!'+editTeamProvider.message);
-                          }
-                        },
-                        child:  Text('edit',style: TextStyle(color: appFo,fontSize: size.width*0.045)),
-                        style: ButtonStyle(
-                          //elevation: MaterialStateProperty.all(40),
-                          shape: MaterialStateProperty.all(const CircleBorder()),
-                          padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
-                          foregroundColor: MaterialStateProperty.all(appFo),
-                          backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
-                          overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
-                            if (states.contains(MaterialState.pressed)) return appFo; // <-- Splash color
-                          }),
+                              Container(
+                                color: appFo,
+                                child: Padding(
+                                  padding:EdgeInsets.only(right: 20,left:20,top: 20),
+                                  child: defaultTextFormField(controller: editTeamProvider.teamName,
+                                      type: TextInputType.name,
+                                      hint: 'New team name',
+                                      validate:(value){if(value!.isEmpty){
+                                        return 'Enter new team name please ! ';
+                                      }
+                                      return null;} ,label:this.name as String,// 'Team name',
+                                      prefix: Icons.group),
+                                ),
+                              ),]
                         ),
-                      )
+                        Container(
 
-                    ],
+                            height: size.height*0.08,
+                            decoration:  BoxDecoration( color: appFo,borderRadius: BorderRadius.only(
+                                bottomLeft:Radius.circular(r),bottomRight:Radius.circular(r)),
+                            )
+                        ),
+                        SizedBox(height:size.height*0.06),
+                        ElevatedButton(
+                          onPressed: ()async{
+                            if(formKey.currentState!.validate())
+                              {
+                                EasyLoading.show(status: 'Loading....');
+                                editTeamProvider.setTeamId(this.id);
+                                await editTeamProvider.onEditTeam();
+                                if (editTeamProvider.modelTeam != null)
+                                {
+                                  EasyLoading.showSuccess(editTeamProvider.message);
+                                  Navigator.pushReplacementNamed(
+                                      context, '/teams');
+                                }
+                                else if (editTeamProvider.modelTeam == null)
+                                {
+                                  EasyLoading.showError('oops!'+editTeamProvider.message);
+                                }
+                              }
+
+                          },
+                          child:  Text('edit',style: TextStyle(color: appFo,fontSize: size.width*0.045)),
+                          style: ButtonStyle(
+                            //elevation: MaterialStateProperty.all(40),
+                            shape: MaterialStateProperty.all(const CircleBorder()),
+                            padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+                            foregroundColor: MaterialStateProperty.all(appFo),
+                            backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
+                            overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
+                              if (states.contains(MaterialState.pressed)) return appFo; // <-- Splash color
+                            }),
+                          ),
+                        )
+
+                      ],
+                    ),
                   ),
                 )))
     );

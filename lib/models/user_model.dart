@@ -14,7 +14,6 @@ class User{
   var role_id;
   var team_id;
   var id;
-  //bool? isSelected;
   String? img_profile;
 
   User({
@@ -27,7 +26,6 @@ class User{
     this.team_id,
     this.id,
     this.img_profile,
-   // this.isSelected=false
   });
 
   @override
@@ -40,23 +38,4 @@ class User{
 
   factory User.fromJson(Map <String,dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
-/*
-  factory  User.fromJson(Map<String,dynamic> json)=>
-      User(
-          first_name: json['first_name'],
-          last_name: json['first_name'],
-          email:json['email'],
-          employee_identical:json['employee_identical'],
-          password:json['password'],
-          role_id:json['role_id'],
-          team_id:json['team_id'],
-          id: json['id']
-      );
-*/
-
-
-
-
-
-
 }

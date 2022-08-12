@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
+import 'package:tracker/config/server_config.dart';
 import 'package:tracker/models/showTeamModel.dart';
 import 'package:tracker/modules/team/team.dart';
 import 'package:tracker/services/team_service.dart';
@@ -22,7 +23,6 @@ class _TeamsState extends State<Teams> {
 
   @override
   Widget build(BuildContext context) {
-    //TeamsController teamsController=TeamsController();
 var team;
 var team_id;
     Size size =MediaQuery.of(context).size;
@@ -168,8 +168,11 @@ var team_id;
                     height: h*0.85,
                     width: w*0.9,
 
-                    decoration: const BoxDecoration(color: appFo,
-                      image:DecorationImage(image: AssetImage("assets/images/team.jpg"),
+                    decoration:  BoxDecoration(color: appFo,
+                      image:DecorationImage(image:
+                       AssetImage("assets/images/team.jpg"),
+                     //'http://192.168.43.139:8000/'
+                     //'images/1660201018.png'
                           fit: BoxFit.contain
                       ),),
                   ),

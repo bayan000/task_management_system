@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
+import 'package:tracker/config/server_config.dart';
 import 'package:tracker/controllers/meetings_controller.dart';
 import 'package:tracker/models/meetingModel.dart';
 import 'package:tracker/services/meeting_service.dart';
@@ -205,6 +206,7 @@ Widget buildMeetingItem(BuildContext context,Size size,MeetingModel meetingModel
                     backgroundImage: NetworkImage(meetingModel.participants?[0]?.img_profile as String)
 
               ),
+
                         SizedBox(width: size.width*0.03,),
                     meetingModel.participants!.length>=2 &&meetingModel.participants ![1]?.img_profile==null?
                     CircleAvatar(
@@ -240,6 +242,7 @@ Widget buildMeetingItem(BuildContext context,Size size,MeetingModel meetingModel
                             SizedBox(width: size.width*0.03,),
                             CircleAvatar(
                                 radius: 20.0,
+
                                 backgroundImage: NetworkImage(meetingModel.participants?[2]?.img_profile as String)
 
                             ),

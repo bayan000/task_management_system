@@ -78,7 +78,52 @@ static Future<List<TeamModel>> showTeams() async{
     return response.statusCode.toString();
 
   }
-  //show certain team***********************
+
+  ///myTeamMember
+  static var sTm;
+  static Future<ShowTeamModel> showTeamM() async{
+    List<User> leader;
+    List<User> tMembers;
+    var url=ServerConfig.domainName+ServerConfig.myTeam;
+    var response=await http.get(Uri.parse(url),headers: {
+      'Authorization':'Bearer  ${GetStorage().read('token')}',
+      'Accept':'application/json',
+    });
+    print(response.statusCode);
+    var body=jsonDecode(response.body);
+    //team=TeamModel.fromJson(body["the team"]);
+    leader=(body["the leader of team"] as List).map((i) =>
+        User.fromJson(i)).toList();
+    tMembers=(body["my team"] as List).map((i) =>
+        User.fromJson(i)).toList();
+    sTm=ShowTeamModel(teamLeader: leader,teamMembers: tMembers);
+    print(body);
+    return sTm;
+  }
+  ///myTeamLeader
+  static var sTl;
+  static Future<ShowTeamModel> showTeamL() async{
+    List<User> tMembers=[];
+    var url=ServerConfig.domainName+ServerConfig.myTeam;
+    var response=await http.get(Uri.parse(url),headers: {
+      'Authorization':'Bearer  ${GetStorage().read('token')}',
+      'Accept':'application/json',
+    });
+    print(response.statusCode);
+    var body=jsonDecode(response.body);
+print(body["my team"].length);
+    for(int i=0;i<body["my team"].length;i++)
+      {
+
+        tMembers.add(User.fromJson(body["my team"][i]) as User);
+      }
+    print(tMembers.length);
+    sTl=ShowTeamModel(teamMembers: tMembers);
+   print('hi');
+    print(sTl.teamMembers);
+    return sTl;
+  }
+  //show specific show team
   static var showTeamModel;
   static Future<ShowTeamModel> showTeam(int id) async{
     TeamModel team;

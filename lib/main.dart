@@ -12,12 +12,16 @@ import 'package:tracker/modules/acheivers/acheivers.dart';
 import 'package:tracker/modules/add%20meeting/add_meeting.dart';
 import 'package:tracker/modules/comments/comments.dart';
 import 'package:tracker/modules/edit%20team/edit_team.dart';
+import 'package:tracker/modules/meeting/MeetingForLeader.dart';
+import 'package:tracker/modules/meetings/leaders_meetings.dart';
 import 'package:tracker/modules/meetings/meetings.dart';
 import 'package:tracker/modules/monthly_calendar/monthly_calendar.dart';
-import 'package:tracker/modules/page_one.dart';
 import 'package:tracker/modules/reports/reports.dart';
-import 'package:tracker/modules/second_page.dart';
 import 'package:tracker/modules/selectUsers.dart';
+import 'package:tracker/modules/select_to_add.dart';
+import 'package:tracker/modules/subtask/sub_task.dart';
+import 'package:tracker/modules/team/my_team_l.dart';
+import 'package:tracker/modules/team/my_team_m.dart';
 import 'package:tracker/modules/teams/teams.dart';
 import 'package:tracker/modules/user/user.dart';
 import 'package:provider/provider.dart';
@@ -75,11 +79,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: appName,
 
-      initialRoute:GetStorage().hasData('token') ?'/pag2' : '/login',
+      initialRoute:GetStorage().hasData('token') ?'/subtask' :
+      '/login',
       builder: EasyLoading.init(),
       routes:
       {
-
         '/login': (context) => Login(),
         '/Dashboard': (context) => Dashboard(),
         '/Tasks': (context) => Task(),
@@ -92,16 +96,20 @@ class MyApp extends StatelessWidget {
         '/edit_team':(context){return EditTeam();},
         '/meeting':(context){return Meeting();},
         '/meetings':(context){return  Meetings();},
+        '/meeting_for_leader':(context){return MeetingForLeaderOm();},
+        '/leaders_meetings':(context){return  LeadersOmMeetings();},
         '/monthly_calendar':(context){return const CalendarMonthly();},
         '/reports':(context){return const Reports();},
        '/team':(context){return Team();},
-        //'/team': (BuildContext context) => new Team(),
+        '/subtask':(context){return SubTask();},
+        //for member or leader
+        '/myTeamM':(context){return TeamM();},
+        '/myTeamL':(context){return TeamL();},
         '/teams':(context){return  Teams();},
         '/acheivers':(context){return  Acheivers();},
         '/select_users':(context){return  SelectUsers();},
+        '/select_to_add_users':(context){return  SelectToAddUsers();},
         '/user':(context){return  UserScreen();},
-        '/pag':(context){return  PageOne();},
-        '/pag2':(context){return  SecondPage();},
       },
       theme: ThemeData(
         primarySwatch: pur,

@@ -14,17 +14,12 @@ import '../team/team.dart';
 
 class EditMeeting extends StatefulWidget  {
   var id;
-
   EditMeeting({ this.id}) ;
   @override
   State<EditMeeting> createState() => _EditMeetingState(id);
   late DateTime? dateTime;
   late String? stat;
-
   String? time;
-
-
-
 }
 
 class _EditMeetingState extends State<EditMeeting> {
@@ -40,8 +35,6 @@ class _EditMeetingState extends State<EditMeeting> {
   static List<int> l=[];
   @override
   Widget build(BuildContext context) {
-
-//editMeetingProvider.onEditMeeting(1);
     DateTime _date;
     Size size =MediaQuery.of(context).size;
     return Scaffold(
@@ -68,15 +61,11 @@ class _EditMeetingState extends State<EditMeeting> {
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
-
               padding: EdgeInsets.all(size.height*0.025),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children:  [
-
                   SizedBox(height: size.height*0.049,),
-
-
                   Container(
                       height: size.height*0.25,
                       decoration:  BoxDecoration(
@@ -85,10 +74,8 @@ class _EditMeetingState extends State<EditMeeting> {
                         image:const DecorationImage(image: AssetImage("assets/images/puzzle.jpg"),
                           fit: BoxFit.fill,),)),
                   SizedBox(height: size.height*0.05,),
-
                   Consumer<EditMeetingProvider>(builder: (context,emp,child)
                     {
-
                       return Row(
                         children: [
                           ElevatedButton(
@@ -117,19 +104,13 @@ class _EditMeetingState extends State<EditMeeting> {
                                     print(editMeetingProvider.dateOfMeetingg);
                                     dato=_date.year.toString()+"-"+_date.month.toString()+"-"+_date.day.toString();
                                     emp.changeDOM(dato);
-
                                   }
                                 });
                               }),
-                          SizedBox(width: size.width*0.08),
-                          // editMeetingProvider.datoO(size),
-
-                          Text(emp.dateOfMeetingg==null? 'when is your meeting?':emp.printDOM(),style: TextStyle(color: appFo,fontSize: size.width*0.045),),
-
+                          SizedBox(width: size.width*0.08),Text(emp.dateOfMeetingg==null? 'when is your meeting?':emp.printDOM(),style: TextStyle(color: appFo,fontSize: size.width*0.045),),
                         ],
                       );
                     },)
-
                   ,SizedBox(height:size.height*0.02),
                   Consumer<EditMeetingProvider>(
                      builder: (context,emp,child) {
@@ -254,20 +235,26 @@ emp.changeTOM(taymo);
                       Consumer<EditMeetingProvider>(
                         builder: (context,emp,child) {
                           return ElevatedButton(
-                            onPressed:/*(){
-                              print('hi');
-                            } */() async{
-
-                          print(emp.l.length);
+                            onPressed:() async{
+                              print(emp.l.length);
                               print('iwillwin');
                               EasyLoading.show(status: 'Loading....');
                               editMeetingProvider.stateeee=selected.toString();
                               editMeetingProvider.dateOfMeetingg=dato.toString();
                               editMeetingProvider.timeOfMeeting=taymo.toString();
                               editMeetingProvider.l=emp.l;
-                              await editMeetingProvider.onEditMeeting(this.id);
+                              if(
+                              editMeetingProvider.stateeee==null||
+                                  editMeetingProvider.dateOfMeeting==null||
+                                  editMeetingProvider.timeOfMeeting==null||
+                                  editMeetingProvider.l.isEmpty){
+                                              EasyLoading.showError('All fields are required ');
+                                            }
+                                            else{await editMeetingProvider.onEditMeeting(this.id);
                               if (editMeetingProvider.message=="200" || editMeetingProvider.message=="201")
                               {
+                                print(editMeetingProvider.l.length);
+                                print('hi');
                               EasyLoading.showSuccess("Meeting edited successfully");
                               Navigator.pushReplacementNamed(
                               context, '/meetings');
@@ -276,7 +263,8 @@ emp.changeTOM(taymo);
                               {
                                 EasyLoading.showError('oops! error');
 
-                              }
+                              }}
+
                               }
                             ,child:  Text('edit',style: TextStyle(color: appFo,fontSize: size.width*0.045)),
                             style: ButtonStyle(

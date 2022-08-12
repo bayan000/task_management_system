@@ -20,6 +20,21 @@ var meeting;
     return await MeetingService.showMeetings();
 
   }
+  //**
+  Future<List<MeetingModel>> fetchLeMeetings() async
+  {
+    await fetchMeetingStates();
+    meet=await MeetingService.showLeMeetings();
+    return await MeetingService.showLeMeetings();
+
+  }
+  Future<List<MeetingStates>> fetchMeetingStates() async
+  {
+    await MeetingService.meetingStates();
+    statesMap=await MeetingService.map;
+    return await MeetingService.meetingStates();
+  }
+  //**
   Future<MeetingModel> fetchMeeting(var id) async
   {
     await fetchMeetingStates();
@@ -34,12 +49,7 @@ var meeting;
     meetingState=await MeetingService.stateNamee;
   }
 
-  Future<List<MeetingStates>> fetchMeetingStates() async
-  {
-    await MeetingService.meetingStates();
-    statesMap=await MeetingService.map;
-    return await MeetingService.meetingStates();
-  }
+
 
  Future deletion(int id) async{
     message= await MeetingService.deleteMeeting(id);

@@ -35,7 +35,6 @@ Map<String,String> map={};
   }
   notifyListeners();
   }
-
   Future onEditMeeting(var id)async{
 
     MeetingModel meetingModel =MeetingModel(
@@ -55,8 +54,7 @@ for(int i=0;i<l.length;i++)
       message =await   MeetingService.editMeeting(meetingModel);
 
   }
-
-changeStatus(var value){
+  changeStatus(var value){
    stateeee=value;
 
    notifyListeners();
@@ -91,7 +89,7 @@ changeStatus(var value){
     return statesMap;
 
   }
-Text datoO(Size size){
+  Text datoO(Size size){
     if (dateOfMeetingg==null)
       {return Text('when is your meeting?',style: TextStyle(color: appFo,fontSize: size.width*0.045),);
       }
@@ -99,7 +97,6 @@ Text datoO(Size size){
       {return Text('$dateOfMeetingg',style: TextStyle(color: appFo,fontSize: size.width*0.045),);
 }
 }
-
   Future<List<User>> onClickShowAllUser() async {
 
     list_of_Users = await UserService.servAllUsaer();
