@@ -45,9 +45,8 @@ class _AddSubtaskState extends State<AddSubtask> {
             icon: const Icon(Icons.arrow_back),
 
             onPressed: () {
-
               Navigator.pushReplacementNamed(
-                  context, '/meetings');
+                  context, '/subtask');
             },
           ),
           title: Text('Add subtask',style: trackerStyle,),

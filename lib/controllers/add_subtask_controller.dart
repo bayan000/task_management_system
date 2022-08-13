@@ -63,8 +63,30 @@ class AddSubtaskProvider extends ChangeNotifier{
   {
     return end;
   }
+Future delete()async{
+    await SubTaskService.deleteSubt();
+}
+  Future onEditS()async{
+    // ModelSubTask modelSubTas=[] as ModelSubTask;
+    await SubTaskService.editSub();
+/*
+    MeetingModel meetingModel =MeetingModel(
+        meeting_date: dateOfMeetingg ,
+        start_at: timeOfMeeting ,
+
+        participant_list: l
+    );
+    for(int i=0;i<l.length;i++)
+    {
+      map["participant_list[$i]"]=l.toString();
+    }
+    message =await   MeetingService.addMeeting(meetingModel);*/
+
+  }
 
   Future onAddS()async{
+   // ModelSubTask modelSubTas=[] as ModelSubTask;
+    await SubTaskService.addSub();
 /*
     MeetingModel meetingModel =MeetingModel(
         meeting_date: dateOfMeetingg ,

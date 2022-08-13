@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:tracker/config/server_config.dart';
+import 'package:tracker/controllers/add_subtask_controller.dart';
 
 import '../../controllers/show_subtask_controlller.dart';
 import '../../models/subtask_model.dart';
@@ -114,22 +116,14 @@ class SubTask extends StatelessWidget {
                                             fontSize: 23,
 
                                           )),
-                                      CircleAvatar(
-                                        radius: 18,
-                                        backgroundColor: Colors.grey[100],
-                                        child: IconButton(
-                                          icon:Icon(Icons.more_horiz_outlined,),
-                                          color: Colors.black,
-                                         // size: 20,
-                                          onPressed: () {  leading: IconButton(
-                                            icon: const Icon(Icons.arrow_back),
+                                      IconButton(
+                                        icon:Icon(Icons.more_horiz_outlined,),
+                                        color: Colors.black,
+                                       // size: 20,
+                                        onPressed: () { Navigator.pushReplacementNamed(
+                                            context, '/leeditsubtask');
 
-                                            onPressed: () {
-                                              Navigator.pushReplacementNamed(
-                                                  context, '/leeditsubtask');
-                                            },
-                                          );},
-                                        ),
+                                        },
                                       ),
                                     ],
                                   ),
@@ -339,8 +333,38 @@ Container(
                                               fontWeight: FontWeight.bold),
                                           textAlign: TextAlign.center,
                                         )),
-                                   
 
+                                    Padding(
+                                      padding:  EdgeInsets.only(right: size.width*0.07,left: size.width*0.07),
+                                      child: ElevatedButton(
+                                        onPressed: ()async{
+AddSubtaskProvider addSubtaskProvider=AddSubtaskProvider();
+await addSubtaskProvider.onEditS();
+if (addSubtaskProvider.message=="200" || addSubtaskProvider.message=="201")
+{
+  EasyLoading.showSuccess("subtask added successfully ");
+  //Navigator.pushReplacementNamed(
+   //   context, '/meetings');
+}
+else
+{
+  EasyLoading.showError('oops! error');
+
+}
+                                        },
+                                        child: Text('delete'),
+                                        style: ButtonStyle(
+                                          elevation: MaterialStateProperty.all(40),
+                                          shape: MaterialStateProperty.all(const CircleBorder()),
+                                          padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+                                          foregroundColor: MaterialStateProperty.all(appFo),
+                                          backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
+                                          overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
+                                            if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color
+                                          }),
+                                        ),
+                                      ),
+                                    )
                                   ],),
 
 

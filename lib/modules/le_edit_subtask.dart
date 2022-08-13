@@ -46,8 +46,8 @@ class _LeAddSubtaskState extends State<LeAddSubtask> {
 
             onPressed: () {
 
-              Navigator.pushReplacementNamed(
-                  context, '/meetings');
+             // Navigator.pushReplacementNamed(
+               //   context, '/meetings');
             },
           ),
           title: Text('Edit subtask',style: trackerStyle,),
@@ -170,7 +170,7 @@ class _LeAddSubtaskState extends State<LeAddSubtask> {
                     children: [
                       ElevatedButton(
                         onPressed:() async{
-                          await addSubtaskProvider.onAddS();
+                          await addSubtaskProvider.onEditS();
                           if (addSubtaskProvider.message=="200" || addSubtaskProvider.message=="201")
                           {
                             EasyLoading.showSuccess("Meeting added successfully");

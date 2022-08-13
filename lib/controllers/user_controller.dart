@@ -4,22 +4,10 @@ import 'package:tracker/models/user_model.dart';
 import 'package:provider/provider.dart';
 import '../models/all_u_models.dart';
 
-
-class UserController extends ChangeNotifier {
-  AllUsersModel? allUsersModel;
-
-  Future getAllUsers() async {
-    print('get all users fun');
-    allUsersModel = await UserService.getAllUsers();
-
-    notifyListeners();
-  }
-
-
+class UserController  with  ChangeNotifier {
 //------------------------addUser------------------------------
 
   List<User> list_of_Users = [];
-
   //update res
   int id_user = 0;
 
@@ -32,14 +20,9 @@ class UserController extends ChangeNotifier {
   TextEditingController passwordController = TextEditingController();
   String? choosRoleId;
   String? choosteamId;
-  Future updateUser(UserModel userModel) async{
-    await UserService.updateUser(userModel);
-    getAllUsers();
 
-  }
   //--------------AddUser---------------------
-  String role_id =  '';
-  String team_id = '';
+
   onClickAddUser() async {
     User user = User(
         first_name: fnameController.text,
@@ -47,13 +30,12 @@ class UserController extends ChangeNotifier {
         email: emailController.text,
         employee_identical: idController.text,
         password: passwordController.text,
-        role_id: role_id,
-        team_id: team_id);
-
-
-    await UserService.addUser(user);
+        role_id: choosRoleId,
+        team_id: choosteamId);
+    addedUser = await UserService.addUser(user);
+    list_of_Users.add(addedUser);
+    notifyListeners();
   }
-
 //--------------EditeUser---------------------
 
   onClickEditUser() async {
@@ -70,32 +52,47 @@ class UserController extends ChangeNotifier {
     );
 
 
-    edit_User = await UserService.editUser(user, id_user);
-    for (var us in list_of_Users) {
-      if (us.id == id_user) {
-        us = edit_User;
+    edit_User=await UserService.editUser(user, id_user);
+    for(var us in list_of_Users){
+      if(us.id == id_user){
+        us=edit_User;
         notifyListeners();
         break;
       }
+
     }
   }
 
 //--------------DeleteUser---------------------
 
-  Future deleteUser(int id) async{
-    await UserService.deleteUser(id);
-    getAllUsers();
-  }
+  onClickDeleteUser() async {
 
+    print(id_user);
+
+    await UserService.deleteUser(id_user);
+    //int index,int id
+    for (var us in list_of_Users) {
+      if (us.id == id_user) {
+        list_of_Users.remove(us);
+        notifyListeners();
+        break;
+      }
+    }
+
+  }
 
 
 //---------------------ShowAllUsers---------------
 
   Future<List<User>> onClickShowAllUser() async {
+
     list_of_Users = await UserService.servAllUsaer();
 
     return list_of_Users;
+
   }
+
+
 
 
 }
