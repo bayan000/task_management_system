@@ -91,6 +91,13 @@ class UserController  with  ChangeNotifier {
     return list_of_Users;
 
   }
+  var im;
+  Future<User> onClickShowUser(var id) async {
+
+    im= await UserService.servAUsaer(id);
+
+return im;
+  }
 
 
 

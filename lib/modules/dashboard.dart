@@ -34,15 +34,12 @@ class Dashboard extends StatelessWidget {
   List pushtoArea=[
 
     '/teams',
-   // '/Users',
     '/Users',
     '/Report',
-    '/Users',
     '/Tasks',
-    //  '/Calender',
+    '/Calender',
     '/meetings',
-    //   '/Metting'
-    //'/meetings'
+
 
   ];
 

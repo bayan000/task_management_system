@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../../shared/constants.dart';
-
+//DID NOT NEED TO USE THIS SO THIS STILL IS JUST A UI
 class CalendarMonthly extends StatelessWidget {
   const CalendarMonthly({Key? key}) : super(key: key);
 

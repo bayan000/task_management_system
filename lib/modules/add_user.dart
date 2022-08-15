@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tracker/shared/components.dart';
 import 'package:tracker/controllers/user_controller.dart';
 
@@ -6,10 +7,9 @@ class AddUser extends StatefulWidget {
 
 
   UserController userController=UserController();
-  List<int> RoleIdList = [2,3,4];
-  List<int> teamIdList = [1,2,3];
-  String? choosRoleId;
-  String? choosteamId;
+  List<int> RoleIdList = [2,3];
+  List<int> teamIdList = [1,2,3,4];
+
   @override
   State<AddUser> createState() => _AddUserState();
 }
@@ -20,7 +20,7 @@ class _AddUserState extends State<AddUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.indigo,
+      backgroundColor: Colors.blue,
       body: SafeArea(
         child: Column(
             children: [
@@ -30,15 +30,12 @@ class _AddUserState extends State<AddUser> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
 
-                    CircleAvatar(
-                        radius: 15,
-                        backgroundColor: Colors.white12,
-                        child: Icon(Icons.arrow_back_ios_outlined,
-                          color: Colors.white,size: 20,)),
+                    Icon(Icons.arrow_back,
+                      color: Colors.white,size: 25,),
 
                     Text(
                       'AddUser',
-                      style: TextStyle(color: Colors.white, fontSize: 28),
+                      style: TextStyle(color: Colors.white, fontSize: 27),
                     ),
                     SizedBox(
 
@@ -127,14 +124,14 @@ class _AddUserState extends State<AddUser> {
                                   hint:Text( 'select role_Id '),
 
                                   items: widget.RoleIdList.map(buildMenuItem).toList(),
-                                  value:widget.choosRoleId ,
+                                  value:widget.userController.choosRoleId ,
                                   icon: Icon(Icons.keyboard_arrow_down),
                                   iconSize: 30,
                                   isExpanded: true,
                                   onChanged: (value)=>
 
                                       setState(() {
-                                        widget.choosRoleId=value as String?;
+                                        widget.userController.choosRoleId=value as String?;
                                       }),
                                 ),
                               ),
@@ -163,14 +160,14 @@ class _AddUserState extends State<AddUser> {
                                 child: DropdownButton(
                                   hint:Text( 'select Team_id '),
                                   items: widget.teamIdList.map(buildMenuItem).toList(),
-                                  value:widget.choosteamId ,
+                                  value:widget.userController.choosteamId ,
                                   icon: Icon(Icons.keyboard_arrow_down),
                                   iconSize: 30,
                                   isExpanded: true,
                                   onChanged: (value)=>
 
                                       setState(() {
-                                        widget.choosteamId=value as String?;
+                                        widget.userController.choosteamId=value as String?;
                                       }),
                                 ),
                               ),
@@ -197,10 +194,25 @@ class _AddUserState extends State<AddUser> {
 
       ),
 
-      floatingActionButton: FloatingActionButton(backgroundColor:Colors.indigo,onPressed: (){
+      floatingActionButton: FloatingActionButton(backgroundColor:Colors.blue,
+        onPressed: ()async{
+
+//Provider.of<UserController>(context,listen:false).onClickAddUser();
+          EasyLoading.show(status: 'loading...');
+          await widget.userController.onClickAddUser();
+
+          if(widget.userController.addedUser !=null){
+            EasyLoading.showSuccess('new user is added');
+            Navigator.of(context).pop();
 
 
-      },child: Icon(Icons.check_outlined),) ,
+          }
+          else {
+            EasyLoading.showError('can not add ');
+          }
+
+
+        },child: Icon(Icons.check_outlined),) ,
 
     );
   }

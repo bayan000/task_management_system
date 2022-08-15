@@ -1,45 +1,37 @@
 
+import 'package:json_annotation/json_annotation.dart';
+import 'package:tracker/models/subtask_model.dart';
+part 'task_model.g.dart';
+@JsonSerializable(explicitToJson: true)
+class Task{
 
-class TaskModel{
 
-  /*
-        "title": "hospital management system",
-        "description": "this system will help doctors and patients",
-        "start_date": "2022-08-01",
-        "end_date": "2022-10-15",
-        "status_id": "2",
-        "team_id": "2",
-        "id": 6
-   */
 
   String? title;
   String? description;
   String? start_date;
   String? end_date;
-  String? status_id;
-  String? team_id;
-  String? id ;
+  var status_id;
+  var team_id;
+  var id ;
+  List<ModelSubTask?>? subtasks;
 
+//var subtasks;
 
-  TaskModel({
+  Task({
+
     this.title,
     this.description,
     this.start_date,
     this.end_date,
     this.status_id,
     this.team_id,
-    this.id
+    this.id,
+    this.subtasks
 
   });
-  factory  TaskModel.fromJson(Map<String,dynamic> json)=>
-      TaskModel(
-          title: json['title'],
-          description: json['description'],
-          start_date: json['start_date'],
-          end_date:json['end_date'],
-          status_id:json['status_id'],
-          team_id:json['team_id'],
-          id:json['id']
 
-      );
+  factory Task.fromJson(Map <String,dynamic> json) => _$TaskFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TaskToJson(this);
 }

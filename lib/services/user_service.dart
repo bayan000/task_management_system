@@ -43,7 +43,38 @@ class UserService {
       return null;
     return User.fromJson(json['the user is:']);
   }
+//-------------------------ShowUser---------------------------
 
+  static var img;
+  static var phn;
+  static Future<dynamic> showUser(var id) async {
+
+    var url=ServerConfig.domainName+'api/admin/user/show/user/'+id.toString();
+    var response=await http.get(Uri.parse(url),
+      headers: {
+      'Authorization':'Bearer  ${GetStorage().read('token')}',
+      'Accept':'application/json',
+      },
+    );
+    var body=jsonDecode(response.body);
+    if(body['the user'].isEmpty)
+      {
+        img=null;
+        phn=null;
+      }
+
+    else{
+      if(body['the user'][0]['img_profile']!=null)
+      img=body['the user'][0]['img_profile'] as String;
+      else if(body['the user'][0]['img_profile']==null)
+        img=null;
+      if(body['the user'][0]['phone']!=null)
+        phn=body['the user'][0]['phone'] as String;
+      else if(body['the user'][0]['phone']==null)
+        phn=null;
+    }
+    return img;
+  }
 //-------------------------EditUser---------------------------
   static Future editUser(User user, int id_user) async {
     var response = await http.put(
@@ -99,7 +130,7 @@ class UserService {
   }
 
 //-----------------------showAllUsers-------------------------
-
+static var idi;
   static Future<List<User>> servAllUsaer() async {
     var response = await http.get(
         Uri.parse(ServerConfig.domainName + ServerConfig.showUsers)
@@ -114,14 +145,26 @@ class UserService {
     Map<String, dynamic> json = jsonDecode(response.body);
     print(response.statusCode);
     List users = json['the users'] ;
+
 print(users);
     List<User> models = [];
     print(response.statusCode);
 
+for(int i=0 ;i<json['the users'].length;i++)
+  {
+    idi=json['the users'][i]['id'];
+    await showUser(idi);
+    models.add(User(
+      id: idi,
+      img_profile: img,
+      first_name: json['the users'][i]['first_name'] as String,
+      last_name: json['the users'][i]['last_name'] as String,
+      email: json['the users'][i]['email'] as String,
+      role_id: json['the users'][i]['role_id'] as int,
+    ));
 
-    for (var us in users) {
-      models.add(User.fromJson(us));
-    }
+  }
+
     print(models);
     if (models != null) {
       return models;
@@ -129,6 +172,70 @@ print(users);
     else {
       return [];
     }
+  }
+  //------------------------
+  static var t;
+ static Future teamName(var i) async{
+    var response = await http.get(
+        Uri.parse(ServerConfig.domainName +ServerConfig.teamName+i.toString())
+        ,
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer ${GetStorage().read(
+              'token')}',
+          'Accept': 'application/json'
+        });
+    List< dynamic> json = jsonDecode(response.body);
+    if(json.isNotEmpty)
+      t=json[0]['name'] as String;
+    else
+      t="";
+  }
+  //------------------------
+  static Future<User> servAUsaer(var idd) async {
+    var response = await http.get(
+        Uri.parse(ServerConfig.domainName + ServerConfig.showUsers)
+        ,
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer ${GetStorage().read(
+              'token')}',
+          'Accept': 'application/json'
+        });
+
+
+    Map<String, dynamic> json = jsonDecode(response.body);
+    print(response.statusCode);
+    List users = json['the users'] ;
+
+    print(users);
+    User model =User() ;
+    print(response.statusCode);
+
+    for(int i=0 ;i<json['the users'].length;i++)
+    {
+      idi=json['the users'][i]['id'];
+      if(idi==idd)
+      {
+        await showUser(idi);
+        await teamName(json['the users'][i]['team_id'] as int);
+        model=User(
+        id: idi,
+        img_profile: img,
+        phone: phn,
+        first_name: json['the users'][i]['first_name'] as String,
+        last_name: json['the users'][i]['last_name'] as String,
+        email: json['the users'][i]['email'] as String,
+        role_id: json['the users'][i]['role_id'] as int,
+        team_id:   json['the users'][i]['team_id'] as int,
+          teamName: t
+      );
+      }
+
+
+    }
+
+
+      return model;
+
   }
 
 

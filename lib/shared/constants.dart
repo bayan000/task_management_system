@@ -52,7 +52,15 @@ const Color kwhite=Color(0xffffffff);
 const Color kpurple=Color(0xff2b2024);
 const Color kblue=Color(0xff0D47A1);
 
+const Color kBackgroundColor=Color(0xFFF1EEF1);
+const Color kcolorApp=Colors.indigo;
+const double kDefaultPadding=20.0;
+const kDefaultShadow=BoxShadow(
+    offset: Offset(0,15),
+    blurRadius: 27,
+    color:Colors.black12
 
+);
 
 //
 TextStyle trackerStyle= GoogleFonts.chewy(textStyle:const TextStyle(fontWeight: FontWeight.w100,color: appFo,fontSize: 27, letterSpacing: .5));

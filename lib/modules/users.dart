@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:provider/provider.dart';
+import 'package:tracker/modules/user/user.dart';
 import 'package:tracker/shared/components.dart';
 import 'package:tracker/models/model_user.dart';
 
@@ -25,8 +26,11 @@ class Users extends StatefulWidget {
 }
 
 class _UsersState extends State<Users> {
+
   @override
   Widget build(BuildContext context) {
+
+
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -97,82 +101,96 @@ class _UsersState extends State<Users> {
                                       if (snapShot.hasData)
                                         return ListView.builder(
                                           itemCount: snapShot.data!.length,
-                                          itemBuilder: (context, index) => Padding(
-                                            padding: EdgeInsets.only(bottom: 20.0),
-                                            child: Row(
-                                              children: [
-                                                CircleAvatar(
-                                                    radius: 30,
-                                                    backgroundImage: NetworkImage(
-                                                      // DataUser.dataUs[index].Img
-                                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH6Uyi30Ty2WkMb0ZjuFLoXmkRwrrMObm-X2zztWtGbOgyA-i7mFzuiSKltN14HLAJDVM&usqp=CAU',
-                                                    )),
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Expanded(
-                                                  child: Row(
-
-
-                                                    children: [
-                                                      Expanded(
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
-                                                          children: [
-
-                                                            Row(
-                                                              children: [
-                                                                Text(
-                                                                    '${snapShot.data![index].first_name}'),
-                                                                SizedBox(
-                                                                  width: 2,
-                                                                ),
-                                                                Text(
-                                                                    '${snapShot.data![index].last_name}'),
-                                                              ],
-                                                            ),
-                                                            SizedBox(
-                                                              height: 3,
-                                                            ),
-                                                            Text(
-                                                              //DataUser.dataUs[index].email
-                                                                '${snapShot.data![index].email}'),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 18,
-                                                      ),
-                                                      Text(//DataUser.dataUs[index].role
-
-                                                          snapShot.data![index].role_id == 2
-                                                              ? 'Leader '
-                                                              : 'Member'),
-                                                      SizedBox(
-                                                        width: 30,
-                                                      ),
-                                                      PopupMenuButton<MenuItem>(
-                                                        onSelected: (item) {
-
-                                                          userController.id_user=snapShot.data![index].id;
-                                                          //userController.toAssignId(snapShot.data![index].id);
-
-                                                          print('id of user........');
-                                                          print(userController.id_user);
-                                                          return onSelected(
-                                                              context, item, userController);
-                                                        },
-                                                        itemBuilder: (context) => [
-                                                          ...MenuItems.items
-                                                              .map(buildItem)
-                                                              .toList()
-                                                        ],
-                                                      )
-                                                    ],
+                                          itemBuilder: (context, index) => GestureDetector(
+                                            onTap: (){
+                                             Navigator.of(context).pushReplacement(                                                         //new
+            new MaterialPageRoute(                                                                       //new
+              settings: const RouteSettings(name: '/user'),                                              //new
+              builder: (context) => new UserScreen(id: snapShot.data![index].id as int,) //new
+            )                                                                                            //new
+          );
+                                            },
+                                            child: Padding(
+                                              padding: EdgeInsets.only(bottom: 20.0),
+                                              child: Row(
+                                                children: [
+                                                  snapShot.data![index].img_profile==null?
+                                                  CircleAvatar(
+                                                      radius: 30,
+                                                      backgroundImage:AssetImage('assets/images/avatary.jpg'
+                                                      )):
+                                                  CircleAvatar(
+                                                      radius: 30,
+                                                      backgroundImage: NetworkImage(
+                                                        ServerConfig.domainName+'${snapShot.data![index].img_profile}',
+                                                      )),
+                                                  SizedBox(
+                                                    width: 10,
                                                   ),
-                                                ),
-                                              ],
+                                                  Expanded(
+                                                    child: Row(
+
+
+                                                      children: [
+                                                        Expanded(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                            CrossAxisAlignment.start,
+                                                            children: [
+
+                                                              Row(
+                                                                children: [
+                                                                  Text(
+                                                                      '${snapShot.data![index].first_name}'),
+                                                                  SizedBox(
+                                                                    width: 2,
+                                                                  ),
+                                                                  Text(
+                                                                      '${snapShot.data![index].last_name}'),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: 3,
+                                                              ),
+                                                              Text(
+                                                                //DataUser.dataUs[index].email
+                                                                  '${snapShot.data![index].email}'),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 18,
+                                                        ),
+                                                        Text(//DataUser.dataUs[index].role
+
+                                                            snapShot.data![index].role_id == 2
+                                                                ? 'Leader '
+                                                                : 'Member'),
+                                                        SizedBox(
+                                                          width: 30,
+                                                        ),
+                                                        PopupMenuButton<MenuItem>(
+                                                          onSelected: (item) {
+
+                                                            userController.id_user=snapShot.data![index].id;
+                                                            //userController.toAssignId(snapShot.data![index].id);
+
+                                                            print('id of user........');
+                                                            print(userController.id_user);
+                                                            return onSelected(
+                                                                context, item, userController);
+                                                          },
+                                                          itemBuilder: (context) => [
+                                                            ...MenuItems.items
+                                                                .map(buildItem)
+                                                                .toList()
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         );

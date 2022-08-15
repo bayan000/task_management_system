@@ -38,6 +38,7 @@ class  SubTaskService {
 print('well');
     return states;
   }
+
   static Future<List<StatusModel>> subPr() async{
     List<StatusModel> states=[];
     var url=ServerConfig.domainName+'api/show3';
@@ -167,6 +168,20 @@ var id =0;
     if(response.statusCode==422)
       print(a['errors']);
     return response.statusCode.toString();
+  }
+  static var v;
+  static Future<String> memberEditSubtask()async{
+    var url=ServerConfig.domainName+'api/member/task/1/subtask/update/37';
+    var response =await http.post(Uri.parse(url),
+      body: {
+        "status_id":"2"
+      },
+      headers: {
+        'Authorization':'Bearer  ${GetStorage().read('token')}',
+        'Accept':'application/json',
+      },);
+    v=response.statusCode.toString();
+    return v;
   }
   static Future   editSub() async {
     var id =0;

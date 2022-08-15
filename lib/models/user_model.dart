@@ -15,6 +15,8 @@ class User{
   var team_id;
   var id;
   String? img_profile;
+  String? phone;
+  String? teamName;
 
   User({
     this.first_name,
@@ -26,6 +28,8 @@ class User{
     this.team_id,
     this.id,
     this.img_profile,
+    this.phone,
+    this.teamName
   });
 
   @override

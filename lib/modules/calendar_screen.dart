@@ -2,6 +2,8 @@
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+
+//DID NOT NEED TO USE THIS SO THIS STILL IS JUST A UI
 class CalendarScreen extends StatelessWidget {
 
 

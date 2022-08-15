@@ -29,19 +29,19 @@ if(body["Bronze"][0][0].length.toString()!=emp)
   print(["Bronze"][0][0].length.toString());
 int z;
 var u;
-    for(var b in body["Bronze"][0])
+    for(var b in body["Bronze"])
       {
         u=b.length.toString();
         z=int.parse(u);
         for(int i=0;i<z;i++)
           {
 
-            print(body["Bronze"][0][i]["img_profile"]);
-            if( body["Bronze"][0][i]["img_profile"]!=null)
+            print(body["Bronze"][i]["img_profile"]);
+            if( body["Bronze"][i]["img_profile"]!=null)
               {
-                user=User(first_name: body["Bronze"][0][i]["first_name"] as String,
-                  last_name: body["Bronze"][0][i]["last_name"] as String,
-                  img_profile: body["Bronze"][0][i]["img_profile"] as String ,
+                user=User(first_name: body["Bronze"][i]["first_name"] as String,
+                  last_name: body["Bronze"][i]["last_name"] as String,
+                  img_profile: body["Bronze"][i]["img_profile"] as String ,
                 ) ;
                 bronzers.add(user);
                 print(bronzers.length);
@@ -49,17 +49,20 @@ var u;
                 print('hii');
               }
 
-            else if( body["Bronze"][0][i]["img_profile"]==null)
+            else if( body["Bronze"][i]["img_profile"]==null)
             {
 
-              user=User(first_name: body["Bronze"][0][i]["first_name"].toString(),
-                last_name: body["Bronze"][0][i]["last_name"].toString(),
+              user=User(first_name: body["Bronze"][i]["first_name"].toString(),
+                last_name: body["Bronze"][i]["last_name"].toString(),
               )as User ;
               print(user.first_name);
               bronzers.add(user);
-              print('o');
+
               //print(bronzers[0].first_name);
             }
+            print(body["Bronze"][i]["first_name"]);
+            print('fun');
+            print(bronzers[1].first_name);
           }
 
       }

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get_storage/get_storage.dart';
@@ -12,6 +13,8 @@ import 'package:tracker/controllers/user_controller.dart';
 import 'package:tracker/modules/acheivers/acheivers.dart';
 import 'package:tracker/modules/add%20meeting/add_meeting.dart';
 import 'package:tracker/modules/add_subtask.dart';
+import 'package:tracker/modules/add_user.dart';
+import 'package:tracker/modules/calendar.dart';
 import 'package:tracker/modules/comments/comments.dart';
 import 'package:tracker/modules/edit%20team/edit_team.dart';
 import 'package:tracker/modules/le_edit_subtask.dart';
@@ -30,14 +33,18 @@ import 'package:tracker/modules/user/user.dart';
 import 'package:provider/provider.dart';
 import 'package:tracker/controllers/add_team_provider.dart';
 import 'package:tracker/controllers/edit_team_provider.dart';
+import 'package:tracker/services/task_service.dart';
 import 'package:tracker/shared/constants.dart';
+import 'controllers/calendar controller.dart';
 import 'controllers/meetings_controller.dart';
 import 'modules/add team/add_team.dart';
+import 'modules/add_task.dart';
 import 'modules/dashboard.dart';
 import 'modules/edit meeting/edit_meeting.dart';
 import 'modules/login_screen.dart';
 import 'modules/meeting/meeting.dart';
 import 'modules/subtask/m_subtask.dart';
+import 'modules/task_details.dart';
 import 'modules/tasks_screen.dart';
 import 'modules/team/team.dart';
 import 'modules/users.dart';
@@ -55,7 +62,8 @@ void main() async {
       ChangeNotifierProvider(create: (_)=> MeetingsController()),
       ChangeNotifierProvider(create: (_)=> UserController()),
       ChangeNotifierProvider(create: (_)=> AddSubtaskProvider()),
-
+      ChangeNotifierProvider(create: (_)=> TaskController()),
+      ChangeNotifierProvider(create: (_)=> CalendarContro()),
     ],
     child: MyApp(),)
   );
@@ -84,18 +92,23 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: appName,
 
-      initialRoute://GetStorage().hasData('token') ?'/msubtask' :
+      initialRoute:GetStorage().hasData('token') ?'/Users' :
       '/login',
       builder: EasyLoading.init(),
       routes:
       {
+
         '/login': (context) => Login(),
         '/Dashboard': (context) => Dashboard(),
-        '/Tasks': (context) => Task(),
+        '/TaskDetail':(context)=>TaskDetail(),
+        '/AddTask':(context) => AddTask(),
+        //'/EditTask':(context)=>EditTask(),
+        '/Tasks': (context) => TaskScreen(),
         '/Users':(context) => Users(),
         '/add_team':(context){return const AddTeam();},
         '/add_meeting':(context){return AddMeeting();},
         '/comments':(context){return const Comments();},
+        '/AddUser':(context){return  AddUser();},
         '/edit_meeting':(context){return EditMeeting();},
         '/edit_team':(context){return EditTeam();},
         '/meeting':(context){return Meeting();},
@@ -117,6 +130,7 @@ class MyApp extends StatelessWidget {
         '/select_users':(context){return  SelectUsers();},
         '/select_to_add_users':(context){return  SelectToAddUsers();},
         '/user':(context){return  UserScreen();},
+      '/Calender':(context) {return PageThree();},
       },
       theme: ThemeData(
         primarySwatch: pur,
