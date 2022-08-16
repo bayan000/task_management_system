@@ -14,6 +14,6 @@ class AcheiversController extends ChangeNotifier{
     print('la');
     silvers=await AcheiversService.silvers;
     bronzers=await AcheiversService.bronzers;
-    print('oh lalala');
+    print('lalala');
   }
 }

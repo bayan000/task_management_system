@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:get_storage/get_storage.dart';
 
@@ -10,64 +11,104 @@ class AcheiversService{
   static List<User> silvers=[];
   static List<User> bronzers=[];
 static var emp="0";
-  static Future achivers() async {
+  static List<int> idsB=[];
+  static List<int> idsG=[];
+  static List<int> idsS=[];
+
+  static Future achivers()async {
     User user;
-    var url=ServerConfig.domainName+'api/achiever/show/';
+print('s');
+    var url=ServerConfig.domainName+ServerConfig.acheivers;
     var response=await http.get(Uri.parse(url),headers: {
       'Authorization':'Bearer  ${GetStorage().read('token')}',
       'Accept':'application/json',
     });
-//print(GetStorage().read('token'));
-    var body=jsonDecode(response.body);
+    print('hi');
     print(response.statusCode.toString());
+
+    var body=jsonDecode(response.body);
+
     if(response.statusCode==401)
     print(body['message']);
-    print(body["Bronze"][0][0]["id"] );
-    print(["Bronze"][0][1].length.toString());
-    print('hi');
-if(body["Bronze"][0][0].length.toString()!=emp)
-  print(["Bronze"][0][0].length.toString());
-int z;
+
 var u;
     for(var b in body["Bronze"])
       {
-        u=b.length.toString();
-        z=int.parse(u);
-        for(int i=0;i<z;i++)
+        if(b[0]['img_profile']!=null)
           {
-
-            print(body["Bronze"][i]["img_profile"]);
-            if( body["Bronze"][i]["img_profile"]!=null)
-              {
-                user=User(first_name: body["Bronze"][i]["first_name"] as String,
-                  last_name: body["Bronze"][i]["last_name"] as String,
-                  img_profile: body["Bronze"][i]["img_profile"] as String ,
-                ) ;
-                bronzers.add(user);
-                print(bronzers.length);
-                print(bronzers[0].img_profile);
-                print('hii');
-              }
-
-            else if( body["Bronze"][i]["img_profile"]==null)
-            {
-
-              user=User(first_name: body["Bronze"][i]["first_name"].toString(),
-                last_name: body["Bronze"][i]["last_name"].toString(),
-              )as User ;
-              print(user.first_name);
-              bronzers.add(user);
-
-              //print(bronzers[0].first_name);
-            }
-            print(body["Bronze"][i]["first_name"]);
-            print('fun');
-            print(bronzers[1].first_name);
+            u=User(first_name: b[0]['first_name'] as String,
+                last_name: b[0]['last_name']as String,
+                img_profile:b[0]['img_profile'].toString(),
+                id: b[0]['user_id'] as int
+            );
           }
-        print(bronzers[1].first_name);
+        else
+        {
+          u=User(first_name: b[0]['first_name'] as String,
+              last_name: b[0]['last_name']as String,
+             // img_profile:b[0]['img_profile'].toString(),
+              id: b[0]['user_id'] as int
+          );
+        }
+
+        if (!idsB.contains(b[0]['user_id'] as int))
+        {
+          idsB.add(b[0]['user_id'] as int);
+          bronzers.add(u);
+        }
+
+      }
+    for(var b in body["Silver"])
+    {
+
+      if(b[0]['img_profile']!=null)
+      {
+        u=User(first_name: b[0]['first_name'] as String,
+            last_name: b[0]['last_name']as String,
+            img_profile:b[0]['img_profile'].toString(),
+            id: b[0]['user_id'] as int
+        );
+      }
+      else
+      {
+        u=User(first_name: b[0]['first_name'] as String,
+            last_name: b[0]['last_name']as String,
+            // img_profile:b[0]['img_profile'].toString(),
+            id: b[0]['user_id'] as int
+        );
+      }
+      if (!idsS.contains(b[0]['user_id'] as int))
+      {
+        idsS.add(b[0]['user_id'] as int);
+        silvers.add(u);
       }
 
-   // print(silvers);
+    }
+    for(var b in body["Golden"])
+    {
+      if(b[0]['img_profile']!=null)
+      {
+        u=User(first_name: b[0]['first_name'] as String,
+            last_name: b[0]['last_name']as String,
+            img_profile:b[0]['img_profile'].toString(),
+            id: b[0]['user_id'] as int
+        );
+      }
+      else
+      {
+        u=User(first_name: b[0]['first_name'] as String,
+            last_name: b[0]['last_name']as String,
+            // img_profile:b[0]['img_profile'].toString(),
+            id: b[0]['user_id'] as int
+        );
+      }
+      if (!idsG.contains(b[0]['user_id'] as int))
+      {
+        idsG.add(b[0]['user_id'] as int);
+        goldies.add(u);
+      }
+
+    }
 
   }
 

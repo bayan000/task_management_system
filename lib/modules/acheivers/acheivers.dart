@@ -39,6 +39,25 @@ class Acheivers extends StatelessWidget {
                       child: FutureBuilder(
                           future:acheiversController.fetchAcheivers(),
                         builder: (context,snapshot) {
+                          if(snapshot.connectionState==ConnectionState.waiting)
+                          {return Column(
+
+                            children: [
+                              SizedBox(height: size.height*0.37,),
+                              Container(
+                                height: size.height*0.5,
+                                alignment: AlignmentDirectional.bottomCenter,
+                                child: Center(child: Column(children: [
+                                  CircularProgressIndicator(),
+                                  SizedBox(height: size.height*0.01,),
+                                  Text('loading...',style: TextStyle(fontSize: 15),),],)),),
+                            ],
+                          );}
+                          if(snapshot.hasError)
+                          {
+                            return Center(child: Text('Error !',style: TextStyle(fontSize: 20),),);
+                          }
+                          else{
                           return Column(
                             children: [
                               Row(
@@ -238,7 +257,7 @@ class Acheivers extends StatelessWidget {
                               ),
 /****/
                             ],
-                          );
+                          );}
                         }
                       )
                   ),
@@ -257,7 +276,7 @@ class Acheivers extends StatelessWidget {
               radius: 25.0,
               backgroundImage:
 
-            AssetImage("assets/images/team.jpg")
+            AssetImage("assets/images/avatary.jpg")
 
           ):
           CircleAvatar(

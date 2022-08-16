@@ -20,15 +20,7 @@ class ReportController{
     List json = jsonDecode(response.body);
     List<ReoprtModel> models = [];
     ReoprtModel re;
-  /*  for(var r in json)//model.theTask[0].teamId
-    {
-      re=ReoprtModel.fromJson(r);
-      await teamName(r['the task'][0]['team_id']);
 
-      models.add(ReoprtModel.fromJson(r));
-
-
-    }*/
     for(int i=0;i<json.length;i++)
       {
         re=ReoprtModel.fromJson(json[i]);
