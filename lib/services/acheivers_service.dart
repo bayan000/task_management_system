@@ -64,7 +64,7 @@ var u;
             print('fun');
             print(bronzers[1].first_name);
           }
-
+        print(bronzers[1].first_name);
       }
 
    // print(silvers);

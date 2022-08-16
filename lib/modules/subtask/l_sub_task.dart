@@ -11,8 +11,8 @@ import '../../models/subtask_model.dart';
 import '../../models/user_model.dart';
 import '../../shared/constants.dart';
 
-class SubTask extends StatelessWidget {
-  const SubTask({Key? key}) : super(key: key);
+class LeaderSubTask extends StatelessWidget {
+  const LeaderSubTask({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

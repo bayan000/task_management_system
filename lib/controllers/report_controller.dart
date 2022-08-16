@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:get_storage/get_storage.dart';
 
@@ -18,12 +19,43 @@ class ReportController{
     print(response.body);
     List json = jsonDecode(response.body);
     List<ReoprtModel> models = [];
-    for(var r in json)
+    ReoprtModel re;
+  /*  for(var r in json)//model.theTask[0].teamId
+    {
+      re=ReoprtModel.fromJson(r);
+      await teamName(r['the task'][0]['team_id']);
+
       models.add(ReoprtModel.fromJson(r));
 
+
+    }*/
+    for(int i=0;i<json.length;i++)
+      {
+        re=ReoprtModel.fromJson(json[i]);
+        await teamName(json[i]['the task'][0]['team_id'] as int);
+        re.theTask[0].teamName=t;
+        print( re.theTask[0].teamName);
+        models.add(re);
+
+      }
     return models;
   }
-
+  static var t;
+  static Future teamName(var i) async{
+    var response = await http.get(
+        Uri.parse(ServerConfig.domainName +ServerConfig.teamName+i.toString())
+        ,
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer ${GetStorage().read(
+              'token')}',
+          'Accept': 'application/json'
+        });
+    List< dynamic> json = jsonDecode(response.body);
+    if(json.isNotEmpty)
+      t=json[0]['name'] as String;
+    else
+      t="";
+  }
 
 
 }

@@ -30,6 +30,7 @@ class TheTask {
     required this.createdAt,
     required this.updatedAt,
     required this.subtasks,
+    this.teamName
   });
 
   final int id;
@@ -38,6 +39,7 @@ class TheTask {
   final DateTime startDate;
   final DateTime endDate;
   final int statusId;
+  String? teamName;
   final int teamId;
   final DateTime createdAt;
   final DateTime updatedAt;

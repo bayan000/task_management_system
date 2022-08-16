@@ -93,16 +93,18 @@ class Reports extends StatelessWidget {
                     const Text('Team :',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
                         fontWeight: FontWeight.bold,color: Colors.black87),),
                     SizedBox(width: w*0.03,),
-                    Text(model.theTask[0].teamId.toString(),style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
+                    Text(model.theTask[0].teamName.toString(),style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
                         fontWeight: FontWeight.bold,color: Colors.black54),),
                   ],
                 ),
                 SizedBox(height: h*0.04,),
                 const Text('members',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
                     fontWeight: FontWeight.bold,color: Colors.black87),),
+                SizedBox(height: h*0.04,),
                 for(var s in model.theTask[0].subtasks)
                   for(var s2 in s.members)
-                    Text(s2.firstName + ' ' + s2.lastName),
+                    Text(s2.firstName + ' ' + s2.lastName,style:TextStyle(overflow:TextOverflow.ellipsis,fontSize: 16,
+                        fontWeight: FontWeight.bold,color: Colors.black87),),
                 SizedBox(height: h*0.04,),
                 //getTextWidgets(members,size),
                 SizedBox(height: h*0.04,),
@@ -126,8 +128,8 @@ class Reports extends StatelessWidget {
                     const Text('Task status',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
                         fontWeight: FontWeight.bold,color: Colors.black87),),
                     SizedBox(width: w*0.03,),
-                    Text('done ${model.thePercentage}%',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
-                        fontWeight: FontWeight.bold,color: Colors.black54),),
+                    Text(' ${model.thePercentage}% is done',style: TextStyle(overflow:TextOverflow.ellipsis,fontSize: 18,
+                        fontWeight: FontWeight.bold,color: appCo),),
 
                   ],
 

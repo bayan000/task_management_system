@@ -2,7 +2,7 @@
 
 class ServerConfig{
 
-  static String  domainName='http://192.168.1.7:8000/';
+  static String  domainName='http://192.168.43.139:8000/';
   //task
   static String deleteTask='api/admin/task/delete/';
   static String showTasks='api/show/MyTask';
@@ -20,7 +20,6 @@ class ServerConfig{
   static String deleteEvent='api/delete/event/';
   static String showMyEvents='api/show/events';
   static String showOneEvent='api/show/event/';
-
   //user
   static String editUser='api/admin/user/update/';
   static String deleteUser='api/admin/user/delete/';
@@ -29,7 +28,6 @@ class ServerConfig{
   static String login='api/auth/login';
   static String logout='api/logout';
   static String addUser='api/admin/user/add';
-
   //report
   static String showReports='api/show/report/';
   //team

@@ -43,7 +43,7 @@ class UserService {
       return null;
     return User.fromJson(json['the user is:']);
   }
-//-------------------------ShowUser---------------------------
+//-------------------------ShowUser and save his phone+image---------------------------
 
   static var img;
   static var phn;
@@ -173,7 +173,7 @@ for(int i=0 ;i<json['the users'].length;i++)
       return [];
     }
   }
-  //------------------------
+  //------------------------get the name of the user's team
   static var t;
  static Future teamName(var i) async{
     var response = await http.get(
@@ -191,7 +191,7 @@ for(int i=0 ;i<json['the users'].length;i++)
       t="";
   }
   //------------------------
-  static Future<User> servAUsaer(var idd) async {
+  static Future<User> servAUser(var idd) async {
     var response = await http.get(
         Uri.parse(ServerConfig.domainName + ServerConfig.showUsers)
         ,
