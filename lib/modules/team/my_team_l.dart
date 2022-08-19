@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/config/server_config.dart';
 import 'package:tracker/controllers/show_team_controller.dart';
 import 'package:tracker/models/showTeamModel.dart';
 import 'package:tracker/modules/edit%20team/edit_team.dart';
@@ -6,6 +7,7 @@ import 'package:tracker/modules/edit%20team/edit_team.dart';
 
 import '../../controllers/teams_controller.dart';
 import '../../shared/constants.dart';
+import '../add_subtask.dart';
 
 class TeamL extends StatelessWidget{
 
@@ -49,7 +51,6 @@ class TeamL extends StatelessWidget{
                   icon: const Icon(Icons.arrow_back),
 
                   onPressed: () {
-
                   },
                 ),
                 title:  Text('My team',style: trackerStyle,),
@@ -109,7 +110,7 @@ class TeamL extends StatelessWidget{
               ):
               CircleAvatar(
                   radius: 30.0,
-                  backgroundImage:  NetworkImage(showTeamModel.teamMembers?[index]?.img_profile as String)
+                  backgroundImage:  NetworkImage(ServerConfig.domainName+'${showTeamModel.teamMembers?[index]?.img_profile}')
               )
 
             ],

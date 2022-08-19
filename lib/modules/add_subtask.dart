@@ -9,32 +9,20 @@ import '../shared/components.dart';
 import '../shared/constants.dart';
 
 class AddSubtask extends StatefulWidget {
-  AddSubtask({Key? key, this.dateTime, this.value}) : super(key: key);
-  final String? value ;
+  AddSubtask({Key? key}) : super(key: key);
+
   @override
   State<AddSubtask> createState() => _AddSubtaskState();
-  late DateTime? dateTime;
-  late DateTime? dateTimee;
-  String? time;
+
 }
 
 class _AddSubtaskState extends State<AddSubtask> {
-  AddSubtaskProvider addSubtaskProvider =AddSubtaskProvider();
-
-  String? st;
-  String? value ;
-  static var des;
-
-  static var dato;
-  static var datoo;
-  static var tii;
-  //static var taymo;
-  static var selectedP;
-  static var selectedS;
-  static List<int> l=[];
+  static var datoStarto;
+  static var datoEndo;
   @override
   Widget build(BuildContext context) {
-    DateTime _date;
+    DateTime _dateS;
+    DateTime _dateEn;
     Size size =MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
@@ -55,149 +43,268 @@ class _AddSubtaskState extends State<AddSubtask> {
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
-
               padding: EdgeInsets.all(size.height*0.025),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children:  [
-                  SizedBox(height: size.height*0.049,),
                   Container(
                       height: size.height*0.25,
                       decoration:  BoxDecoration(
                         borderRadius: BorderRadius.only(topRight: Radius.circular(r),topLeft: Radius.circular(r),
                             bottomLeft:Radius.circular(r),bottomRight:Radius.circular(r) ),
-                        image:const DecorationImage(image: AssetImage("assets/images/puzzle.jpg"),
+                        image:const DecorationImage(image: AssetImage("assets/images/addEditSubtask.jpg"),
                           fit: BoxFit.fill,),)),
                   SizedBox(height: size.height*0.05,),
-                   Row(
-                    children: [
-                      ElevatedButton(
-                          style:  ButtonStyle(backgroundColor: MaterialStateProperty.all(appFo),
-                              shadowColor:MaterialStateProperty.all(pu) ,
-                              elevation:MaterialStateProperty.all(10)),
-                          child: Text('starts at',style: TextStyle(color: pu,
-                              fontSize: size.width*0.04),),
-                          onPressed: (){
-                            showDatePicker(context: context,
-                                initialDatePickerMode: DatePickerMode.day,
-                                initialEntryMode: DatePickerEntryMode.calendarOnly,
-                                initialDate: DateTime.now(),
-                                firstDate:  DateTime.now(),
-                                lastDate: DateTime(2050),
-                                builder: (context,picker){
-                                  return Theme(data:ThemeData.light().copyWith(
-                                      colorScheme: ColorScheme.light(primary: pu
-                                      )),
-                                    child:picker!,);}).then((date){
-                              if(date!=null)
-                              {
-                                widget.dateTime=date;
-                                _date=date;
+                Consumer<AddSubtaskProvider>(
+                     builder: (context,asp,child) {
+                       return Row(
+                        children: [
+                          ElevatedButton(
+                              style:  ButtonStyle(backgroundColor: MaterialStateProperty.all(appFo),
+                                  shadowColor:MaterialStateProperty.all(pu) ,
+                                  elevation:MaterialStateProperty.all(10)),
+                              child: Text('starts at',style: TextStyle(color: pu,
+                                  fontSize: size.width*0.04),),
+                              onPressed: (){
+                                showDatePicker(context: context,
+                                    initialDatePickerMode: DatePickerMode.day,
+                                    initialEntryMode: DatePickerEntryMode.calendarOnly,
+                                    initialDate: DateTime.now(),
+                                    firstDate:  DateTime.now(),
+                                    lastDate: DateTime(2050),
+                                    builder: (context,picker){
+                                      return Theme(data:ThemeData.light().copyWith(
+                                          colorScheme: ColorScheme.light(primary: pu
+                                          )),
+                                        child:picker!,);}).then((date){
+                                  if(date!=null)
+                                  {
+                                    _dateS=date;
+                                    datoStarto=_dateS.year.toString()+"-"+_dateS.month.toString()+"-"+_dateS.day.toString();
+                                    asp.changeDOS(datoStarto);
+                                  }
+                                });
+                              }),
+                          SizedBox(width: size.width*0.08),
+                          Text(asp.start==null?
+                          'When does it start?':asp.printDOS(),style: TextStyle(color: appFo,fontSize: size.width*0.045),),
+                        ],
+                  );
+                     }
+                   ),
+                  SizedBox(height:size.height*0.02),
+                  Consumer<AddSubtaskProvider>(
+                    builder: (context,asp,child) {
+                      return Row(
+                          children: [
+                            ElevatedButton(
+                                style:  ButtonStyle(backgroundColor: MaterialStateProperty.all(appFo),
+                                    shadowColor:MaterialStateProperty.all(pu) ,
+                                    elevation:MaterialStateProperty.all(10)),
+                                child: Text('ends at',style: TextStyle(color: pu,
+                                    fontSize: size.width*0.04),),
+                                onPressed: (){
+                                  showDatePicker(context: context,
+                                      initialDatePickerMode: DatePickerMode.day,
+                                      initialEntryMode: DatePickerEntryMode.calendarOnly,
+                                      initialDate: DateTime.now(),
+                                      firstDate:  DateTime.now(),
+                                      lastDate: DateTime(2050),
+                                      builder: (context,picker){
+                                        return Theme(data:ThemeData.light().copyWith(
+                                            colorScheme: ColorScheme.light(primary: pu
+                                            )),
+                                          child:picker!,);}).then((date){
+                                    if(date!=null)
+                                    {
+                                      _dateEn=date;
+                                      datoEndo=_dateEn.year.toString()+"-"+_dateEn.month.toString()+"-"+_dateEn.day.toString();
+                                      asp.changeEO(datoEndo);
+                                    }
+                                  });
+                                }),
+                            SizedBox(width: size.width*0.08),
+                            Text(asp.end==null?
+                            'When does it end?':asp.printEO()
+                              ,style: TextStyle(color: appFo,fontSize: size.width*0.045),),
 
-
-                              }
-                            });
-                          }),
-                      SizedBox(width: size.width*0.08),
-                   /*   Text(
-                     '2022-09-10',style: TextStyle(color: appFo,fontSize: size.width*0.045),),*/
-
-                    ],
+                          ],
+                        );
+                    }
                   ),
+                  SizedBox(height:size.height*0.02),
+                  Consumer<AddSubtaskProvider>(
+                    builder: (context,asp,child) {
+                      return Padding(
+                        padding:const EdgeInsets.only(right: 20),
+                        // padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(borderRadius: BorderRadius.only(topRight: Radius.circular(size.width*0.0096),topLeft: Radius.circular(size.width*0.0096),
+                              bottomLeft:Radius.circular(size.width*0.0096),bottomRight:Radius.circular(size.width*0.0096) ),
+                            color: appFo
+                          ),
+                          child: defaultTextFormField(controller:asp.title,
 
+                              hint: 'Title',
+                              type: TextInputType.name,
+                              validate:(value){if(value!.isEmpty){
+                                return 'Write a title please ! ';
+                              }
+                              return null;} ,
+                              label: '', prefix: Icons.title),
+                        ),
+                      );
+                    }
+                  ),
                   SizedBox(height:size.height*0.02),
-                  Row(
-                      children: [
-                        ElevatedButton(
-                            style:  ButtonStyle(backgroundColor: MaterialStateProperty.all(appFo),
-                                shadowColor:MaterialStateProperty.all(pu) ,
-                                elevation:MaterialStateProperty.all(10)),
-                            child: Text('daed line',style: TextStyle(color: pu,fontSize: size.width*0.04),),
-                            onPressed: (){
-                              showTimePicker(context: context,
-                                  initialEntryMode: TimePickerEntryMode.dial,
-                                  initialTime:
-                                  const TimeOfDay(hour: 12, minute: 0),
-                                  builder: (context,picker){
-                                    return Theme(data:ThemeData.light().copyWith(colorScheme: ColorScheme.light(primary: pu
-                                    )),
-                                      child:picker!,);}
-                              ).then((date){
-                                if(date!=null)
-                                {
-                                  print('h');
+                  Consumer<AddSubtaskProvider>(
+                      builder: (context,asp,child) {
+                        return Padding(
+                          padding:const EdgeInsets.only(right: 20),
+                          // padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(borderRadius: BorderRadius.only(topRight: Radius.circular(size.width*0.0096),topLeft: Radius.circular(size.width*0.0096),
+                                bottomLeft:Radius.circular(size.width*0.0096),bottomRight:Radius.circular(size.width*0.0096) ),
+                                color: appFo
+                            ),
+                            child: defaultTextFormField(controller:asp.description,
+
+                                hint: 'Description',
+                                type: TextInputType.name,
+                                validate:(value){if(value!.isEmpty){
+                                  return 'Write a description please ! ';
                                 }
-                              });}),
-                        SizedBox(width: size.width*0.08),
-                     /*   Text('2022-12-05',style: TextStyle(color: appFo,fontSize: size.width*0.045),),*/
-                      ],
-                    ),
+                                return null;},
+                                label: '', prefix: Icons.description),
+                          ),
+                        );
+                      }
+                  ),
                   SizedBox(height:size.height*0.02),
-                  CustomField(allBorder: true, hintText: 'title', isPassword: false),
-                  SizedBox(height:size.height*0.02),
-                  CustomField(allBorder: true, hintText: 'priority', isPassword: false),
-                  SizedBox(height:size.height*0.02),
-                  CustomField(allBorder: true, hintText: 'status', isPassword: false),
+                  Consumer<AddSubtaskProvider>(
+                      builder: (context,asp,child) {
+                        return FutureBuilder<List<StatusModel>>(
+                            future:asp.fetchStates(),
+                            builder: (context,snapshot){return Row(
+                              children: [
+                                Text('subtask status',style: TextStyle(color: appFo,fontSize: size.width*0.045),),
+                                SizedBox(width:size.width*0.08),
+                                DropdownButton<String>(
+                                    dropdownColor: pu,
+                                    style: TextStyle(color: appFo,fontSize: size.width*0.045),
+                                    icon: Icon(Icons.arrow_drop_down,color: appFo,),
+                                    value:asp.state,
+                                    items: AddSubtaskProvider.stt.map(buildMenuItem).toList(),
+                                    onChanged: (String? value)=>setState(() {
+                                      asp.state=value.toString();
+                                     asp.stateeee= asp.stateId[asp.state];
+                                    })
+                                )
+                              ],
+                            );}
+                        );
+                      }
+                  )
+                  ,SizedBox(height:size.height*0.02),
+                  Consumer<AddSubtaskProvider>(
+                      builder: (context,asp,child) {
+                        return FutureBuilder<List<StatusModel>>(
+                            future:asp.fetchPriorites(),
+                            builder: (context,snapshot){return Row(
+                              children: [
+                                Text('subtask priority',style: TextStyle(color: appFo,fontSize: size.width*0.045),),
+                                SizedBox(width:size.width*0.08),
+                                DropdownButton<String>(
+                                    dropdownColor: pu,
+                                    style: TextStyle(color: appFo,fontSize: size.width*0.045),
+                                    icon: Icon(Icons.arrow_drop_down,color: appFo,),
+                                    value:asp.priority,
+                                    items: AddSubtaskProvider.st.map(buildMenuItem).toList(),
+                                    onChanged: (String? value)=>setState(() {
+                                      //string
+                                      asp.priority=value.toString();
+                                      //int
+                                      asp.proiorityyyy= asp.proiorityId[asp.priority];
+                                      print(asp.priority);
+                                      print(asp.proiorityyyy);
+                                    })
+                                )
+                              ],
+                            );}
+                        );
+                      }
+                  ),
                   Row(children:[
                     const Text(
                       'add ',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 18,
                         color:appFo ,
                       ),
                     ),
-                    TextButton(onPressed: (){
+                    Consumer<AddSubtaskProvider>(
+                      builder: (context,asp,child) {
+                        return TextButton(onPressed: (){
+if(asp.l.length!=0) {
+  asp.l.length=0;
+}
+                                Navigator.pushReplacementNamed(
+                                    context, '/myTeamLSelector');
 
-                            Navigator.pushReplacementNamed(
-                                context, '/myteam');
-
-                          }, child: const Text(
-                            'Members',
-                            style:TextStyle(
-                              fontSize: 20,
-                              color:appFo,
-                            ),
-                          ),
-                          )
+                              }, child: const Text(
+                                'Members',
+                                style:TextStyle(
+                                  fontSize: 20,
+                                  color:appFo,
+                                ),
+                              ),
+                              );
+                      }
+                    )
                   ],
                   ),
                   SizedBox(height:size.height*0.02),
                   Row(
-                    /*Navigator.pushReplacementNamed(
-                                            context, '/meetings');*/
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                       ElevatedButton(
-                              onPressed:() async{
-                                  await addSubtaskProvider.onAddS();
-                                  if (addSubtaskProvider.message=="200" || addSubtaskProvider.message=="201")
-                                  {
-                                    EasyLoading.showSuccess("subtask added successfully");
-                                    Navigator.pushReplacementNamed(
-                                        context, '/Task');
+                       Consumer<AddSubtaskProvider>(
+                         builder: (context,asp,child) {
+                           return ElevatedButton(
+                                  onPressed:() async{
+                                    EasyLoading.show(status: 'Loading....');
+                                    if(asp.l.isEmpty||asp.description==null||asp.title==null||asp.proiorityyyy==null||
+                                    asp.stateeee==null||asp.end==null||asp.state==null)
+                                      EasyLoading.showError('All fields are required ');
+                                    else
+                                      {
+                                        await asp.onAddS();
+                                        if (asp.message=="200" || asp.message=="201")
+                                        {
+                                          EasyLoading.showSuccess("subtask added successfully");
+                                          /*  Navigator.pushReplacementNamed(
+                                            context, '/Task');*/
+                                        }
+                                        else
+                                        {
+                                          EasyLoading.showError('oops! error');
+
+                                        }
+                                      }
                                   }
-                                  else
-                                  {
-                                    EasyLoading.showError('oops! error');
-
-                                  }
-
-                              }
-                              ,child:  Text('add',style: TextStyle(color: appFo,fontSize: size.width*0.045)),
-                              style: ButtonStyle(
-                                //elevation: MaterialStateProperty.all(40),
-                                shape: MaterialStateProperty.all(const CircleBorder()),
-                                padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
-                                foregroundColor: MaterialStateProperty.all(appFo),
-                                backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
-                                overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
-                                  if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color
-                                }),
-                              ),
-                            )
-
-
-
+                                  ,child:  Text('add',style: TextStyle(color: appFo,fontSize: size.width*0.045)),
+                                  style: ButtonStyle(
+                                    //elevation: MaterialStateProperty.all(40),
+                                    shape: MaterialStateProperty.all(const CircleBorder()),
+                                    padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+                                    foregroundColor: MaterialStateProperty.all(appFo),
+                                    backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
+                                    overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
+                                      if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color
+                                    }),
+                                  ),
+                                );
+                         }
+                       )
                     ],
                   ),
                   //SizedBox(height:size.height*0.02),
@@ -212,133 +319,4 @@ class _AddSubtaskState extends State<AddSubtask> {
   }
   DropdownMenuItem<String> buildMenuItem(String item) =>
       DropdownMenuItem(value:item,child: Text(item));
-}
-
-class CustomField extends StatefulWidget {
-  final Color? colorField;
-  final String hintText;
-  final String? labelText;
-  final  TextInputType? keyboard;
-  final double? height;
-  final  TextEditingController? controller;
-  Widget? prefixIcon;
-  final bool isPassword;
-  final bool allBorder;
-  final Color? hintColor;
-  final double? borderRadius;
-  final Widget? iconWidget;
-
-  bool unVisable = true;
-
-  CustomField({
-
-    this.iconWidget,
-    this.borderRadius,
-    this.height,
-    this.hintColor,
-    this.labelText,
-    required this.allBorder,
-    required this.hintText,
-    required this.isPassword,
-    this.controller,
-    this.keyboard,
-    this.colorField,
-    this.prefixIcon
-
-
-
-  });
-
-  @override
-  State<CustomField> createState() => _CustomFieldState();
-}
-
-class _CustomFieldState extends State<CustomField> {
-
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
-    return Container(
-
-      height: widget.height,
-      decoration: BoxDecoration(
-        color:widget.colorField ?? Colors.grey[200],
-        borderRadius: BorderRadius.circular(widget.borderRadius??8),
-        border:widget.allBorder ? Border.all(color: Colors.black12, width: 1.5)
-            :
-        Border(
-          top:BorderSide(color:Colors.white.withAlpha(30),width: 2),
-          right:BorderSide(color:Colors.white.withAlpha(30),width: 2),
-          left:BorderSide(color:Colors.white.withAlpha(30),width: 2),
-          bottom:BorderSide(color:Colors.white.withAlpha(30),width: 2),
-
-        ),
-
-      ),
-
-      child:   Center(
-          child:
-
-          Row(children: [
-            Expanded(child:  TextFormField(
-              readOnly:widget.iconWidget == null ? false:true,
-              controller:widget.controller ,
-              obscureText: widget.isPassword ? widget.unVisable : false,
-              cursorColor: Colors.indigo,
-              keyboardType: widget.keyboard ?? TextInputType.text,
-              style: TextStyle(
-                color:Colors.grey[800],
-                fontSize: 18,
-
-
-              ),
-              decoration: InputDecoration(
-                border: InputBorder.none,
-
-                hintText:widget.hintText,
-                labelText:widget.labelText,
-                labelStyle:TextStyle(
-                  fontSize: 18,
-
-                ),
-                hintStyle: TextStyle(
-                  fontSize: 16,
-                  color: widget.hintColor ?? Colors.grey[500],
-                  //fontFamily: 'Acaslon Reqular',
-
-                ),
-                //المسافة بين النص وحواف الفيلد
-                contentPadding: EdgeInsets.fromLTRB(13, 8, 8,8),
-                prefixIcon: widget.prefixIcon,
-                suffixIcon: widget.isPassword
-                    ? IconButton(
-                    onPressed: () {
-                      setState(() {
-                        widget.unVisable = !widget.unVisable;
-                      });
-                    },
-                    icon: Icon(widget.unVisable
-                        ? Icons.visibility
-                        : Icons.visibility_off, color: Colors.grey[600],size:size.width*0.050,))
-                    : null,
-
-
-              ),
-
-
-
-
-            ),),
-            widget.iconWidget == null ? Container() : Container(child:widget.iconWidget)
-
-          ],)
-      ),
-    );
-
-
-
-
-  }
 }

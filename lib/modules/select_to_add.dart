@@ -52,17 +52,11 @@ class _SelectToAddUsersState extends State<SelectToAddUsers> {
                                 builder: (context,amp,child) {
                                   return IconButton(
                                     onPressed: () {
-
-
-
                                       if(amp.l.length!=0)
                                         amp.l.length=0;
-
                                       print(amp.l.length);
-    Navigator.pushReplacementNamed(
-    context, '/add_meeting');
-
-
+                                    Navigator.pushReplacementNamed(
+                                    context, '/add_meeting');
                                     },
                                     icon: Icon(Icons.arrow_back_outlined,
                                         size: 27, color: Colors.white),

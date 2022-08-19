@@ -9,15 +9,22 @@ import '../models/user_model.dart';
 
 import 'package:http/http.dart' as http;
 class  SubTaskService {
+  //priority id to name
   static Map<dynamic,String> priority={};
+  //status id to name
   static Map<dynamic,String> suStatu={};
+  //priority name to id
   static Map<String,int> idMap={};
+  //status name to id
   static Map<String,int> idMapp={};
+  //list of priority names
   static List<String> st=[];
+  //list of status names
   static List<String> stt=[];
+  //the function to fill the whole subtask status thing*********************************************
   static Future<List<StatusModel>> subSt() async{
     List<StatusModel> states=[];
-    var url=ServerConfig.domainName+'api/show2';
+    var url=ServerConfig.domainName+ServerConfig.showSubStatuses;
     var response =await http.get(Uri.parse(url),headers: {
       'Authorization':'Bearer  ${GetStorage().read('token')}',
       'Accept':'application/json',
@@ -38,10 +45,10 @@ class  SubTaskService {
 print('well');
     return states;
   }
-
+  //the function to fill the whole subtask priority thing*******************************************
   static Future<List<StatusModel>> subPr() async{
     List<StatusModel> states=[];
-    var url=ServerConfig.domainName+'api/show3';
+    var url=ServerConfig.domainName+ServerConfig.showSubPriorites;
     var response =await http.get(Uri.parse(url),headers: {
       'Authorization':'Bearer  ${GetStorage().read('token')}',
       'Accept':'application/json',
@@ -62,9 +69,10 @@ print('well');
 
     return states;
   }
-  static Future deleteSubt() async{
+  //to delete subtask******************************************************************************
+ static Future deleteSubtask(int id) async{
 
-    var url=ServerConfig.domainName+'api/leader/task/9/subtask/delete/16'+"6";
+    var url=ServerConfig.domainName+'api/leader/task/1/subtask/delete/$id';
     var response=await http.delete(Uri.parse(url),headers: {
       'Authorization':'Bearer  ${GetStorage().read('token')}',
       'Accept':'application/json',
@@ -73,10 +81,9 @@ print('well');
     var body=jsonDecode(response.body);
     print(body);
     return response.statusCode.toString();
-
   }
-
-static Future<ModelSubTask> showSubtask(var sId) async{
+  //to showSubtask**********************************************************************************
+  static Future<ModelSubTask> showSubtask(var sId) async{
   User user;
   List<User> sMembers=[];
   ModelSubTask modelSubTask;
@@ -128,35 +135,22 @@ static Future<ModelSubTask> showSubtask(var sId) async{
       return modelSubTask;
 
 }
-
-
-  static ModelSubTask? s;
-  static Map<String,dynamic> ss={};
-  static Future   addSub() async {
-var id =0;
-
-    ss["title"]='task 29' ;
-    ss ["description"]='testing for task29' ;
-    ss ["end_at"]='2022-12-05';
-    ss [ "start_at"]='2022-09-10';
-    //ss [ "description"]=modelSubTask.
-    print('hi');
-    ss["priority_id"]='1';
-    ss["status_id"]='1';
-    ss["user_list[$id]"]="4";
-    /*if(meetingModel.participant_list?.length!=0)
+  //to addSubtask***********************************************************************************
+  static Map<String,dynamic> requestBody={};
+  static Future addSub(ModelSubTask modelSubTask) async {
+    requestBody["title"]=modelSubTask.title ;
+    requestBody["description"]=modelSubTask.description ;
+    requestBody["end_at"]=modelSubTask.end_at;
+    requestBody["start_at"]=modelSubTask.start_at;
+    requestBody["priority_id"]=modelSubTask.priority_id.toString();
+    requestBody["status_id"]=modelSubTask.status_id.toString();
+    for(int i=0;i<modelSubTask.participants!.length;i++)
     {
-      for(int i=0;i<meetingModel.participant_list!.length;i++)
-      {
-        ss["participant_list[$i]"]=meetingModel.participant_list![i].toString();
-      }
-    }*/
-
-   // print(ss["participant_list[$id]"]);
-   // print(meetingModel.participant_list?.length.toString());
+    requestBody["user_list[$i]"]=modelSubTask.participants![i].toString();
+    }
     var url=ServerConfig.domainName+'api/leader/task/1/subtask/create';
     var response =await http.post(Uri.parse(url),
-      body: ss,
+      body: requestBody,
       headers: {
         'Authorization':'Bearer  ${GetStorage().read('token')}',
         'Accept':'application/json',
@@ -164,12 +158,12 @@ var id =0;
     Map<String, dynamic> a = jsonDecode(response.body);
     print(response.statusCode);
     print(a['message']);
-   // print(emeeting['with']);
     if(response.statusCode==422)
       print(a['errors']);
     return response.statusCode.toString();
   }
   static var v;
+  //member edition thing
   static Future<String> memberEditSubtask()async{
     var url=ServerConfig.domainName+'api/member/task/1/subtask/update/37';
     var response =await http.post(Uri.parse(url),
@@ -183,31 +177,22 @@ var id =0;
     v=response.statusCode.toString();
     return v;
   }
-  static Future   editSub() async {
-    var id =0;
-
-    ss["title"]='testing testing 9' ;
-    ss ["description"]='marketing test 9' ;
-    ss ["end_at"]='2022-12-05';
-    ss [ "start_at"]='2022-09-10';
-    //ss [ "description"]=modelSubTask.
-    print('hi');
-    ss["priority_id"]='1';
-    ss["status_id"]='1';
-    ss["user_list[$id]"]="4";
-    /*if(meetingModel.participant_list?.length!=0)
+  //leader edition thing
+  static Map<String,dynamic> requestbody={};
+  static Future   editSub(ModelSubTask modelSubTask) async {
+    requestbody["title"]=modelSubTask.title ;
+    requestbody["description"]=modelSubTask.description ;
+    requestbody["end_at"]=modelSubTask.end_at;
+    requestbody["start_at"]=modelSubTask.start_at;
+    requestbody["priority_id"]=modelSubTask.priority_id.toString();
+    requestbody["status_id"]=modelSubTask.status_id.toString();
+    for(int i=0;i<modelSubTask.participants!.length;i++)
     {
-      for(int i=0;i<meetingModel.participant_list!.length;i++)
-      {
-        ss["participant_list[$i]"]=meetingModel.participant_list![i].toString();
-      }
-    }*/
-
-    // print(ss["participant_list[$id]"]);
-    // print(meetingModel.participant_list?.length.toString());
-    var url=ServerConfig.domainName+'api/leader/task/1/subtask/create';
+      requestbody["user_list[$i]"]=modelSubTask.participants![i].toString();
+    }
+    var url=ServerConfig.domainName+'api/leader/task/1/subtask/update/68';
     var response =await http.post(Uri.parse(url),
-      body: ss,
+      body: requestbody,
       headers: {
         'Authorization':'Bearer  ${GetStorage().read('token')}',
         'Accept':'application/json',
@@ -215,7 +200,6 @@ var id =0;
     Map<String, dynamic> a = jsonDecode(response.body);
     print(response.statusCode);
     print(a['message']);
-    // print(emeeting['with']);
     if(response.statusCode==422)
       print(a['errors']);
     return response.statusCode.toString();

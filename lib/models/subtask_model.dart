@@ -14,7 +14,8 @@ class ModelSubTask {
   var status_id;
   var task_id;
   List<User?>? users;
-
+  //this one get used to add or edit
+  List<int>? participants;
 
   ModelSubTask(
       {this.priority_id,
@@ -25,7 +26,8 @@ class ModelSubTask {
         this.title,
         this.end_at,
         this.task_id,
-        this.users
+        this.users,
+        this.participants
       });
 
   factory ModelSubTask.fromJson(Map <String,dynamic> json) => _$ModelSubTaskFromJson(json);

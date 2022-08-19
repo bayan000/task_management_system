@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:tracker/config/server_config.dart';
@@ -53,7 +54,7 @@ class LeaderSubTask extends StatelessWidget {
                           height: 350,
                           width: 200,
                           decoration: BoxDecoration(
-                              color: Colors.indigo,
+                              color: appCo,
                               borderRadius:
                               BorderRadius.only(bottomLeft: Radius.circular(
                                   800))),
@@ -66,7 +67,7 @@ class LeaderSubTask extends StatelessWidget {
                           height: 350,
                           width: 200,
                           decoration: BoxDecoration(
-                              color: Colors.indigo,
+                              color: pu,
                               borderRadius:
                               BorderRadius.only(topRight: Radius.circular(
                                   800))),
@@ -101,8 +102,7 @@ class LeaderSubTask extends StatelessWidget {
                                   padding: const EdgeInsets.only(
                                       top: 10, bottom: 35.0),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .spaceBetween,
+                                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
                                     children: [
                                       CircleAvatar(
                                         radius: 18,
@@ -112,19 +112,16 @@ class LeaderSubTask extends StatelessWidget {
                                             color: Colors.black, size: 20),
                                       ),
                                       Text('SubTask Details',
-                                          style: TextStyle(
-                                            fontSize: 23,
+              style: GoogleFonts.chewy(textStyle:const TextStyle(fontWeight: FontWeight.w100,color: myGray,fontSize: 27, letterSpacing: .5))
 
-                                          )),
-                                      IconButton(
-                                        icon:Icon(Icons.more_horiz_outlined,),
-                                        color: Colors.black,
-                                       // size: 20,
-                                        onPressed: () { Navigator.pushReplacementNamed(
-                                            context, '/leeditsubtask');
 
-                                        },
-                                      ),
+              ),
+
+                                      TextButton( onPressed: () { Navigator.pushReplacementNamed(
+                                          context, '/editsubtask');
+
+                                      }, child: Text('edit',style: TextStyle(fontWeight: FontWeight.bold,fontSize: size.width*0.05,color: appCo),))
+
                                     ],
                                   ),
                                 ),
@@ -147,7 +144,7 @@ class LeaderSubTask extends StatelessWidget {
                                       padding: EdgeInsets.all(10),
                                       width: 70,
                                       decoration: BoxDecoration(
-                                          color: Colors.pinkAccent,
+                                          color: appCo,
                                           borderRadius: BorderRadius.circular(
                                               4)),
                                       child: Text(
@@ -258,7 +255,7 @@ Container(
                                           'Start time',
                                           style: TextStyle(
                                               fontSize: 15,
-                                              color: Colors.indigo,
+                                              color: pu,
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Container(
@@ -286,7 +283,7 @@ Container(
                                           'Dead Line',
                                           style: TextStyle(
                                               fontSize: 15,
-                                              color: Colors.indigo,
+                                              color: pu,
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Container(
@@ -322,7 +319,7 @@ Container(
                                         padding: EdgeInsets.all(10),
                                         width: 90,
                                         decoration: BoxDecoration(
-                                            color: Colors.teal,
+                                            color:pu,
                                             borderRadius: BorderRadius.circular(
                                                 4)),
                                         child: Text(
@@ -338,29 +335,17 @@ Container(
                                       padding:  EdgeInsets.only(right: size.width*0.07,left: size.width*0.07),
                                       child: ElevatedButton(
                                         onPressed: ()async{
-AddSubtaskProvider addSubtaskProvider=AddSubtaskProvider();
-await addSubtaskProvider.onEditS();
-if (addSubtaskProvider.message=="200" || addSubtaskProvider.message=="201")
-{
-  EasyLoading.showSuccess("subtask added successfully ");
-  //Navigator.pushReplacementNamed(
-   //   context, '/meetings');
-}
-else
-{
-  EasyLoading.showError('oops! error');
+                                          await showAlertDialog(context, size.width, showSubtaskController, 72);
 
-}
                                         },
                                         child: Text('delete'),
                                         style: ButtonStyle(
-                                          elevation: MaterialStateProperty.all(40),
                                           shape: MaterialStateProperty.all(const CircleBorder()),
                                           padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
                                           foregroundColor: MaterialStateProperty.all(appFo),
-                                          backgroundColor: MaterialStateProperty.all(pu), // <-- Button color
+                                          backgroundColor: MaterialStateProperty.all(myGray), // <-- Button color
                                           overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
-                                            if (states.contains(MaterialState.pressed)) return pu; // <-- Splash color
+                                            if (states.contains(MaterialState.pressed)) return appFo; // <-- Splash color
                                           }),
                                         ),
                                       ),
@@ -396,4 +381,51 @@ else
 
        ],
       );
+
+}
+
+showAlertDialog(BuildContext context,double w,ShowSubtaskController showSubtaskController,int id) {
+
+
+  Widget cancelButton = TextButton(
+    child: Text("Cancel"),
+    onPressed:  () =>{ Navigator.pop(context)},
+  );
+  Widget continueButton = TextButton(
+    child: Text("Delete"),
+    onPressed:  ()async {await showSubtaskController.deletion(id);
+    if (showSubtaskController.message=="200" || showSubtaskController.message=="201")
+    {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('subtask deleted successfully'),
+      ));
+      //**********navigate to task
+      /*Navigator.pushReplacementNamed(
+                                          context, '');*/
+    }
+    else
+    {
+      EasyLoading.showError('oops! error'+showSubtaskController.message.toString());
+
+    }
+    },
+
+  );
+  Widget iconty=Icon(Icons.delete,size: w*0.1,);
+
+  AlertDialog alert = AlertDialog(
+    title:iconty,
+    content: Text("Do you really want to delete this subtask ?"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

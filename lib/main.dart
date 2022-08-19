@@ -17,7 +17,7 @@ import 'package:tracker/modules/add_user.dart';
 import 'package:tracker/modules/calendar.dart';
 import 'package:tracker/modules/comments/comments.dart';
 import 'package:tracker/modules/edit%20team/edit_team.dart';
-import 'package:tracker/modules/le_edit_subtask.dart';
+import 'package:tracker/modules/edit_subtask.dart';
 import 'package:tracker/modules/meeting/MeetingForLeader.dart';
 import 'package:tracker/modules/meetings/leaders_meetings.dart';
 import 'package:tracker/modules/meetings/meetings.dart';
@@ -28,6 +28,8 @@ import 'package:tracker/modules/select_to_add.dart';
 import 'package:tracker/modules/subtask/l_sub_task.dart';
 import 'package:tracker/modules/team/my_team_l.dart';
 import 'package:tracker/modules/team/my_team_m.dart';
+import 'package:tracker/modules/team/select_of_my_teaml.dart';
+import 'package:tracker/modules/team/select_to_edit.dart';
 import 'package:tracker/modules/teams/teams.dart';
 import 'package:tracker/modules/user/user.dart';
 import 'package:provider/provider.dart';
@@ -36,6 +38,7 @@ import 'package:tracker/controllers/edit_team_provider.dart';
 import 'package:tracker/services/task_service.dart';
 import 'package:tracker/shared/constants.dart';
 import 'controllers/calendar controller.dart';
+import 'controllers/edit_subtask_controller.dart';
 import 'controllers/meetings_controller.dart';
 import 'modules/add team/add_team.dart';
 import 'modules/add_task.dart';
@@ -63,6 +66,7 @@ void main() async {
       ChangeNotifierProvider(create: (_)=> MeetingsController()),
       ChangeNotifierProvider(create: (_)=> UserController()),
       ChangeNotifierProvider(create: (_)=> AddSubtaskProvider()),
+      ChangeNotifierProvider(create: (_)=> EditSubtaskProvider()),
       ChangeNotifierProvider(create: (_)=> TaskController()),
       ChangeNotifierProvider(create: (_)=> CalendarContro()),
     ],
@@ -83,7 +87,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: appName,
 
-      initialRoute:GetStorage().hasData('token') ?'/acheivers' :
+      initialRoute:GetStorage().hasData('token') ?'/l_subtask' :
       '/login',
       builder: EasyLoading.init(),
       routes:
@@ -93,7 +97,6 @@ class MyApp extends StatelessWidget {
         '/Dashboard': (context) => Dashboard(),
         '/TaskDetail':(context)=>TaskDetail(),
         '/AddTask':(context) => AddTask(),
-        //'/EditTask':(context)=>EditTask(),
         '/Tasks': (context) => TaskScreen(),
         '/Users':(context) => Users(),
         '/add_team':(context){return const AddTeam();},
@@ -113,10 +116,12 @@ class MyApp extends StatelessWidget {
         '/l_subtask':(context){return LeaderSubTask();},
         '/msubtask':(context){return MemSubTask();},
         '/addsubtask':(context){return AddSubtask();},
-        '/leeditsubtask':(context){return LeAddSubtask();},
+        '/editsubtask':(context){return EditSubtask();},
         //for member or leader
         '/myTeamM':(context){return TeamM();},
         '/myTeamL':(context){return TeamL();},
+        '/myTeamLSelector':(context){return TeamLSelector();},
+        '/selectToEditSubtask':(context){return  TeamLSelectorEdit();},
         '/teams':(context){return  Teams();},
         '/acheivers':(context){return  Acheivers();},
         '/select_users':(context){return  SelectUsers();},

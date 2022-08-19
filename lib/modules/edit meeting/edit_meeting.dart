@@ -9,9 +9,6 @@ import 'package:tracker/shared/components.dart';
 import '../../shared/constants.dart';
 import '../meeting/meeting.dart';
 import '../team/team.dart';
-
-
-
 class EditMeeting extends StatefulWidget  {
   var id;
   EditMeeting({ this.id}) ;
@@ -114,7 +111,6 @@ class _EditMeetingState extends State<EditMeeting> {
                   ,SizedBox(height:size.height*0.02),
                   Consumer<EditMeetingProvider>(
                      builder: (context,emp,child) {
-                      //  emp.fetchMeetingStates();
                        return FutureBuilder<Map>(
                          future:emp.fetchMeetingStates(),
                            builder: (context,snapshot){return Row(

@@ -20,6 +20,8 @@ ModelSubTask _$ModelSubTaskFromJson(Map<String, dynamic> json) {
         ?.map(
             (e) => e == null ? null : User.fromJson(e as Map<String, dynamic>))
         .toList(),
+    participants:
+        (json['participants'] as List<dynamic>?)?.map((e) => e as int).toList(),
   );
 }
 
@@ -34,4 +36,5 @@ Map<String, dynamic> _$ModelSubTaskToJson(ModelSubTask instance) =>
       'status_id': instance.status_id,
       'task_id': instance.task_id,
       'users': instance.users?.map((e) => e?.toJson()).toList(),
+      'participants': instance.participants,
     };

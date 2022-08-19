@@ -1,11 +1,13 @@
 import 'dart:collection';
-import 'package:provider/provider.dart';
+
 import 'package:flutter/material.dart';
-import 'package:tracker/models/subtask_model.dart';
+
+import '../models/subtask_model.dart';
 import '../models/subtask_task_status_model.dart';
 import '../models/user_model.dart';
 import '../services/subtask_service.dart';
-class AddSubtaskProvider extends ChangeNotifier{
+
+class EditSubtaskProvider extends ChangeNotifier{
   List<User> list_of_Users = [];
   ModelSubTask? modelSubTask;
   //priority id to name
@@ -62,20 +64,21 @@ class AddSubtaskProvider extends ChangeNotifier{
   {
     return end;
   }
-  Future onAddS()async{
+  //for leader***********************
+  Future onEditS()async{
     ModelSubTask modelSubTask=ModelSubTask(
-      start_at: start,
-      end_at: end,
-      title: title.text,
-      description: description.text,
-      status_id: stateeee,
-      priority_id: proiorityyyy,
-      participants: l
+        start_at: start,
+        end_at: end,
+        title: title.text,
+        description: description.text,
+        status_id: stateeee,
+        priority_id: proiorityyyy,
+        participants: l
     );
-  message=  await SubTaskService.addSub(modelSubTask);
+    message=  await SubTaskService.editSub(modelSubTask);
 
   }
-
+  //************************
   Future<List<StatusModel>> fetchPriorites() async
   {
     await SubTaskService.subPr();
@@ -84,6 +87,7 @@ class AddSubtaskProvider extends ChangeNotifier{
     st=await SubTaskService.st;
     return await SubTaskService.subPr();
   }
+  //************************
   Future<List<StatusModel>> fetchStates() async
   {
     await SubTaskService.subSt();
@@ -93,6 +97,7 @@ class AddSubtaskProvider extends ChangeNotifier{
     print(substates);
     return await SubTaskService.subSt();
   }
+  //************************
   savingSelectedItems(HashSet<User> selectedItem){
 
     if(selectedItem.length!=0)

@@ -170,17 +170,13 @@ static List<int> l=[];
                                 ],
                               ),
                               SizedBox(height:size.height*0.02),
-                              Row(
-                                /*Navigator.pushReplacementNamed(
-                                            context, '/meetings');*/
-                                mainAxisAlignment: MainAxisAlignment.end,
+                              Row(mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Consumer<AddMeetingProvider>(
                                       builder: (context,emp,child) {
                                         return ElevatedButton(
                                           onPressed:() async{
                                             print(emp.l.length);
-                                            print('iwillwin');
                                             EasyLoading.show(status: 'Loading....');
                                             addMeetingProvider.dateOfMeetingg=dato.toString();
                                             addMeetingProvider.timeOfMeeting=taymo.toString();
