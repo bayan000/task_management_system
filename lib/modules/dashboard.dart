@@ -77,8 +77,8 @@ class Dashboard extends StatelessWidget {
         padding: EdgeInsets.only(
             top: size.width * 0.06,
             bottom: 0,
-            left: size.width * 0.004,
-            right: size.width * 0.004),
+            left: size.width * 0.04,
+            right: size.width * 0.04),
         child: StaggeredGridView.countBuilder(
           crossAxisCount: 2,
           crossAxisSpacing: 10,

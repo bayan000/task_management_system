@@ -186,7 +186,7 @@ Widget buildMeetingItem(BuildContext context,Size size,MeetingModel meetingModel
 
                           CircleAvatar(
                               radius: 20.0,
-                              backgroundImage: NetworkImage(meetingModel.participants?[0]?.img_profile as String)
+                              backgroundImage: NetworkImage(ServerConfig.domainName+'${meetingModel.participants?[0]?.img_profile}' )
 
                           ),
                           SizedBox(width: size.width*0.03,),
@@ -200,7 +200,7 @@ Widget buildMeetingItem(BuildContext context,Size size,MeetingModel meetingModel
 
                           CircleAvatar(
                               radius: 20.0,
-                              backgroundImage: NetworkImage(meetingModel.participants?[1]?.img_profile as String)
+                              backgroundImage: NetworkImage(ServerConfig.domainName+'${meetingModel.participants?[1]?.img_profile }')
 
                           ):
                           SizedBox(width: size.width*0.03,),
@@ -224,7 +224,7 @@ Widget buildMeetingItem(BuildContext context,Size size,MeetingModel meetingModel
                               SizedBox(width: size.width*0.03,),
                               CircleAvatar(
                                   radius: 20.0,
-                                  backgroundImage: NetworkImage(meetingModel.participants?[2]?.img_profile as String)
+                                  backgroundImage: NetworkImage(ServerConfig.domainName+'${meetingModel.participants?[2]?.img_profile}')
 
                               ),
                               SizedBox(width: size.width*0.03,),

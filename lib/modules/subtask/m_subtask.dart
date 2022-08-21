@@ -1,10 +1,13 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../config/server_config.dart';
 import '../../controllers/show_subtask_controlller.dart';
 import '../../models/subtask_model.dart';
 import '../../models/user_model.dart';
+import '../../shared/constants.dart';
 
 class MemSubTask extends StatelessWidget {
   const MemSubTask({Key? key}) : super(key: key);
@@ -12,25 +15,29 @@ class MemSubTask extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size =MediaQuery.of(context).size;
+    TextEditingController status=TextEditingController();
     ShowSubtaskController showSubtaskController=ShowSubtaskController();
     return Scaffold(
       body: SafeArea(child: FutureBuilder<ModelSubTask>(
           future: showSubtaskController.fetchSubtask(6),
           builder: (context,snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Column(
+              return SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Column(
 
-                children: [
-                  SizedBox(height: size.height * 0.37,),
-                  Container(
-                    height: size.height * 0.5,
-                    alignment: AlignmentDirectional.bottomCenter,
-                    child: Center(child: Column(children: [
-                      CircularProgressIndicator(),
-                      SizedBox(height: size.height * 0.01,),
-                      Text('loading...', style: TextStyle(fontSize: 15),),
-                    ],)),),
-                ],
+                  children: [
+                    SizedBox(height: size.height * 0.37,),
+                    Container(
+                      height: size.height * 0.5,
+                      alignment: AlignmentDirectional.bottomCenter,
+                      child: Center(child: Column(children: [
+                        CircularProgressIndicator(),
+                        SizedBox(height: size.height * 0.01,),
+                        Text('loading...', style: TextStyle(fontSize: 15),),
+                      ],)),),
+                  ],
+                ),
               );
             }
             if (snapshot.hasError) {
@@ -48,7 +55,7 @@ class MemSubTask extends StatelessWidget {
                         height: 350,
                         width: 200,
                         decoration: BoxDecoration(
-                            color: Colors.indigo,
+                            color: appCo,
                             borderRadius:
                             BorderRadius.only(bottomLeft: Radius.circular(
                                 800))),
@@ -61,7 +68,7 @@ class MemSubTask extends StatelessWidget {
                         height: 350,
                         width: 200,
                         decoration: BoxDecoration(
-                            color: Colors.indigo,
+                            color: pu,
                             borderRadius:
                             BorderRadius.only(topRight: Radius.circular(
                                 800))),
@@ -107,46 +114,48 @@ class MemSubTask extends StatelessWidget {
                                           color: Colors.black, size: 20),
                                     ),
                                     Text('SubTask Details',
-                                        style: TextStyle(
-                                          fontSize: 23,
+                                        style: GoogleFonts.chewy(textStyle:const TextStyle(fontWeight: FontWeight.w100,color: myGray,fontSize: 27, letterSpacing: .5))
+                                    ),
 
-                                        )),
-
-                                        RaisedButton(
-                                          child: Text("edit"),
-                                          onPressed: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  return AlertDialog(
-                                                    scrollable: true,
-                                                    title: Text('edit subtask'),
-                                                    content: Padding(
-                                                      padding: const EdgeInsets.all(8.0),
-                                                      child: Form(
-                                                        child: Column(
-                                                          children: <Widget>[
-                                                            TextFormField(
-                                                              decoration: InputDecoration(
-                                                                labelText: 'status id',
-                                                                icon: Icon(Icons.account_box),
+                                        Padding(
+                                          padding:  EdgeInsets.only(left:size.width*0.027),
+                                          child: RaisedButton(
+                                            child: Text("edit"),
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return AlertDialog(
+                                                      scrollable: true,
+                                                      title: Text('edit subtask'),
+                                                      content: Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: Form(
+                                                          child: Column(
+                                                            children: <Widget>[
+                                                              TextFormField(
+                                                                controller:status,
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'status id',
+                                                                  icon: Icon(Icons.account_box),
+                                                                ),
                                                               ),
-                                                            ),
 
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    actions: [
-                                                      RaisedButton(
-                                                          child: Text("Submit"),
-                                                          onPressed: () {
-                                                            // your code
-                                                          })
-                                                    ],
-                                                  );
-                                                });
-                                          },
+                                                      actions: [
+                                                        RaisedButton(
+                                                            child: Text("Submit"),
+                                                            onPressed: () {
+                                                              // your code
+                                                            })
+                                                      ],
+                                                    );
+                                                  });
+                                            },
+                                          ),
                                         )
 
 
@@ -172,7 +181,7 @@ class MemSubTask extends StatelessWidget {
                                     padding: EdgeInsets.all(10),
                                     width: 70,
                                     decoration: BoxDecoration(
-                                        color: Colors.pinkAccent,
+                                        color: appCo,
                                         borderRadius: BorderRadius.circular(
                                             4)),
                                     child: Text(
@@ -283,7 +292,7 @@ class MemSubTask extends StatelessWidget {
                                         'Start time',
                                         style: TextStyle(
                                             fontSize: 15,
-                                            color: Colors.indigo,
+                                            color: pu,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Container(
@@ -311,7 +320,7 @@ class MemSubTask extends StatelessWidget {
                                         'Dead Line',
                                         style: TextStyle(
                                             fontSize: 15,
-                                            color: Colors.indigo,
+                                            color: pu,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Container(
@@ -347,7 +356,7 @@ class MemSubTask extends StatelessWidget {
                                       padding: EdgeInsets.all(10),
                                       width: 90,
                                       decoration: BoxDecoration(
-                                          color: Colors.teal,
+                                          color: pu,
                                           borderRadius: BorderRadius.circular(
                                               4)),
                                       child: Text(

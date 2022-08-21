@@ -87,7 +87,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: appName,
 
-      initialRoute:GetStorage().hasData('token') ?'/l_subtask' :
+      initialRoute:GetStorage().hasData('token') ?'/myTeamM' :
       '/login',
       builder: EasyLoading.init(),
       routes:

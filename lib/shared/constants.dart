@@ -11,8 +11,7 @@ AppBar buildAppBar({IconData? prefixIcon,var onPressedPre,var onPressedSuf,requi
     ),
     title: Text(
       text,
-      style: TextStyle(
-          color: Colors.white, fontSize: fontsize, fontWeight: FontWeight.bold),
+      style: trackerStyle,
     ),
     actions: [
       IconButton(

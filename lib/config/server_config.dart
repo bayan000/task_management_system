@@ -2,7 +2,7 @@
 
 class ServerConfig{
 
-  static String  domainName='http://192.168.1.7:8000/';
+  static String  domainName='http://192.168.43.139:8000/';
   //task
   static String deleteTask='api/admin/task/delete/';
   static String showTasks='api/show/MyTask';

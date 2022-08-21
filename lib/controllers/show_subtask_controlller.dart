@@ -9,6 +9,7 @@ class ShowSubtaskController extends ChangeNotifier{
   var substates;
 var subtaskModel;
   String? message;
+  String? memEditmesage;
  Future<ModelSubTask> fetchSubtask(var id) async
   {
     await fetchStates();
@@ -36,5 +37,11 @@ var subtaskModel;
     await SubTaskService.subPr();
     priorities=await SubTaskService.priority;
     return await SubTaskService.subPr();
+  }
+ Future<String> mEditSubtask(var id) async
+  {
+    memEditmesage=await SubTaskService.memberEditSubtask(id);
+    return await SubTaskService.memberEditSubtask(id);
+
   }
   }

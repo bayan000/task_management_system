@@ -82,8 +82,8 @@ static Future<List<TeamModel>> showTeams() async{
   ///myTeamMember
   static var sTm;
   static Future<ShowTeamModel> showTeamM() async{
-    List<User> leader;
-    List<User> tMembers;
+    List<User> leader=[];
+    List<User> tMembers=[];
     var url=ServerConfig.domainName+ServerConfig.myTeam;
     var response=await http.get(Uri.parse(url),headers: {
       'Authorization':'Bearer  ${GetStorage().read('token')}',
@@ -92,12 +92,28 @@ static Future<List<TeamModel>> showTeams() async{
     print(response.statusCode);
     var body=jsonDecode(response.body);
     //team=TeamModel.fromJson(body["the team"]);
-    leader=(body["the leader of team"] as List).map((i) =>
-        User.fromJson(i)).toList();
-    tMembers=(body["my team"] as List).map((i) =>
-        User.fromJson(i)).toList();
+
+        leader.add(User.fromJson(body["the leader of team"][0]) as User);
+for(int i=0;i<body["my team"].length;i++)
+      {
+if(body["my team"][i]["img_profile"]!=null)
+        tMembers.add(User.fromJson(body["my team"][i]) as User);
+else
+  tMembers.add(User(
+    first_name: body["my team"][i]["first_name"] as String,
+    last_name:body["my team"][i]["last_name"] as String,
+      id:body["my team"][i]["id"] as int,
+
+  ));
+
+      }
+
+
+
     sTm=ShowTeamModel(teamLeader: leader,teamMembers: tMembers);
     print(body);
+    ///print(sTm.teamMembers[4]);
+    print('hi');
     return sTm;
   }
   ///myTeamLeader

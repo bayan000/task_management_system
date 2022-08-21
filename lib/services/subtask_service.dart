@@ -164,11 +164,11 @@ print('well');
   }
   static var v;
   //member edition thing
-  static Future<String> memberEditSubtask()async{
-    var url=ServerConfig.domainName+'api/member/task/1/subtask/update/37';
+  static Future<String> memberEditSubtask(var id)async{
+    var url=ServerConfig.domainName+'api/member/task/4/subtask/update/50';
     var response =await http.post(Uri.parse(url),
       body: {
-        "status_id":"2"
+        "status_id":id.toString()
       },
       headers: {
         'Authorization':'Bearer  ${GetStorage().read('token')}',
