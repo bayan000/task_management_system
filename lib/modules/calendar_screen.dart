@@ -1,197 +1,183 @@
 
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+import 'package:tracker/controllers/calendar_controller.dart';
 
-//DID NOT NEED TO USE THIS SO THIS STILL IS JUST A UI
-class CalendarScreen extends StatelessWidget {
+import '../models/calenadar_model.dart';
+import '../shared/constants.dart';
 
+class PageCalendar extends StatefulWidget {
+  const PageCalendar({Key? key}) : super(key: key);
 
+  @override
+  _PageCalendarState createState() => _PageCalendarState();
+}
+
+class _PageCalendarState extends State<PageCalendar> {
+
+  final CalendarController _calendarController=CalendarController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.indigo,
+      appBar:buildAppBar( text:'Calendar',color: appCo,
+          prefixIcon: Icons.arrow_back,onPressedPre: (){
 
-        body:SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(top:15.0),
-            child: Column(
+            Navigator.pop(context);
+          }
 
-              children: [
-                Row(
-
-
-                    children: [
-
-                      GestureDetector(onTap: (){},child: Icon(Icons.arrow_back_ios_outlined,color: Colors.white,size: 27,),),
-                      SizedBox(width: 90,),
-                      Text('Weekly Calendar',style: TextStyle(color:Colors.white,fontSize: 24),),
-                    ]),
-
-/*
-  SizedBox(height: 30,),
-              Column(children: [
-                Text('Augest 19',style: TextStyle(color:Colors.white,fontSize: 20),),
-                SizedBox(height: 5,),
-                Text('10 Task today',style: TextStyle(color: Color(0xffC4DDFF))),
-              ],),
- */
+      ),
+      body:
 
 
-                SizedBox(height: 33,),
+      Consumer<MyCalendarCont>(builder:(context,pro,_)=>FutureBuilder< List<ModelCalendar> >(
+        future: pro.fetchAllEvent(),
+        builder: (context,snapShot){
+          //AsyncSnapShot
+          if(snapShot.hasData)
+            return
 
-                Container(
+              SfCalendar(
+                view: CalendarView.month,
+                controller: _calendarController,
+                dataSource: _getDataSource(snapShot.data!),
+                onViewChanged: calendarViewChanged,
+                //  monthViewSettings: MonthViewSettings(showAgenda: true),
+                monthViewSettings: MonthViewSettings(
+                    dayFormat: 'EEE',
+                    // numberOfWeeksInView: 4,
+                    //  appointmentDisplayCount: 2,
+                    //appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
+                    showAgenda: true,
+                    agendaViewHeight: 400,
+                    monthCellStyle
+                        : MonthCellStyle(textStyle: TextStyle(fontStyle: FontStyle.
+                    normal, fontSize: 15, color: Colors.black),
+                      trailingDatesTextStyle: TextStyle(
+                          fontStyle: FontStyle.normal,
+                          fontSize: 15,
+                          color: Colors.black),
 
-                  child: DatePicker(DateTime.now(),
-                    selectedTextColor: Colors.white,
-                    selectionColor:  Colors.white12,
+                      leadingDatesTextStyle: TextStyle(
+                          fontStyle: FontStyle.normal,
+                          fontSize: 15,
+                          color: Colors.black),
 
-                    initialSelectedDate: DateTime.now(),
-                    height: 100,
-                    dateTextStyle: TextStyle(fontSize: 13,fontWeight: FontWeight.w500,color: Color(0xffC4DDFF)),
-                    dayTextStyle: TextStyle(fontSize: 13,fontWeight: FontWeight.w500,color: Color(0xffC4DDFF)),
-                    monthTextStyle: TextStyle(fontSize: 13,fontWeight: FontWeight.w500,color: Color(0xffC4DDFF)),
+                      todayBackgroundColor:  Color(0xffe3f2fd),
+                      leadingDatesBackgroundColor: Colors.grey[300],
+                      trailingDatesBackgroundColor: Colors.grey[200],
 
-                  ),
+
+                    )
+
+                  //    navigationDirection: MonthNavigationDirection.horizontal
                 ),
-                SizedBox(height: 28,),
-///////// 0xfffcf975
-                Expanded(child: Container(
 
-                    decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30))),
+                //*
+                viewHeaderStyle: ViewHeaderStyle(
+                  backgroundColor: Colors.blue,
 
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: ListView.builder(itemCount: 11,itemBuilder: (context,index)=>
-                          Row(children: [
-                            Container(
-                                height: 110,
-                                width: 20,
-                                child: TimelineTile(
-                                  alignment: TimelineAlign.manual,
-                                  lineXY: 0,
-                                  isFirst: true,
-                                  indicatorStyle: IndicatorStyle(
-                                      indicatorXY: 0,
-                                      width: 15,
-                                      indicator: Container(
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.white,
-                                            border: Border.all(
-                                              width: 5,
-                                              //color: coloritem[index],
-                                              color: Color(0xffC4DDFF),
-                                            )),
-                                      )),
-                                  afterLineStyle: LineStyle(
-                                    thickness: 2,
-                                    //color: coloritem[index]
-                                    color: Color(0xffC4DDFF),
-                                  ),
-                                )),
-                            Expanded(
-                              child: Row(
-                                  children:[Text('09:30 AM',style: TextStyle(fontWeight: FontWeight.w600),),
-                                    Spacer(),
-                                    Container(
-                                      margin: EdgeInsets.all(10),
-                                      height: 100,
-                                      width: 280,
-                                      decoration: BoxDecoration(color: Colors.indigo,
-                                          borderRadius: BorderRadius.circular(10)),
-                                      child: Container(
+                  dayTextStyle:TextStyle
+                    (color:Colors.white,fontWeight: FontWeight.bold) , ),
 
-                                          decoration: BoxDecoration( color: Colors.white,
+                headerStyle:CalendarHeaderStyle(
+                  // textAlign: TextAlign.center,
+                    backgroundColor: Colors.transparent,
+                    textStyle: TextStyle(fontWeight: FontWeight.w500,fontSize: 18,color: Colors.blue,)) ,
+                todayTextStyle: TextStyle(color:Colors.purple,fontSize: 16,fontWeight: FontWeight.w700),
+                todayHighlightColor: Colors.purple.withOpacity(0.1),
+                //showCurrentTimeIndicator: true,
+                selectionDecoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border.all(color: Colors.purple, width: 2),
+                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                  shape: BoxShape.rectangle,
+                ),
+                showNavigationArrow: true,
 
-                                              boxShadow: [BoxShadow(offset: Offset(-1,-1),color:Colors.black12,blurRadius: 5),]),
-                                          margin: EdgeInsets.only(left: 6),
-                                          padding: EdgeInsets.only(left: 15,top:15),
-                                          child:Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text('HR Manager\'s Day',style: TextStyle(fontSize: 13,fontWeight: FontWeight.w600),),
-                                              SizedBox(height: 8,),
-                                              Text('this id description about task ',style: TextStyle(fontSize: 10,color:Colors.grey)),
-                                              SizedBox(height: 8,),
-                                              Container(
-                                                  width: double.infinity,
-                                                  child: Stack(
-                                                    alignment: Alignment.centerLeft,
-                                                    children: [
-                                                      CircleAvatar(
-                                                        radius: 15,
-                                                        backgroundImage: NetworkImage(
-                                                            'https://cdn-icons-png.flaticon.com/512/219/219983.png'),
-                                                      ),
-                                                      Positioned(
-                                                        left: 20,
-                                                        bottom: 0,
-                                                        top: 0,
-                                                        child: CircleAvatar(
-                                                          radius: 15,
-                                                          backgroundImage: NetworkImage(
-                                                              'https://createivo.com/images/q1.jpeg'),
-                                                        ),
-                                                      ),
-                                                      Positioned(
-                                                        left: 40,
-                                                        bottom: 0,
-                                                        top: 0,
-                                                        child: CircleAvatar(
-                                                          radius: 15,
-                                                          backgroundImage: NetworkImage(
-                                                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH6Uyi30Ty2WkMb0ZjuFLoXmkRwrrMObm-X2zztWtGbOgyA-i7mFzuiSKltN14HLAJDVM&usqp=CAU',
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Positioned(
-                                                        left: 60,
-                                                        bottom: 0,
-                                                        child: CircleAvatar(
-                                                          radius: 15,
-                                                          backgroundImage: NetworkImage(
-                                                              'https://www.coursle.org/assets/img/user.png'),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )),
+                allowAppointmentResize: true,
+                backgroundColor: Colors.transparent,
 
-
-                                            ],)
-                                      ),
-
-                                    )
-
-
-                                  ]
+                //*
 
 
 
 
 
-                              ),
-                            ),
-                          ],)
-                        ,
+
+              );
 
 
 
-                      ),
-                    )))
+          if(snapShot.hasError)
+            return Center(
+              child: Text(snapShot.error.toString()),
+            );
+
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ))
+
+
+      , floatingActionButton: FloatingActionButton(backgroundColor:Colors.purple,
+        onPressed: ()async{
+
+          Navigator.pushNamed(context, '/AllEvents');
 
 
 
-
-
-              ],),
-          ),
-        )
+        },child: Text('all')) ,
 
 
 
 
 
     );
+  }
+  void calendarViewChanged(ViewChangedDetails viewChangedDetails) {
+    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+      _calendarController.selectedDate=null;
+    });
+  }
+}
+
+_DataSource _getDataSource(List<ModelCalendar> bEvents) {
+
+
+  final List<Appointment> appointments = <Appointment>[];
+
+  for(int i=0;i<bEvents.length;i++){
+
+
+
+    DateTime s=DateTime.parse(bEvents[i].date_of_event);
+    appointments.add(Appointment(
+      startTime:DateTime(s.year,s.month,s.day,DateTime.now().hour,DateTime.now().minute,DateTime.now().second)
+      ,
+      endTime:DateTime(s.year,s.month,s.day,0,0,0),
+      subject: bEvents[i].event_name,
+      color: Colors.purple,) );
+
+//print(bEvents[i].event_name);
+
+    print(bEvents[i].date_of_event);
+
+  }
+
+
+
+
+
+  return _DataSource(appointments);
+}
+
+class _DataSource extends CalendarDataSource {
+  _DataSource(List<Appointment> source) {
+    appointments = source;
   }
 }

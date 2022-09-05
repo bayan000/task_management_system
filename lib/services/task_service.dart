@@ -16,31 +16,61 @@ class  TaskService{
 
 
   static Map<dynamic,String> priority={};
+  // map[id]=name
   static Map<dynamic,String> suStatu={};
+  //map[name]=id
   static Map<String,int> idMap={};
   static List<String> st=[];
   static List<String> stt=[];
+
+
+
+
+
   static Future<List<StatusModel>> subSt() async{
+
     List<StatusModel> states=[];
-    var url=ServerConfig.domainName+'api/show2';
-    var response =await http.get(Uri.parse(url),headers: {
-      'Authorization':'Bearer  ${GetStorage().read('token')}',
-      'Accept':'application/json',
-    },);
+
+    var response =await http.get(Uri.parse(ServerConfig.domainName+ServerConfig.showAllStatus),
+
+      headers: {
+        'Authorization':'Bearer  ${GetStorage().read('token')}',
+        'Accept':'application/json',
+      },
+    );
     List<dynamic> s = jsonDecode(response.body);
+
     print(response.statusCode);
+
     print(s[0]["id"]);
     for (var i=0; i<s.length ;i++)//var t in jsonData
         {
       states.add( StatusModel.fromJson(s[i]));
+
       suStatu[states[i].id]=states[i].name!;
+
+      print(' suStatu[states[0].id]  :');
+      print( suStatu[states[0].id]);
+
       idMap[states[i].name!]=states[i].id;
-      if(!stt.contains(states[i].name!))
+      print('  idMap[states[i].name!] :');
+
+      print( idMap[states[i].name!]);
+      print('here');
+
+      if(!states.contains(states[i].name) ){
+
         stt.add(states[i].name!);
+      }
+
+
+
+
     }
     print(suStatu[1]);
-
+    print(stt);
     print('well');
+    print(st);
     return states;
   }
 
@@ -62,7 +92,7 @@ class  TaskService{
           'start_date':taskModel.start_date     ,
           'end_date':  taskModel.end_date   ,
           'team_id':   taskModel.team_id   ,
-          'status_id':   taskModel.status_id
+
         },
         headers: {
           HttpHeaders.authorizationHeader: 'Bearer ${GetStorage().read('token')}',
@@ -149,14 +179,14 @@ class  TaskService{
 
 
     List< Task > models = [];
-    print(response.body);
+
     print(response.statusCode);
-    print(json);
+
 
     for(var us in json ){
       print(us);
       models.add(Task.fromJson(us));}
-    print(models);
+
     return models;
 
   }
@@ -280,9 +310,9 @@ class  TaskService{
   //------------------------------ToDoTasks------------------
 
 
-  static Future<List<Task>>  servToDoTasks()async{
+  static Future  servToDoTasks()async{
 
-    var response = await http.get(  Uri.parse(ServerConfig.domainName + ServerConfig.showToDoTasks)
+    var response = await http.get(Uri.parse(ServerConfig.domainName +'api/show/todo/tasks')
         ,
         headers: {
           HttpHeaders.authorizationHeader: 'Bearer ${GetStorage().read(
@@ -293,13 +323,15 @@ class  TaskService{
 
     Map<String,dynamic> json = jsonDecode(response.body);
 
-    List inProgressTasks = json['to to tasks'];
-
-    List< Task > models = [];
     print(response.statusCode);
 
+    List<Task> models = [];
 
-    for(var ta in inProgressTasks){
+
+
+
+    for(var ta in  json['to to tasks']){
+      print(ta['id']);
       models.add(Task.fromJson(ta));}
     print(models);
     if(models != null) {
@@ -320,8 +352,77 @@ class  TaskService{
 
 //---------------------showOneTask----------------------
 
-  static  Future<Task>    servOneTask(int id_task)async {
-    var response = await http.get(  Uri.parse(ServerConfig.domainName+ServerConfig.showOneTask+'${id_task}')
+
+
+  static Future  serTesty(int id)async{
+    ModelSubTask  sub;
+    List<ModelSubTask> list_subtaskT=[];
+    Task taslModel;
+
+
+    var response= await http.get(Uri.parse(ServerConfig.domainName+ServerConfig.showOneTask+'${id}'),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer ${GetStorage().read(
+              'token')}',
+          'Accept': 'application/json'
+        });
+
+    var body=jsonDecode(response.body);
+    print(response.statusCode);
+
+
+    print(body['the info about task'][0]["subtasks"]);
+    print(body['the info about task'][0]["subtasks"].length);
+
+    for (var j=0; j<body['the info about task'][0]["subtasks"].length ;j++){
+
+      sub=ModelSubTask(
+          title:body['the info about task'][0]["subtasks"][j]['title'] as String,
+          description:body['the info about task'][0]["subtasks"][j]['description'] as String ,
+          start_at:body['the info about task'][0]["subtasks"][j]['start_at'] as String ,
+          id:body['the info about task'][0]["subtasks"][j]['id'],
+          end_at:body['the info about task'][0]["subtasks"][j]['end_at'] as String ,
+          priority_id:body['the info about task'][0]["subtasks"][j]['priority_id'] ,
+          status_id:body['the info about task'][0]["subtasks"][j]['status_id'] ,
+          task_id:body['the info about task'][0]["subtasks"][j]['task_id']
+      );
+      list_subtaskT.add(sub);
+
+
+
+    }
+
+
+
+    taslModel=Task(
+        title: body['the info about task'][0]['title'] as String ,
+        description:body['the info about task'][0]['description'] as String ,
+        end_date:body['the info about task'][0]['end_date'] as String,
+        start_date:body['the info about task'][0]['start_date'] as String,
+        status_id: body['the info about task'][0]['status_id']  ,
+        id:body['the info about task'][0]['id'],
+        subtasks:list_subtaskT
+
+
+    );
+
+
+    return taslModel;
+
+
+
+
+
+  }
+
+
+
+//***************************Leader*****************************
+  //-------------------------Leader Show ALL Task ---------------------
+
+  static Future lAllTasks()async{
+
+    var response = await http.get(Uri.parse(ServerConfig.domainName + ServerConfig.showTasks)
         ,
         headers: {
           HttpHeaders.authorizationHeader: 'Bearer ${GetStorage().read(
@@ -329,52 +430,67 @@ class  TaskService{
           'Accept': 'application/json'
         });
 
+
     var json = jsonDecode(response.body);
+
+
+    List< Task > models = [];
+
     print(response.statusCode);
-    List<ModelSubTask?>? subTaskss=[];
-    var usersSub=[];
 
-    print('json');
+
+    for(var us in json['my task'] ){
+
+      models.add(Task.fromJson(us));}
+
+    return models;
+
+
+
+
+  }
+
+
+
+
+
+  //-----------------TO DO TASK------------------
+
+  static Future  lToDoTasks()async{
+
+    var response = await http.get(Uri.parse(ServerConfig.domainName+'api/show/todo/tasks')
+        ,
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer ${GetStorage().read(
+              'token')}',
+          'Accept': 'application/json'
+        });
+
+
+    Map<String,dynamic> json = jsonDecode(response.body);
+    print('todo');
+    print(response.statusCode);
     print(json);
+    print('todo list');
+    print(json["to do tasks"]);
+    List<Task> models_todo = [];
 
-    Task taskmodel=Task();
-    for (var ta in json['the info about task']) {
-
-      print('enter in task');
-      for (int i = 0; i < ta['subtasks'].length; i++){
-
-        print('enter in subtask');
-        subTaskss.add(ModelSubTask.fromJson(ta['subtasks'][i]) as ModelSubTask);
-        for(int j=0;j< ta['subtasks'][j]['members'].length;j++){
-          print('enter mem');
-          usersSub.add(User.fromJson(ta['subtasks'][j]['members'][j]) as User);
-          print('user1....');
-
-        }
-        print('subtask1....');
-
-        print(subTaskss[0]!.title as String);
-        print(ta['title']);
-
-        taskmodel=Task(
-            title:ta['title'] as String ,
-            description: ta['description'] as String,
-            start_date: ta['start_date'] as String,
-            end_date: ta['end_date']  as String ,
-            status_id: ta['status_id'] ,
-            subtasks: subTaskss
-
-
-        );
-
-      }
-
-      print('main task');
-
-      print('yask mmmm');
-      print(taskmodel);
+    for(var ta in  json["to do tasks"]){
+      print(ta['id']);
+      models_todo.add(Task.fromJson(ta));}
+    print(models_todo);
+    if(models_todo != null) {
+      return models_todo;
     }
-    return taskmodel;
+    else{
+      return [];
+    }
+
+
+
+
+
+
 
 
 

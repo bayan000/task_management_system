@@ -7,56 +7,62 @@ import 'package:get_storage/get_storage.dart';
 
 import '../config/server_config.dart';
 import '../models/task_model.dart';
+class SearchService {
 
-class SearchService{
-
-
-
-  static  Future fetchTask(Task task)async{
-
-    var response= await http.post(Uri.parse(ServerConfig.domainName+ServerConfig.SearchOfTask),
+//*********************************8
+  static Future<List<Task>> fetchMyTasks(Task modelTask ) async {
+    var response = await http.post(
+        Uri.parse(ServerConfig.domainName + ServerConfig.SearchOfTask),
         body: {
-          'title': task.title
-
+          'title': modelTask .title
         },
-
-
-
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer ${GetStorage().read(
-              'token')}',
+          HttpHeaders.authorizationHeader:
+          'Bearer ${GetStorage().read('token')}',
           'Accept': 'application/json'
-        }
+        });
 
-
-    );
-
+    print('the name is ');
+    print( modelTask .title);
     var json = jsonDecode(response.body);
     print(response.statusCode);
     print(response.body);
 
-    List<Task> model=[];
-    if(response.statusCode ==200 || response.statusCode ==201){
-      model=json.map((e) => Task.fromJson(e)).toList();
+    List< Task > models = [];
+    print('model');
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print('loop ');
 
-      if(task.title != null){
-        model=model.where((element) => element.title!.toLowerCase().contains(task.title!.toLowerCase())).toList();
+
+      for(var t in json){
+        models.add(Task.fromJson(t));
+
       }
+
+
+
+
+      print('loop after');
+      print(models);
+      if ( modelTask .title != null) {
+        print(' in loop');
+        models=models.where((element) =>element.title!.toLowerCase().contains(element.title!.toLowerCase())).
+        toList();
+      }
+    } else {
+      print('the model is null ');
+    }
+    print('tttttttt yeeeeeees');
+
+    if(models != null) {
+      return models;
     }
     else{
-      print('there are error ');
+      return [];
     }
 
-    return model;
 
   }
-
-
-
-
-
-
-
 
 
 }

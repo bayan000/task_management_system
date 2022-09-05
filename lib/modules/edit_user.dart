@@ -3,116 +3,225 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 import 'package:tracker/controllers/login_controller.dart';
+import 'package:tracker/models/team_model.dart';
+import 'package:tracker/modules/add_user.dart';
+import 'package:tracker/modules/selected_team.dart';
 
-class Dashboard extends StatelessWidget {
-  List<String> nameArea = [
-    'teams',
-    'Users',
-    'Report',
-    'Tasks',
-    'Calender',
-    'Metting'
-  ];
-  LoginController loginController = LoginController();
+import '../controllers/user_controller.dart';
+import '../shared/components.dart';
+import '../shared/constants.dart';
+
+class EditUser extends StatefulWidget {
+  TeamModel? team;
+  final _formKey=GlobalKey<FormState>();
+
+
+  @override
+  State<EditUser> createState() => _EditUserState();
+}
+
+class _EditUserState extends State<EditUser> {
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return  Scaffold(
-        backgroundColor: Color(0xffFFD39A),
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(size.width * 0.02,
-                size.width * 0.03, size.width * 0.02, size.width * 0.01),
-            child: Column(
-              children: [
-                Container(
-                    margin: EdgeInsets.only(top: 10),
-                    child:
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(),
-                        Text(
-                          'Dashboard',
-                          style: TextStyle(
-                              fontSize: 30,
-                              color: Color(0xff2F3A8F),
-                              fontWeight: FontWeight.bold),
-                        ),
-                        CircleAvatar(
-                            radius: 18,
-                            backgroundColor: Colors.grey[200],
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.logout,
-                                color: Colors.black,
-                              ),
-                              onPressed: (() async {
-                                EasyLoading.show(status: 'Loading....');
-                                await loginController.onClickLogout();
+    var model= Provider.of<UserController>(context);
+    return Scaffold(
 
-                                Navigator.pushReplacementNamed(
-                                    context, '/login');
-                                EasyLoading.showSuccess('successfully logged out');
+      appBar: buildAppBar( text: 'Edit User',
 
-                              }),
-                            )),
-                      ],
-                    )),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        top: size.width * 0.06,
-                        bottom: 0,
-                        left: size.width * 0.004,
-                        right: size.width * 0.004),
-                    child: StaggeredGridView.countBuilder(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      itemCount: nameArea.length,
-                      itemBuilder: (context, index) => InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, '/Tasks');
-                          },
-                          child:
+          color: Colors.blue,      prefixIcon: Icons.arrow_back,
 
-                          // cardArea(nameArea: nameArea,index:index),
-                          cardArea(index)),
-                      staggeredTileBuilder: (int index) =>
-                      (index + 1) % 3 == 0
-                          ? StaggeredTile.extent(2, size.width * 0.44)
-                          : StaggeredTile.extent(1, size.width * 0.43),
+          onPressedPre: (){
+            Navigator.pop(context);
+
+          }
+      ),
+
+
+
+      body:    Padding(
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+          child: SingleChildScrollView(
+            child: Form(
+              key:widget._formKey,
+              child: Column(children: [
+                SizedBox(
+                  height: 10,
+                ),
+                //---------fname-------------------------------------
+                InputField(widget: CustomField(
+
+                  height: MediaQuery.of(context).size.height * 0.07,
+                  allBorder:true,hintText:'First_Name',
+                  hintColor: Colors.grey[700],
+                  isPassword: false,
+                  controller: model.fnameController,colorField: Colors.grey[100],)
+
+
+                    , title: 'First_Name'),
+
+                InputField(widget: CustomField(
+
+
+                  height: MediaQuery.of(context).size.height * 0.07,
+                  allBorder:true,hintText:'Last_Name', isPassword: false,
+                  controller: model.lnameController,
+                  hintColor: Colors.grey[700],
+                  colorField: Colors.grey[100],)
+                    , title: 'Last_Name'),
+
+
+                InputField(widget: CustomField(
+
+
+                  keyboard:TextInputType.emailAddress,
+                  height: MediaQuery.of(context).size.height * 0.07, allBorder:true,
+                  hintText:'Email', isPassword: false,
+                  hintColor: Colors.grey[700],
+                  controller: model.emailController,colorField: Colors.grey[100],)
+                    , title: 'Email'),
+
+                InputField(
+                    widget: CustomField(
+
+
+                      keyboard:TextInputType.visiblePassword,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                      allBorder:true,hintText:'Password', isPassword: true,
+                      controller: model.passwordController,
+                      hintColor: Colors.grey[700],
+                      colorField: Colors.grey[100],)
+                    , title: 'Password'),
+
+
+                InputField(widget: CustomField(
+
+                  keyboard:TextInputType.number,
+                  height: MediaQuery.of(context).size.height * 0.07, allBorder:true,
+                  hintText:'Employee_Identical', isPassword: false,
+                  hintColor: Colors.grey[700],
+                  controller: model.idController,colorField: Colors.grey[100],)
+                    , title: 'Employee_Identical'),
+
+
+
+                InputField(widget:
+                CustomField(
+
+                  iconWidget:
+
+                  DropdownButtonHideUnderline(
+                    child:   DropdownButton(
+                      // dropdownColor: Colors.purple,
+                      icon:Icon(Icons.arrow_drop_down,color:Colors.grey[600], size: 30,),
+                      iconSize: 30,
+                      elevation: 4,
+
+                      items: model.list_Name_Roles.map((e)=> DropdownMenuItem(
+
+                        child:Text('${e}'),value: e,)).toList(),
+
+                      onChanged:(var value)=>
+                          setState(() {
+                            model.selectedIdRole=model.c_nameMapRole[value] as int;
+                          }),
+
                     ),
                   ),
-                )
-              ],
-            ),
-          ),
-        ));
-  }
 
-  Container cardArea(int index) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: (index + 1) % 3 == 0 ? Color(0xff2F3A8F) : Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(-2, -2),
-              blurRadius: 8,
-            )
-          ]),
-      child: Center(
-        child: Text(
-          nameArea[index],
-          style: TextStyle(
-              color: (index + 1) % 3 == 0 ? Colors.white : Color(0xff2F3A8F),
-              fontWeight: FontWeight.bold,
-              fontSize: 20),
-        ),
+
+
+                  height: MediaQuery.of(context).size.height * 0.07,
+
+                  allBorder:true,hintText:model.selectedIdRole == null ?
+                'selected_Id_Role' :'${model.selectedIdRole}' , isPassword: false,
+
+                  hintColor: Colors.grey[700],
+
+                  colorField: Colors.grey[100],),
+
+
+                    title: 'IdRoles'),
+
+
+                //-------team_id-------
+
+                InputField(widget:
+
+                Container(
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border:Border.all(color: Colors.black12, width: 1.5),
+                      color:Colors.grey[100],
+
+                    ),
+                    child:ListTile(
+                      onTap: ()async{
+
+                        final TeamModel?   team = await Navigator.push(context, MaterialPageRoute(builder:(context)=>TeamSelected(),));
+
+                        if(team == null ) return ;
+                        setState(()
+
+                        => this.widget.team=team
+
+                        );
+                        model.selectedIdTeam=widget.team!.id;
+
+                      },
+                      title: Text(widget.team == null ? 'No Team ':'${widget.team!.id}',style: TextStyle(
+                          fontSize: 14.4,color:Colors.grey[700]),)
+                      ,
+
+
+                      trailing: Icon(Icons.arrow_drop_down,color:Colors.grey[600], size: 30,),
+
+
+                    )
+                )
+
+                    , title: 'IdTeam'),
+
+
+
+              ]
+
+
+              ),
+            ),
+          )
       ),
+
+
+
+
+      floatingActionButton: FloatingActionButton(backgroundColor:Colors.purple,onPressed: ()async{
+
+        EasyLoading.show(status: 'loading...');
+        await model.onClickEditUser();
+
+        if(model.edit_User != null){
+          EasyLoading.showSuccess('user edited successfully');
+          Navigator.of(context).pop();
+
+
+        }
+        else {
+          EasyLoading.showError('can not edit ');
+        }
+
+
+
+
+
+      },child: Icon(Icons.check_outlined),) ,
+
     );
   }
 }
+
+DropdownMenuItem<String> buildMenuItem(int item) => DropdownMenuItem(
+    value: item.toString(),
+    child: Text(item.toString())
+);

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/models/role_model.dart';
+import 'package:tracker/services/role_service.dart';
 import 'package:tracker/services/user_service.dart';
 import 'package:tracker/models/user_model.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +12,8 @@ class UserController  with  ChangeNotifier {
   List<User> list_of_Users = [];
   //update res
   int id_user = 0;
-
+  int? selectedIdTeam;
+  int? selectedIdRole;
   var addedUser;
   var edit_User;
   TextEditingController fnameController = TextEditingController();
@@ -18,8 +21,7 @@ class UserController  with  ChangeNotifier {
   TextEditingController emailController = TextEditingController();
   TextEditingController idController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  String? choosRoleId;
-  String? choosteamId;
+
 
   //--------------AddUser---------------------
 
@@ -30,8 +32,12 @@ class UserController  with  ChangeNotifier {
         email: emailController.text,
         employee_identical: idController.text,
         password: passwordController.text,
-        role_id: choosRoleId,
-        team_id: choosteamId);
+        role_id: selectedIdRole.toString(),
+        team_id:selectedIdTeam.toString()
+
+    );
+
+
     addedUser = await UserService.addUser(user);
     list_of_Users.add(addedUser);
     notifyListeners();
@@ -47,8 +53,8 @@ class UserController  with  ChangeNotifier {
         email: emailController.text,
         employee_identical: idController.text,
         password: passwordController.text,
-        role_id: choosRoleId,
-        team_id: choosteamId
+        role_id: selectedIdRole.toString(),
+        team_id: selectedIdTeam.toString()
     );
 
 
@@ -86,18 +92,43 @@ class UserController  with  ChangeNotifier {
 
   Future<List<User>> onClickShowAllUser() async {
 
+    await fetchRoles();
     list_of_Users = await UserService.servAllUsaer();
 
     return list_of_Users;
 
   }
+//-----------------showOneUser---------
   var im;
   Future<User> onClickShowUser(var id) async {
 
     im= await UserService.servAUser(id);
 
-return im;
+    return im;
   }
+
+  Map<dynamic,String> c_idMapRole={};
+  Map<String,int> c_nameMapRole={};
+  List<String> list_Name_Roles=[];
+  //----------------------fetchRoles--------------
+  Future<List<RoleModel>> fetchRoles() async
+  {
+    var h;
+    h =await RoleService.ShowAllRole();
+    //map[id]=name
+
+    c_idMapRole=await RoleService.idMapRole;
+    print( c_idMapRole);
+    //list of name states tasks
+    list_Name_Roles=await RoleService.name_Roles;
+
+
+    c_nameMapRole=await RoleService.nameMapRole;
+    // return all obj status
+    return h;
+  }
+
+
 
 
 

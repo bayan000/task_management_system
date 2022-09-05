@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:tracker/models/user_model.dart';
 part 'team_model.g.dart';
 @JsonSerializable()
 class TeamModel{

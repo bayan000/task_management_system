@@ -22,7 +22,10 @@ class Acheivers extends StatelessWidget {
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushReplacementNamed(
+                  context, '/Dashboard');
+            },
           ),
           title: Text("Acheivers", style: trackerStyle),),
         body: SafeArea(

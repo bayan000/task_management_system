@@ -4,6 +4,7 @@ class ServerConfig{
 
   static String  domainName='http://192.168.43.139:8000/';
   //task
+  static String showAllStatus='api/show2';
   static String deleteTask='api/admin/task/delete/';
   static String showTasks='api/show/MyTask';
   static String showOneTask='api/show/details/';
@@ -56,4 +57,7 @@ class ServerConfig{
   static String showSubStatuses='api/show2';
   //priority for subatsk
   static String showSubPriorites='api/show3';
+  //-----------------------Role--------------
+  static String showOneRole='api/show4/name/1';
+  static String showAllRole='api/show4';
 }

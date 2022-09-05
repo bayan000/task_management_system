@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:tracker/modules/card_subtask.dart';
+import 'package:tracker/modules/subtask/a_subtask.dart';
 
 import '../controllers/task_controller.dart';
 import '../models/subtask_model.dart';
@@ -9,359 +10,255 @@ import '../models/task_model.dart';
 import '../shared/components.dart';
 import '../shared/constants.dart';
 
+
 class TaskDetail extends StatelessWidget {
 
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     var taskController=Provider.of< TaskController >(context);
     return Scaffold(
-        backgroundColor: kBackgroundColor,
+      appBar: buildAppBar( text: 'Task Details',color: Colors.blue,centerTitle: false,
+          prefixIcon: Icons.arrow_back,
+          onPressedPre: (){
 
+            Navigator.pop(context);
+          }
 
-        body:SafeArea(
+      ),
+      body:
+
+      Container(
+          margin: EdgeInsets.symmetric(horizontal: 8,vertical: 20),
+          width: double.infinity,
           child:
 
+          FutureBuilder< Task >(
+            future: taskController.testy(),
+            builder: (context, snapShot) {
+              //AsyncSnapShot
+              if (snapShot.hasData)
+                return
 
-          Padding(
-              padding: const EdgeInsets.only(top:15.0,right: 15,left: 15),
-              child:
+                  Column(
+                    children: [
+                      Text(
 
-              FutureBuilder< Task >(
-                future: taskController.onClickshowOneTask(),
-                builder: (context, snapShot) {
-                  //AsyncSnapShot
-                  if (snapShot.hasData)
-                    return
+                        '${snapShot.data!.title}'
+                        ,
+                        style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(height: 15,),
+                      Text(
 
-                      Column(
+                        '${snapShot.data!.description}'
+                        ,
+                        maxLines: 6,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color:Colors.grey[700]
+                        ),
+                      ),
 
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+
+
+
+
+                      Container(
+                        margin: EdgeInsets.only(top:35,bottom:40),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
 
+
                               Row(children: [
-                                Icon(Icons.arrow_back),
-                                SizedBox(width: 15,),
-                                Text('Details',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 18),),
+
+                                Text('The Status of this Task is :',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),),
+                                SizedBox(width: 10,),
+
+                                Text( '${taskController.taskstates[snapShot.data!.status_id]}'   ,style: TextStyle(color:Colors.purple,fontWeight: FontWeight.bold),)
+                              ],),
+
+                              SizedBox(height: 20,),
+                              Row(children: [
+                                Text(' The Statrt Date is :',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),),
+                                SizedBox(width: 10,),
+                                Text('${snapShot.data!.start_date}',style: TextStyle(color:Colors.purple,fontWeight: FontWeight.bold,),),
+
+
+                              ],),
+                              SizedBox(height: 20,),
+                              Row(children: [
+                                Text(' The End Date is :',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500)),
+                                SizedBox(width: 10,),
+                                Text('${snapShot.data!.end_date}',style: TextStyle(color:Colors.purple,fontWeight: FontWeight.bold),),
+
 
                               ],),
 
-                              CustomButton(height: 40,width: 120, buttonName: taskController.taskstates[taskController.id_task
-                              ],buttonColor:Colors.blue,fontSize: 15, onTap: () {  })
-
-                            ],),
-
-                          Container(
-
-                              margin: EdgeInsets.symmetric(vertical: kDefaultPadding+5),
-                              child:
 
 
 
 
-                              Column(
-
-                                crossAxisAlignment: CrossAxisAlignment.start,
-
-                                children: [
+                            ]),
+                      ),
 
 
-                                  Text(
 
-                                    '${snapShot.data!.title}'
-                                    ,
-                                    style: TextStyle(fontSize: 30,),
-                                  ),
-                                  SizedBox(height: 5,),
 
-                                  Row(children: [
 
-                                    Expanded(child:  Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${snapShot.data!.description}'
-                                          ,
-                                          maxLines: 6,
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              color:Colors.grey[500]
-                                          ),
-                                        ),
-                                        SizedBox(height: 7,),
-                                        Row(children: [
 
-                                          Text('${snapShot.data!.start_date}',style: TextStyle(color:Colors.grey[600],fontWeight: FontWeight.bold),),
-                                          SizedBox(width: 7,),
-                                          Container(color:Colors.grey,height: 15,width: 2,),
-                                          SizedBox(width: 7,),
-                                          Text('${snapShot.data!.end_date}',style: TextStyle(color:Colors.grey[600],fontWeight: FontWeight.bold),),
+                      Text('The SubTasks of this task',style: TextStyle(color:Colors.blue,fontWeight: FontWeight.bold,fontSize: 15))
 
-                                        ],),
+                      ,Divider(color: Colors.grey,),
 
-                                        SizedBox(height: 10,),
-                                        Container(
-                                            width: double.infinity,
-                                            margin: EdgeInsets.only(top: 15, bottom: 30),
-                                            child: Stack(
-                                              alignment: Alignment.centerLeft,
-                                              children: [
-                                                CircleAvatar(
-                                                  radius: 20,
-                                                  backgroundImage: NetworkImage(
-                                                      'https://cdn-icons-png.flaticon.com/512/219/219983.png'),
-                                                ),
-                                                Positioned(
-                                                  left: 25,
-                                                  bottom: 0,
-                                                  top: 0,
-                                                  child: CircleAvatar(
-                                                    radius: 20,
-                                                    backgroundImage: NetworkImage(
-                                                        'https://createivo.com/images/q1.jpeg'),
-                                                  ),
-                                                ),
-                                                Positioned(
-                                                  left: 45,
-                                                  bottom: 0,
-                                                  top: 0,
-                                                  child: CircleAvatar(
-                                                    radius: 20,
-                                                    backgroundImage: NetworkImage(
-                                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH6Uyi30Ty2WkMb0ZjuFLoXmkRwrrMObm-X2zztWtGbOgyA-i7mFzuiSKltN14HLAJDVM&usqp=CAU',
+
+
+
+                      Expanded(
+                          child:
+                          ListView.builder(
+
+
+
+                              itemCount: snapShot.data!.subtasks!.length,
+                              itemBuilder: (context, index) =>
+                                  GestureDetector(
+
+
+                                    onTap: (){
+
+
+                                      Navigator.of(context).push(                                                         //new
+                                          new MaterialPageRoute(                                                                       //new
+                                              settings: const RouteSettings(name: '/a_subtask'),                                              //new
+                                              builder: (context) => new ASubTask(id:  snapShot.data!.subtasks![index]!.id as int,) //new
+                                          )                                                                                            //new
+                                      );
+
+                                    },
+
+                                    child: Column(children: [
+
+                                      Container(height: size.height*0.14,width: double.infinity,
+                                          padding: EdgeInsets.fromLTRB(10,15,10,8),
+
+                                          child:
+
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Expanded(flex: 2,child:Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children:[
+
+
+                                                    Row(children: [
+                                                      Container(decoration: BoxDecoration(shape: BoxShape.circle,color:Colors.blue,),height: 6,width: 6,),
+                                                      SizedBox(width: 8,),
+                                                      Text(
+
+                                                        '${snapShot.data!.subtasks![index]!.title}'
+                                                        ,
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight: FontWeight.w500,
+                                                            color: Colors.black),
+                                                      ),
+
+                                                    ],),
+                                                    SizedBox(height: 8,),
+                                                    Text(
+
+                                                      '${snapShot.data!.subtasks![index]!.description}'
+                                                      ,
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.w500,
+                                                        color: Colors.grey[600],
+                                                      ),
+                                                      maxLines: 1,
+                                                      overflow: TextOverflow.ellipsis,
                                                     ),
-                                                  ),
-                                                ),
-                                                Positioned(
-                                                  left: 65,
-                                                  bottom: 0,
-                                                  child: CircleAvatar(
-                                                    radius: 20,
-                                                    backgroundImage: NetworkImage(
-                                                        'https://www.coursle.org/assets/img/user.png'),
-                                                  ),
-                                                ),
-                                                Positioned(
-                                                  left: 85,
-                                                  bottom: 0,
-                                                  top: 0,
-                                                  child: CircleAvatar(
-                                                    radius: 20,
-                                                    backgroundImage: NetworkImage(
-                                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH6Uyi30Ty2WkMb0ZjuFLoXmkRwrrMObm-X2zztWtGbOgyA-i7mFzuiSKltN14HLAJDVM&usqp=CAU',
+
+                                                    SizedBox(
+                                                      height: size.width*0.07,
                                                     ),
-                                                  ),
-                                                ),
-                                                Positioned(
-                                                  left: 105,
-                                                  bottom: 0,
-                                                  top: 0,
-                                                  child: CircleAvatar(
-                                                    radius: 20,
-                                                    backgroundImage: NetworkImage(
-                                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH6Uyi30Ty2WkMb0ZjuFLoXmkRwrrMObm-X2zztWtGbOgyA-i7mFzuiSKltN14HLAJDVM&usqp=CAU',
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            )),
+                                                    Row(
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+                                                        Icon(
+                                                          Icons.calendar_today_outlined,
+                                                          size: 15,
+                                                          color:Colors.blue,
+                                                        ),
+                                                        SizedBox(
+                                                          width: size.width*0.016,
+                                                        ),
+                                                        Text(
+                                                          '${snapShot.data!.subtasks![index]!.end_at}'
 
-                                      ],),),
+                                                          ,
+                                                          style: TextStyle(
+                                                              fontSize: 13, color: Colors.blue,fontWeight: FontWeight.w500),
+                                                        ),
+                                                      ],
+                                                    )
 
-                                    CircularPercentIndicator(
-                                      radius: 75,
-                                      lineWidth: 6,
-                                      percent: 0.3,
-                                      animation: true,
-                                      animationDuration: 5000,
-                                      center: Text('40%',style: TextStyle(fontWeight: FontWeight.w500),),
-                                      progressColor: Colors.teal,
-                                    ),
-                                  ],),
 
-                                  //-------------------------------------------------
+
+                                                  ]), ),
 
 
 
 
 
+                                            ],)
 
 
 
-                                ],)
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('subtasks List',  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
-                              Text('see all',style: TextStyle(color: Colors.indigo,fontSize: 15, fontWeight: FontWeight.w500),),
+                                      ),
+                                      Divider(color:Colors.grey)
 
-                            ],),
-                          SizedBox(height: 15,),
-                          Expanded(
-                              child:
+                                    ],),
+                                  )
 
-                              Stack(
-                                  children: [
-                                    Container(
-                                        margin:EdgeInsets.only(top:10),
-                                        padding: EdgeInsets.only(top:10),
-                                        decoration: BoxDecoration(
-                                          color:Colors.white54,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(30),
-                                            topRight: Radius.circular(30),
-                                          ),
-                                        ),
-
-                                        child:
-
-                                        ListView.builder(
-                                            itemCount: snapShot.data!.subtasks!.length,
-                                            itemBuilder: (context, index) =>
+                          )
 
 
-                                                CardSubTask(lsubtask: snapShot.data!.subtasks![index],)
 
 
-                                        )
+                      )
 
 
-                                    ),
+
+
+                    ],);
+
+              if(snapShot.hasError)
+                return Center(
+                  child: Text(snapShot.error.toString()),
+                );
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          )
 
 
 
 
 
 
-                                  ])),
 
 
+      ),
 
-
-
-
-                        ],);
-
-                  if(snapShot.hasError)
-                    return Center(
-                      child: Text(snapShot.error.toString()),
-                    );
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              )
-
-
-          ),
-        )
 
 
 
     );
-  }
-}
-
-class CardSubTask extends StatelessWidget {
-  ModelSubTask? lsubtask;
-// int index;
-  CardSubTask({required this.lsubtask});
-
-  @override
-  Widget build(BuildContext context) {
-    return
-      GestureDetector(
-        onTap: (){
-
-
-        },
-        child: Container(
-          height: 120,
-          //  width: 250,
-          margin:
-          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: Colors.blue,
-            boxShadow: [
-              BoxShadow(
-                // color: Colors.red,
-                color: Colors.black12,
-                offset: Offset(-1, -1),
-                spreadRadius: 2,
-                blurRadius: 2,
-              )
-            ],
-          ),
-          child:
-
-
-          Container(
-              padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(
-                    20
-                ),
-                color: Colors.white,
-              ),
-              margin: EdgeInsets.only(left: 6),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      // mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                      children: [
-
-                        Text(
-                          '${lsubtask!.title}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          '${ lsubtask!.description}',
-                          style: TextStyle(
-                              fontSize: 12, color: Colors.grey),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(),
-                            Row(children: [
-                              Icon(Icons.calendar_today_outlined,
-                                  color:Colors.blue,
-                                  size: 13),
-                              SizedBox(
-                                width: 7,
-                              ),
-                              Text(
-
-                                '${lsubtask!.end_at}',
-                                style: TextStyle(fontWeight: FontWeight.w500,
-                                    fontSize: 13,color:Colors.blue),
-                              ),
-
-                            ],)
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-
-                ],
-              )),
-        ),
-      );
   }
 }

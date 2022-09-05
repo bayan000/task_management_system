@@ -4,21 +4,23 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:tracker/modules/add_task.dart';
 import 'package:tracker/modules/add_user.dart';
+import 'package:tracker/modules/selected_team.dart';
 
 import '../controllers/task_controller.dart';
 import '../shared/components.dart';
+import 'package:tracker/models/team_model.dart';
 
+import '../shared/constants.dart';
 class EditTask extends StatefulWidget {
-
-  //TaskController taskController=TaskController();
-
+  final _formKey=GlobalKey<FormState>();
 
 
 
-  List<int>teamIdList=[1,2,3,4];
-  List<int> statusIdList=[1,2,3];
 
 
+
+
+  TeamModel? team;
 
   @override
   State<EditTask> createState() => _EditTaskState();
@@ -26,212 +28,217 @@ class EditTask extends StatefulWidget {
 
 class _EditTaskState extends State<EditTask> {
 
-
   @override
   Widget build(BuildContext context) {
     Size size=MediaQuery.of(context).size;
     var taskController=Provider.of<TaskController>(context);
-
     return Scaffold(
-      backgroundColor: Colors.blue,
-      body: SafeArea(
-        child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
 
-                    Icon(Icons.arrow_back,
-                      color: Colors.white,size: 25,),
+      appBar: buildAppBar( text: 'Edit Task',
 
-                    Text(
-                      'EditTask',
-                      style: TextStyle(color: Colors.white, fontSize: 27),
-                    ),
-                    SizedBox(
+          color: Colors.blue,      prefixIcon: Icons.arrow_back,
 
-                    ),
+          onPressedPre: (){
+            Navigator.pop(context);
 
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30))),
-                  child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                      child: SingleChildScrollView(
-                        child: Column(children: [
-                          SizedBox(
-                            height: 10,
-                          ),
-                          //---------TitleTask-------------------------------------
-                          InputField(widget: CustomField(
+          }
+      ),
+      body:    Padding(
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+          child:
 
-                            height: MediaQuery.of(context).size.height * 0.07,
-                            allBorder:true,hintText:'Title',
-                            hintColor: Colors.grey[700],
-                            isPassword: false,
-                            controller:taskController.titleController ,
-                            colorField: Colors.grey[100],)
+          SingleChildScrollView(
+            child: Form(
+              key:widget._formKey,
+              child: Column(children: [
+
+                //---------TitleTask-------------------------------------
+                InputField(widget: CustomField(
+                  validator: (title)=> title !=null && title.isEmpty ? ' Cannot be empty ':null ,
+
+                  height: MediaQuery.of(context).size.height * 0.07,
+                  allBorder:true,hintText:'Title',
+                  hintColor: Colors.grey[700],
+                  isPassword: false,
+                  controller:taskController.titleController ,
+                  colorField: Colors.grey[100],)
 
 
-                              , title: 'Title'),
+                    , title: 'Title'),
 
 
 //------------------------------description-----------------------------
-                          InputField(widget: CustomField(
+                InputField(widget: CustomField(
+                  validator: (title)=> title !=null && title.isEmpty ? 'Title Cannot be empty ':null ,
 
-                            height: MediaQuery.of(context).size.height * 0.07,
-                            allBorder:true,hintText:'Descroption', isPassword: false,
-                            controller:taskController.descriptionController,
-                            hintColor: Colors.grey[700],
-                            colorField: Colors.grey[100],)
-                              , title: 'Description'),
+                  height: MediaQuery.of(context).size.height * 0.07,
+                  allBorder:true,hintText:'Descroption', isPassword: false,
+                  controller:taskController.descriptionController,
+                  hintColor: Colors.grey[700],
+                  colorField: Colors.grey[100],)
+                    , title: 'Description'),
 
 //-------------------start_date------------------------
-                          InputField(widget: CustomField(
-                            iconWidget: IconButton(
-                              icon:Icon(Icons.calendar_today_outlined),
-                              onPressed: (){
+                InputField(widget: CustomField(
 
-                                fetchDateFromUser(context,taskController,true);
+                  iconWidget: IconButton(
+                    icon:Icon(Icons.calendar_today_outlined,
+                      color: Colors.blue,
+                    ),
+                    onPressed: (){
 
-                              },
-                            ),
-                            height: MediaQuery.of(context).size.height * 0.07,
-                            allBorder:true,
-                            hintText: DateFormat.yMd().format(taskController.selectedStartDate), isPassword: false,
-                            hintColor: Colors.grey[700],
-                            colorField: Colors.grey[100],)
-                            , title:'Start_Date' ,
+                      fetchDateFromUser(context,taskController,true);
 
-                          ),
+                    },
+                  ),
+                  height: MediaQuery.of(context).size.height * 0.07,
+                  allBorder:true,
+                  hintText: DateFormat.yMd().format(taskController.selectedStartDate), isPassword: false,
+                  hintColor: Colors.grey[700],
+                  colorField: Colors.grey[100],)
+                  , title:'Start_Date' ,
+
+                ),
 
 //------------------------------endDate----------------------
-                          InputField(widget: CustomField(
-                            iconWidget: IconButton(
-                                icon:Icon(Icons.calendar_today_outlined),
-                                color: Colors.blue,
-                                onPressed: () {
+                InputField(widget: CustomField(
 
-                                  fetchDateFromUser(context,taskController,false);
+                  iconWidget: IconButton(
+                      icon:Icon(Icons.calendar_today_outlined),
+                      color: Colors.blue,
+                      onPressed: () {
 
-                                }
-                            ),
-                            height: MediaQuery.of(context).size.height * 0.07,
-                            allBorder:true,
-                            hintText: DateFormat.yMd().format(taskController.selectedEndDate),
-                            isPassword: false,
-                            hintColor: Colors.grey[700],
-                            colorField: Colors.grey[100],)
-                            , title:'End_Date' ,
+                        fetchDateFromUser(context,taskController,false);
 
-                          ),
+                      }
+                  ),
+                  height: MediaQuery.of(context).size.height * 0.07,
+                  allBorder:true,
+                  hintText: DateFormat.yMd().format(taskController.selectedEndDate),
+                  isPassword: false,
+                  hintColor: Colors.grey[700],
+                  colorField: Colors.grey[100],)
+                  , title:'End_Date' ,
+
+                ),
 
 //------------------teamid-----------------------------
 
-                          InputField(widget: CustomField(
-                            iconWidget: DropdownButtonHideUnderline(
-                              child:   DropdownButton(
-                                icon:Icon(Icons.keyboard_arrow_down,color:Colors.grey,),
-                                iconSize: 30,
-                                elevation: 4,
-                                items: widget.teamIdList.map(kbuildMenuItem).toList(),
-                                underline: Container(height: 0,),
-                                onChanged:(String ?value)=>
+                InputField(widget:
 
-                                    setState(() {
-                                      taskController.selectedIdTeam=int.parse(value!);
-                                    }),
-                                //style: ,
+                Container(
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border:Border.all(color: Colors.black12, width: 1.5),
+                      color:Colors.grey[100],
+
+                    ),
+                    child:ListTile(
+                      onTap: ()async{
+
+                        final TeamModel?   team = await Navigator.push(context, MaterialPageRoute(builder:(context)=>TeamSelected(),));
+
+                        if(team == null ) return ;
+                        setState(()
+
+                        => this.widget.team=team
+
+                        );
+                        taskController.selectedIdTeam=widget.team!.id;
+
+                      },
+                      title: Text(widget.team == null ? 'No Team ':'${widget.team!.id}',style: TextStyle(
+                          fontSize: 14.4,color:Colors.grey[700]),)
+                      ,
 
 
-                              ),
-                            ),
-                            height: MediaQuery.of(context).size.height * 0.07,
-                            allBorder:true,hintText:'${taskController.selectedIdTeam} selected_Id_Team', isPassword: false,
+                      trailing: Icon(Icons.arrow_drop_down,color:Colors.grey[600], size: 30,),
 
-                            hintColor: Colors.grey[700],
-                            colorField: Colors.grey[100],) , title: 'IdTeam'),
+
+                    )
+                )
+
+                    , title: 'IdTeam'),
+
 //------------------------------StatusID----------------------------------
-                          InputField(widget: CustomField(
-                            iconWidget:
+                InputField(widget:
+                CustomField(
+                 // validator: (title)=> title !=null && title.isEmpty ? 'Title Cannot be empty ':null ,
 
-                            DropdownButtonHideUnderline(
-                              child:   DropdownButton(
-                                icon:Icon(Icons.keyboard_arrow_down,color:Colors.grey,),
-                                iconSize: 30,
-                                elevation: 4,
-                                items: widget.statusIdList.map(kbuildMenuItem).toList(),
-                                onChanged:(String ?value)=>
-                                    setState(() {
-                                      taskController.selectedIdStatus=int.parse(value!);
-                                    }),
-                              ),
-                            ),
+                  iconWidget:
 
+                  DropdownButtonHideUnderline(
+                    child:   DropdownButton(
+                      // dropdownColor: Colors.purple,
+                      icon:Icon(Icons.arrow_drop_down,color:Colors.grey[600], size: 30,),
+                      iconSize: 30,
+                      elevation: 4,
 
+                      items: taskController.list_Name_states.map((e)=> DropdownMenuItem(
 
-                            height: MediaQuery.of(context).size.height * 0.07,
-                            allBorder:true,hintText:'${taskController.selectedIdStatus} selected_Id_Status', isPassword: false,
+                        child:Text('${e}'),value: e,)).toList(),
 
-                            hintColor: Colors.grey[700],
-                            colorField: Colors.grey[100],) , title: 'Id_Status'),
-                        ]
+                      onChanged:(var value)=>
+                          setState(() {
+                            taskController.mychoosStatusId=taskController.map_nameStates_id[value] as int;
+                          }),
 
-
-                        ),
-                      )
+                    ),
                   ),
-                ),
+
+
+
+                  height: MediaQuery.of(context).size.height * 0.07,
+
+                  allBorder:true,hintText:taskController.mychoosStatusId == null ? 'selected_Id_Status' :'${taskController.mychoosStatusId}' , isPassword: false,
+
+                  hintColor: Colors.grey[700],
+
+                  colorField: Colors.grey[100],),
+
+
+                    title: 'IdStatus'),
+
+                SizedBox(height: 40,),
+                CustomButton(height: 50, width: 180, buttonName: 'Save ',
+                    buttonColor:Colors.blue,fontSize: 18, onTap: ()async{
+                      final isValid=widget._formKey.currentState!.validate();
+// if found title
+                      if(isValid == true) {
+
+
+
+                        EasyLoading.show(status: 'loading...');
+                        await taskController.onClickEditTask();
+
+                        if(taskController.editedTask != null){
+                          EasyLoading.showSuccess('task edited successfully');
+                          Navigator.of(context).pop();
+
+
+                        }
+                        else {
+                          EasyLoading.showError('can not edit ');
+                        }}
+
+
+
+                    })
+
+              ]
+
+
               ),
-
-
-
-
-
-            ]),
-
+            ),
+          )
       ),
 
-      floatingActionButton: FloatingActionButton(backgroundColor:Colors.indigo,onPressed: () async {
-
-
-        print(taskController.id_task);
-
-        EasyLoading.show(status: 'loading...');
-        await taskController.onClickEditTask();
-
-        if(taskController.editedTask != null){
-          EasyLoading.showSuccess('new user is edited');
-          Navigator.of(context).pop();
-
-
-        }
-        else {
-          EasyLoading.showError('can not edit ');
-        }
-
-
-
-
-
-
-      },child: Icon(Icons.check_outlined),) ,
-
     );
+
+
   }
+
 
   fetchDateFromUser(var context,TaskController taskContr,bool isStartDate)async{
     DateTime? pickerDate= await showDatePicker(
@@ -242,12 +249,23 @@ class _EditTaskState extends State<EditTask> {
 
     if(pickerDate !=null){
       if(isStartDate ==true) {
+        if(pickerDate.isAfter(taskContr.selectedEndDate)){
+          taskContr.selectedEndDate=pickerDate;
+        }
+
+
         setState(() {
           taskContr.selectedStartDate = pickerDate;
+
           print(taskContr.selectedStartDate);
         });
       }
       else if(isStartDate == false){
+        if(pickerDate.isBefore(taskContr.selectedStartDate)){
+          taskContr.selectedStartDate=pickerDate;
+        }
+
+
         setState(() {
           taskContr.selectedEndDate = pickerDate;
           print(taskContr.selectedEndDate);
@@ -264,135 +282,4 @@ class _EditTaskState extends State<EditTask> {
   }
 
 
-
-
-}
-
-class CustomField extends StatefulWidget {
-  final Color? colorField;
-  final String hintText;
-  final String? labelText;
-  final  TextInputType? keyboard;
-  final double? height;
-  final  TextEditingController? controller;
-  Widget? prefixIcon;
-  final bool isPassword;
-  final bool allBorder;
-  final Color? hintColor;
-  final double? borderRadius;
-  final Widget? iconWidget;
-
-  bool unVisable = true;
-
-  CustomField({
-
-    this.iconWidget,
-    this.borderRadius,
-    this.height,
-    this.hintColor,
-    this.labelText,
-    required this.allBorder,
-    required this.hintText,
-    required this.isPassword,
-    this.controller,
-    this.keyboard,
-    this.colorField,
-    this.prefixIcon
-
-
-
-  });
-
-  @override
-  State<CustomField> createState() => _CustomFieldState();
-}
-
-class _CustomFieldState extends State<CustomField> {
-
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
-    return Container(
-
-      height: widget.height,
-      decoration: BoxDecoration(
-        color:widget.colorField ?? Colors.grey[200],
-        borderRadius: BorderRadius.circular(widget.borderRadius??8),
-        border:widget.allBorder ? Border.all(color: Colors.black12, width: 1.5)
-            :
-        Border(
-          top:BorderSide(color:Colors.white.withAlpha(30),width: 2),
-          right:BorderSide(color:Colors.white.withAlpha(30),width: 2),
-          left:BorderSide(color:Colors.white.withAlpha(30),width: 2),
-          bottom:BorderSide(color:Colors.white.withAlpha(30),width: 2),
-
-        ),
-
-      ),
-
-      child:   Center(
-          child:
-
-          Row(children: [
-            Expanded(child:  TextFormField(
-              readOnly:widget.iconWidget == null ? false:true,
-              controller:widget.controller ,
-              obscureText: widget.isPassword ? widget.unVisable : false,
-              cursorColor: Colors.indigo,
-              keyboardType: widget.keyboard ?? TextInputType.text,
-              style: TextStyle(
-                color:Colors.grey[800],
-                fontSize: 18,
-
-
-              ),
-              decoration: InputDecoration(
-                border: InputBorder.none,
-
-                hintText:widget.hintText,
-                labelText:widget.labelText,
-                labelStyle:TextStyle(
-                  fontSize: 18,
-
-                ),
-                hintStyle: TextStyle(
-                  fontSize: 16,
-                  color: widget.hintColor ?? Colors.grey[500],
-                  //fontFamily: 'Acaslon Reqular',
-
-                ),
-                //المسافة بين النص وحواف الفيلد
-                contentPadding: EdgeInsets.fromLTRB(13, 8, 8,8),
-                prefixIcon: widget.prefixIcon,
-                suffixIcon: widget.isPassword
-                    ? IconButton(
-                    onPressed: () {
-                      setState(() {
-                        widget.unVisable = !widget.unVisable;
-                      });
-                    },
-                    icon: Icon(widget.unVisable
-                        ? Icons.visibility
-                        : Icons.visibility_off, color: Colors.grey[600],size:size.width*0.050,))
-                    : null,
-
-
-              ),
-
-
-
-
-            ),),
-            widget.iconWidget == null ? Container() : Container(child:widget.iconWidget)
-
-          ],)
-      ),
-    );
-
-
-
-
-  }
 }

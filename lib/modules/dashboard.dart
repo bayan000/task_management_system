@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -16,17 +17,20 @@ class Dashboard extends StatelessWidget {
     'Report',
     'Tasks',
     'Calender',
-    'Meetings'
+    'Meetings',
+    'Statistics',
+    'Acheivers'
   ];
 
   List imgArea=[
+    'assets/images/team.jpg',
+    'assets/images/first.png',
+    'assets/images/three.png',
+    'assets/images/addEditSubtask.jpg',
+    'assets/images/cover.jpg',
     'assets/images/metting.png',
-    'assets/images/first.png',
-    'assets/images/first.png',
     'assets/images/tasks.png',
-    'assets/images/first.png',
-    'assets/images/metting.png'
-
+    'assets/images/medalsF.jpg',
 
 
 
@@ -36,10 +40,11 @@ class Dashboard extends StatelessWidget {
     '/teams',
     '/Users',
     '/Report',
-    '/Tasks',
-    '/Calender',
+    '/TaskScre',
+    '/PageCalendar',
     '/meetings',
-
+    '/StatisticsScre',
+    '/acheivers'
 
   ];
 
@@ -49,11 +54,13 @@ class Dashboard extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return  Scaffold(
       backgroundColor:Colors.blue,
-      appBar: buildAppBar(text: 'Dashboard',fontsize: 23, suffixIcon:Icons.notifications_outlined,
-          prefixIcon: Icons.menu,onPressedPre: ()async{
+      appBar: buildAppBar(text: 'Dashboard', suffixIcon:Icons.logout_outlined ,
+
+          onPressedSuf:()async{
 
 
             EasyLoading.show(status: 'Loading....');
+
             await loginController.onClickLogout();
 
             Navigator.pushReplacementNamed(
@@ -64,11 +71,7 @@ class Dashboard extends StatelessWidget {
 
 
           },
-          onPressedSuf: (){
-            Navigator.pushNamed(context,  '/PageOne');
 
-
-          }
 
 
       ),
@@ -95,9 +98,10 @@ class Dashboard extends StatelessWidget {
               // cardArea(nameArea: nameArea,index:index),
               cardArea(index)),
           staggeredTileBuilder: (int index) =>
-          (index + 1) % 3 == 0
+          ((index + 1) == 3||(index + 1) == 8)
               ? StaggeredTile.extent(2, size.width * 0.44)
               : StaggeredTile.extent(1, size.width * 0.43),
+
         ),
       ),
 
@@ -117,6 +121,7 @@ class Dashboard extends StatelessWidget {
   Container cardArea(int index) {
     return Container(
         decoration: BoxDecoration(
+          
             borderRadius: BorderRadius.circular(20),
             color: (index + 1) % 3 == 0 ? Colors.white : Colors.white,
             boxShadow: [
@@ -137,8 +142,10 @@ class Dashboard extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   fontSize: 20),
             ),
+index+1==4?
+            Container(clipBehavior:Clip.hardEdge,decoration:BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight:Radius.circular(20)),),child: Expanded(child:  Image.asset(imgArea[index]),)):
 
-            Expanded(child:  Image.asset(imgArea[index]),)
+            Container(child: Expanded(child:  Image.asset(imgArea[index]),))
           ],
         )
 

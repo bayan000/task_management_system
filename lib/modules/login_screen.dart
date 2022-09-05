@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker/shared/components.dart';
 import 'package:tracker/controllers/login_controller.dart';
 import 'package:tracker/models/user_model.dart';
@@ -8,9 +10,14 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tracker/shared/constants.dart';
 import 'package:provider/provider.dart';
 
+import '../controllers/task_controller.dart';
+import '../controllers/user_controller.dart';
 class Login extends StatelessWidget {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   LoginController loginController = LoginController();
+  TaskController  taskController=TaskController();
+  UserController  userController=UserController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -29,8 +36,7 @@ class Login extends StatelessWidget {
                           children: [
                             IconButton(
                               onPressed: () {
-                                Navigator.pop(
-                                  context,
+                                Navigator.pushNamed(context,'/OnBarding'
                                 );
                               },
                               icon: Icon(Icons.arrow_back_ios_outlined),
@@ -38,7 +44,7 @@ class Login extends StatelessWidget {
                               color: Colors.black,
                             ),
                             Text(
-                              'Welcome To $appName',
+                              'Welcome To Tasko',
                               style: TextStyle(
                                   fontSize: 25, fontWeight: FontWeight.bold),
                             ),
@@ -48,12 +54,14 @@ class Login extends StatelessWidget {
                         SizedBox(
                           height: 40,
                         ),
-                        Image.asset('assets/images/second.png'),
+                        Image.asset('images/second.png'),
 
                         SizedBox(
                           height: 28,
                         ),
                         CustomField(
+
+
                             height: 65,
                             hintColor: Colors.grey[700],
                             allBorder: false,
@@ -66,6 +74,8 @@ class Login extends StatelessWidget {
                           height: 18,
                         ),
                         CustomField(
+
+
                             allBorder: false,
                             hintColor: Colors.grey[700],
                             height: 65,
@@ -79,28 +89,59 @@ class Login extends StatelessWidget {
                         ),
 
                         CustomButton(
-                          height: 63,
+                            height: 63,
 
-                          width: size.width*0.9, buttonName: 'LOGIN', onTap:
-                            () async {
-                          EasyLoading.show(status: 'Loading....');
+                            width: size.width*0.9, buttonName: 'LOGIN',
 
-                          await loginController.onClickLogin();
+                            onTap:
+                                () async {
+                              final isValid = formKey.currentState!
+                                  .validate();
+// if found title
+                              if (isValid == true) {
+                                EasyLoading.show(status: 'Loading....');
 
-                          if (loginController.modelUser != null) {
-                            EasyLoading.showSuccess('sing up is done.');
-                            Navigator.pushReplacementNamed(
-                                context, '/Dashboard');
-                            print('yes every things');
-                          } else {
-                            EasyLoading.showError(
-                              'error page',
-                            );
-                            print('there are errors ');
-                          }},
+                                await loginController.onClickLogin();
+
+                                if (loginController.modelUser != null) {
+                                  EasyLoading.showSuccess('sing up is done.');
 
 
+                                  await GetStorage().write('role_id',
+                                      loginController.modelUser!.role_id);
+                                  int role_id = await GetStorage().read(
+                                      'role_id');
+                                  if (role_id == 1) {
+                                    print('1');
+                                    Navigator.pushReplacementNamed(
+                                        context, '/Dashboard');
+                                  }
+                                  else if (role_id == 2) {
+                                    print('2');
+                                    Navigator.pushReplacementNamed(
+                                        context, '/DashboardTeamLeader');
+                                  }
 
+
+                                  else if (role_id == 3) {
+                                    print('2');
+                                    Navigator.pushReplacementNamed(
+                                        context, '/DashboardMember');
+                                  }
+
+
+                                  print('yes every things');
+                                } else {
+                                  EasyLoading.showError(
+                                    'error page',
+                                  );
+                                  print('there are errors ');
+                                }
+                              }
+
+
+
+                            }
 
                         ),
 
@@ -115,40 +156,3 @@ class Login extends StatelessWidget {
 }
 
 
-
-/*
-   GestureDetector(
-                          onTap: () async {
-                            EasyLoading.show(status: 'Loading....');
-                            //FocusScope.of(context).unfocus();
-                            await loginController.onClickLogin();
-                            if (loginController.modelUser != null) {
-                              EasyLoading.showSuccess('sing up is done.');
-                              Navigator.pushReplacementNamed(
-                                  context, '/Dashboard');
-                              print('yes every things');
-                            } else {
-                              EasyLoading.showError(
-                                'error page',
-                              );
-                              print('there are errors ');
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: kblue,
-                                borderRadius: BorderRadius.circular(12)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Center(
-                                  child: Text(
-                                'LOGIN',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: size.width * 0.044,
-                                    fontWeight: FontWeight.w500),
-                              )),
-                            ),
-                          ),
-                        ),
- */

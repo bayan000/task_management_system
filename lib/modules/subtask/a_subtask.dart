@@ -7,17 +7,17 @@ import '../../controllers/show_subtask_controlller.dart';
 import '../../models/subtask_model.dart';
 import '../../models/user_model.dart';
 import '../../shared/constants.dart';
-
 class ASubTask extends StatelessWidget {
-  const ASubTask({Key? key}) : super(key: key);
+  var id;
 
+  ASubTask({Key? key, this.id}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     Size size =MediaQuery.of(context).size;
     ShowSubtaskController showSubtaskController=ShowSubtaskController();
     return Scaffold(
       body: SafeArea(child: FutureBuilder<ModelSubTask>(
-          future: showSubtaskController.fetchSubtask(50),
+          future: showSubtaskController.fetchSubtask(id),
           builder: (context,snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Column(
@@ -100,9 +100,15 @@ class ASubTask extends StatelessWidget {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Icon(
-                                        Icons.arrow_back_ios_outlined,
-                                        color: Colors.black, size: 20),
+                                    GestureDetector(
+                                      onTap: (){
+                                        Navigator.pop(context);
+
+                                      },
+                                      child: Icon(
+                                          Icons.arrow_back_ios_outlined,
+                                          color: Colors.black, size: 20),
+                                    ),
                                     Text('  SubTask Details',
                                         style: GoogleFonts.chewy(textStyle:const TextStyle(fontWeight: FontWeight.w100,color: myGray,fontSize: 27, letterSpacing: .5))
 

@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-AppBar buildAppBar({IconData? prefixIcon,var onPressedPre,var onPressedSuf,required double fontsize ,required String text,required IconData suffixIcon}) {
+
+import 'menu_item.dart';
+AppBar buildAppBar({IconData? prefixIcon,var onPressedPre,var onPressedSuf,
+  required String text,IconData? suffixIcon,Color? color,bool? centerTitle}) {
   return AppBar(
     elevation: 0,
-    centerTitle: true,
-    backgroundColor: Colors.transparent,
+    centerTitle: centerTitle ==null ? true : centerTitle,
+    backgroundColor: color == null ? Colors.transparent: color,
     leading: prefixIcon == null ?Container():GestureDetector(child: Icon(prefixIcon),
       onTap: onPressedPre ,
 
     ),
     title: Text(
-      text,
-      style: trackerStyle,
+        text,
+        style: GoogleFonts.chewy(textStyle:const TextStyle(fontWeight: FontWeight.w100,color: appFo,fontSize: 27, letterSpacing: .5))
+    ), actions: [
+    IconButton(
+      icon:
+      Icon(suffixIcon, size: 26, color: Colors.white),
+      onPressed: onPressedSuf,
     ),
-    actions: [
-      IconButton(
-        icon:
-        Icon(suffixIcon, size: 28, color: Colors.white),
-        onPressed: onPressedSuf,
-      ),
-    ],
+  ],
   );
 }
 String appName ='tracker';
@@ -63,3 +65,23 @@ const kDefaultShadow=BoxShadow(
 
 //
 TextStyle trackerStyle= GoogleFonts.chewy(textStyle:const TextStyle(fontWeight: FontWeight.w100,color: appFo,fontSize: 27, letterSpacing: .5));
+//
+
+PopupMenuItem<MenuItem> buildItem(MenuItem item) => PopupMenuItem<MenuItem>(
+  value: item,
+  child: Row(
+    children: [
+      Icon(
+        item.icon,
+        color: Colors.purple,
+        size: 20,
+      ),
+      SizedBox(
+        width: 12,
+      ),
+      Text(item.text),
+    ],
+  ),
+);
+//
+
