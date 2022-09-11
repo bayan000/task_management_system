@@ -7,7 +7,7 @@ import 'package:tracker/modules/edit%20team/edit_team.dart';
 
 import '../../controllers/teams_controller.dart';
 import '../../shared/constants.dart';
-import '../add_subtask.dart';
+import '../subtask/add_subtask.dart';
 
 class TeamL extends StatelessWidget{
 
@@ -50,8 +50,10 @@ class TeamL extends StatelessWidget{
                 leading: IconButton(
                   icon: const Icon(Icons.arrow_back),
 
-                  onPressed: () {
-                  },
+                    onPressed: (){
+                      Navigator.pop(context);
+
+                    }
                 ),
                 title:  Text('My team',style: trackerStyle,),
                 automaticallyImplyLeading: false,

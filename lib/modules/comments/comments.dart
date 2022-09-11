@@ -1,7 +1,7 @@
 import 'package:comment_box/comment/comment.dart' show CommentBox;
 import 'package:flutter/material.dart';
 import 'package:tracker/shared/constants.dart';
-
+//this UI is not ready yet
 class Comments extends StatefulWidget {
   const Comments({Key? key}) : super(key: key);
 

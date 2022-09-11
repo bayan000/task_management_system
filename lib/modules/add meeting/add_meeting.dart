@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:tracker/controllers/add_meeting_controller.dart';
-import 'package:tracker/modules/users.dart';
+import 'package:tracker/modules/user/users.dart';
 
 import '../../shared/components.dart';
 import '../../shared/constants.dart';
-import '../selectUsers.dart';
+import '../edit_meeting/selectUsers.dart';
 import '../team/team.dart';
 import 'dart:convert';
 import 'package:provider/provider.dart';

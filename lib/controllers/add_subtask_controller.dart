@@ -62,8 +62,9 @@ class AddSubtaskProvider extends ChangeNotifier{
   {
     return end;
   }
-  Future onAddS()async{
+  Future onAddS(var taskId)async{
     ModelSubTask modelSubTask=ModelSubTask(
+      task_id: taskId,
       start_at: start,
       end_at: end,
       title: title.text,

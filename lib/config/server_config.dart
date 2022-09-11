@@ -15,6 +15,11 @@ class ServerConfig{
   static String editTask='api/admin/task/update/';
   static String SearchOfTask='api/search/task';
   static String addTask='api/admin/task/add';
+  //---------------------Attachement----------------
+
+  static String showAllAttachement='api/task/show/my/attachment';
+  static String fAddAttachement='api/task/';
+  static String sAddAttachement='/attachment/add';
   //calendar
   static String addEvent='api/add/event';
   static String editEvent='api/edit/event/';
@@ -60,4 +65,11 @@ class ServerConfig{
   //-----------------------Role--------------
   static String showOneRole='api/show4/name/1';
   static String showAllRole='api/show4';
+  //---------------PROFILE---------------------
+  static String showLProfile='api/show/MyProfile';
+  static String showAdedProfile='api/leader/create';
+  static String showEditedProfile='api/leader/update/';
+  static String showMEditedProfile='api/member/edit/';
+  static String showMAdedProfile='api/member/create';
+
 }

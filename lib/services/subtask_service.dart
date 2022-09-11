@@ -148,7 +148,7 @@ print('well');
     {
     requestBody["user_list[$i]"]=modelSubTask.participants![i].toString();
     }
-    var url=ServerConfig.domainName+'api/leader/task/1/subtask/create';
+    var url=ServerConfig.domainName+'api/leader/task/${modelSubTask.task_id.toString()}/subtask/create';
     var response =await http.post(Uri.parse(url),
       body: requestBody,
       headers: {
@@ -190,7 +190,7 @@ print('well');
     {
       requestbody["user_list[$i]"]=modelSubTask.participants![i].toString();
     }
-    var url=ServerConfig.domainName+'api/leader/task/1/subtask/update/68';
+    var url=ServerConfig.domainName+'api/leader/task/${modelSubTask.task_id.toString()}/subtask/update/${modelSubTask.id.toString()}';
     var response =await http.post(Uri.parse(url),
       body: requestbody,
       headers: {
@@ -200,7 +200,7 @@ print('well');
     Map<String, dynamic> a = jsonDecode(response.body);
     print(response.statusCode);
     print(a['message']);
-    if(response.statusCode==422)
+    if(response.statusCode==404)
       print(a['errors']);
     return response.statusCode.toString();
   }

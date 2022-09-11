@@ -7,6 +7,7 @@ import 'package:tracker/controllers/add_meeting_controller.dart';
 import 'package:tracker/controllers/add_subtask_controller.dart';
 import 'package:tracker/controllers/edit_meeting_controller.dart';
 import 'package:tracker/controllers/login_controller.dart';
+import 'package:tracker/controllers/profile_controller.dart';
 import 'package:tracker/controllers/show_team_controller.dart';
 import 'package:tracker/controllers/statistics.dart';
 import 'package:tracker/controllers/task_controller.dart';
@@ -14,63 +15,71 @@ import 'package:tracker/controllers/teams_controller.dart';
 import 'package:tracker/controllers/user_controller.dart';
 import 'package:tracker/modules/acheivers/acheivers.dart';
 import 'package:tracker/modules/add%20meeting/add_meeting.dart';
-import 'package:tracker/modules/add_subtask.dart';
-import 'package:tracker/modules/add_user.dart';
-import 'package:tracker/modules/calendar.dart';
-import 'package:tracker/modules/calendar_screen.dart';
+import 'package:tracker/modules/statistics/member_statistics.dart';
+import 'package:tracker/modules/subtask/add_subtask.dart';
+import 'package:tracker/modules/user/add_user.dart';
+import 'package:tracker/modules/calendar/calendar_screen.dart';
 import 'package:tracker/modules/comments/comments.dart';
 import 'package:tracker/modules/edit%20team/edit_team.dart';
-import 'package:tracker/modules/edit_subtask.dart';
-import 'package:tracker/modules/edit_user.dart';
+import 'package:tracker/modules/subtask/edit_subtask.dart';
+import 'package:tracker/modules/user/edit_user.dart';
 import 'package:tracker/modules/meeting/MeetingForLeader.dart';
 import 'package:tracker/modules/meetings/leaders_meetings.dart';
 import 'package:tracker/modules/meetings/meetings.dart';
 import 'package:tracker/modules/reports/reports.dart';
-import 'package:tracker/modules/selectUsers.dart';
-import 'package:tracker/modules/select_to_add.dart';
+import 'package:tracker/modules/edit_meeting/selectUsers.dart';
+import 'package:tracker/modules/add_meeting/select_to_add.dart';
 import 'package:tracker/modules/subtask/l_sub_task.dart';
 import 'package:tracker/modules/team/my_team_l.dart';
 import 'package:tracker/modules/team/my_team_m.dart';
-import 'package:tracker/modules/team/select_of_my_teaml.dart';
-import 'package:tracker/modules/team/select_to_edit.dart';
+import 'package:tracker/modules/subtask/select_to_edit.dart';
 import 'package:tracker/modules/teams/teams.dart';
 import 'package:tracker/modules/user/user.dart';
 import 'package:provider/provider.dart';
 import 'package:tracker/controllers/add_team_provider.dart';
 import 'package:tracker/controllers/edit_team_provider.dart';
 import 'package:tracker/shared/constants.dart';
+import 'controllers/attachment_controller.dart';
 import 'controllers/calendar_controller.dart';
 import 'controllers/edit_subtask_controller.dart';
 import 'controllers/meetings_controller.dart';
+import 'controllers/notifications.dart';
 import 'modules/add team/add_team.dart';
-import 'modules/add_task.dart';
-import 'modules/all_events.dart';
-import 'modules/dashboard.dart';
+import 'modules/attachment/add_attachment.dart';
+import 'modules/attachment/leader_attaschments.dart';
+import 'modules/dashboard/member_dashboard.dart';
+import 'modules/notification/notifications.dart';
+import 'modules/profile/add_profile.dart';
+import 'modules/profile/edit_profile.dart';
+import 'modules/profile/m_add_profile.dart';
+import 'modules/profile/m_edit_profile.dart';
+import 'modules/profile/m_profile_screen.dart';
+import 'modules/profile/profile_screen.dart';
+import 'modules/subtask/select_onTeam_l.dart';
+import 'modules/tasks/add_task.dart';
+import 'modules/calendar/all_events.dart';
+import 'modules/dashboard/dashboard.dart';
+import 'modules/dashboard/leader_dashboard.dart';
 import 'modules/edit meeting/edit_meeting.dart';
-import 'modules/edit_event.dart';
-import 'modules/edit_task.dart';
-import 'modules/login_screen.dart';
+import 'modules/calendar/edit_event.dart';
+import 'modules/tasks/edit_task.dart';
+import 'modules/auth/login_screen.dart';
 import 'modules/meeting/meeting.dart';
-import 'modules/search.dart';
+import 'modules/tasks/leader_tasks_screen.dart';
+import 'modules/tasks/member_tasks_screen.dart';
+import 'modules/tasks/search.dart';
 import 'modules/statistics/statistics.dart';
 import 'modules/subtask/a_subtask.dart';
 import 'modules/subtask/m_subtask.dart';
-import 'modules/task_details.dart';
-import 'modules/tasks_screen.dart';
+import 'modules/tasks/task_details.dart';
+import 'modules/tasks/task_details_for_leader.dart';
+import 'modules/tasks/tasks_screen.dart';
 import 'modules/team/team.dart';
-import 'modules/users.dart';
+import 'modules/user/users.dart';
 void main() async {
   await GetStorage.init();
   runApp(
     MultiProvider(providers: [
-      /*ChangeNotifierProvider(create: (_) => UserController()),
-          ChangeNotifierProvider(create: (_) => TaskController()),
-          ChangeNotifierProvider(create: (_)=> MeetingsController()),
-          ChangeNotifierProvider(create: (_) =>TeamsController()),
-    ChangeNotifierProvider(create: (_) =>StatisticsController()),
-          ChangeNotifierProvider(create: (_) =>AttachementController()),
-          ChangeNotifierProvider(create: (_) => NotificationController()),
-          ChangeNotifierProvider(create: (_) => MyCalendarCont()),*/
       ChangeNotifierProvider(create: (_) =>AddTeamProvider()),
       ChangeNotifierProvider(create: (_) =>EditTeamProvider()),
       ChangeNotifierProvider(create: (_)=> LoginController()),
@@ -85,6 +94,9 @@ void main() async {
       ChangeNotifierProvider(create: (_)=> TaskController()),
       ChangeNotifierProvider(create: (_)=> MyCalendarCont()),
       ChangeNotifierProvider(create: (_)=> StatisticsController()),
+      ChangeNotifierProvider(create: (_) =>AttachementController()),
+      ChangeNotifierProvider(create: (_) => NotificationController()),
+      ChangeNotifierProvider(create: (_) => ProfileController()),
 
     ],
     child: MyApp(),)
@@ -99,26 +111,35 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int role_id = GetStorage().read(
+        'role_id');
     return MaterialApp(
 
       debugShowCheckedModeBanner: false,
       title: appName,
 
-      initialRoute:GetStorage().hasData('token') ?'/Dashboard' :
+      initialRoute:GetStorage().hasData('token') ?
+          role_id==1?
+          '/Dashboard':
+          role_id==2?
+          '/DashboardTeamLeader':
+          '/DashboardMember'
+                                                  :
       '/login',
       builder: EasyLoading.init(),
       routes:
       {
         '/login': (context) => Login(),
+
 //Admin**************************************
-      '/Dashboard': (context) => Dashboard(),
-      '/teams':(context){return  Teams();},
-      '/Users':(context) => Users(),
-      '/Report':(context){return const Reports();},
-      '/TaskScre': (context) => TaskScre(),
-      '/PageCalendar':(context)=>PageCalendar(),
-      '/meetings':(context){return  Meetings();},
-      '/StatisticsScre':(context)=>StatisticsScre(),
+        '/Dashboard': (context) => Dashboard(),
+        '/teams':(context){return  Teams();},
+        '/Users':(context) => Users(),
+        '/Report':(context){return const Reports();},
+        '/TaskScre': (context) => TaskScre(),
+        '/PageCalendar':(context)=>PageCalendar(),
+        '/meetings':(context){return  Meetings();},
+        '/StatisticsScre':(context)=>StatisticsScre(),
         '/SearchPage':(context)=>SearchPage(),
         '/AddTask':(context) => AddTask(),
         '/EditUser':(context) => EditUser(),
@@ -137,55 +158,42 @@ class MyApp extends StatelessWidget {
         '/acheivers':(context){return  Acheivers();},
         '/AllEvents':(context)=>AllEvents(),
         '/EditEvent':(context)=>EditEventScr(),
-      /**/
-
-
-
-
-
-        '/comments':(context){return const Comments();},
-
-        '/meeting_for_leader':(context){return MeetingForLeaderOm();},
-        '/leaders_meetings':(context){return  LeadersOmMeetings();},
-
-
-        '/l_subtask':(context){return LeaderSubTask();},
-        '/msubtask':(context){return MemSubTask();},
-        '/addsubtask':(context){return AddSubtask();},
-        '/editsubtask':(context){return EditSubtask();},
-        //for member or leader
-        '/myTeamM':(context){return TeamM();},
-        '/myTeamL':(context){return TeamL();},
-        '/myTeamLSelector':(context){return TeamLSelector();},
-        '/selectToEditSubtask':(context){return  TeamLSelectorEdit();},
-
         '/user':(context){return  UserScreen();},
-        /*'/login': (context) => Login(),
-        '/Dashboard': (context) => Dashboard(),
-        '/TaskScre': (context) => TaskScre(),
-        '/AddUser':(context) => AddUser(),
-        '/Users':(context)=> Users(),
-        '/AddTask':(context) => AddTask(),
 
-        '/TaskDetail':(context)=>TaskDetail(),
-'/TeamSelected':(context)=>TeamSelected(),
+//profile**leader&member**********************
+        '/AddProfile':(context)=>AddProfile(),
+        '/ProfileScr':(context)=>ProfileScr(),
+        '/EditProfile':(context)=>EditProfile(),
+        '/MProfileScr':(context)=>MProfileScr(),
+        '/MEditProfile':(context)=>MEditProfile(),
+        '/MAddProfile':(context)=>MAddProfile(),
 
-
-'/MTaskScr':(context)=>MTaskScr(),
+//Leader**************************************
+        '/DashboardTeamLeader':(context)=>DashboardTeamLeader(),
+        '/myTeamL':(context){return TeamL();},
         '/LedTaskScreen':(context)=>LedTaskScreen(),
-'/user':(context)=>UserScreen(),
-        '/MStatisticsScre':(context)=>MStatisticsScre(),
-        '/NotificationsScre':(context)=>NotificationsScre(),
-'/DashboardTeamLeader':(context)=>DashboardTeamLeader(),
-        '/DashboardMember':(context)=>DashboardMember(),
-        '/Comments':(context)=>Comments(),
-        '/MeetingForLeaderOm ':(context)=>MeetingForLeaderOm(),
-
         '/LAttachementScr':(context)=>LAttachementScr(),
-
         '/LDetailsTask':(context)=>LDetailsTask(),
         '/AddAttachement':(context)=> AddAttachement(),
-        */
+        '/leaders_meetings':(context){return  LeadersOmMeetings();},
+        //meeting for leader or member
+        '/meeting_for_leader':(context){return MeetingForLeaderOm();},
+        '/l_subtask':(context){return LeaderSubTask();},
+        '/addsubtask':(context){return AddSubtask();},
+        '/editsubtask':(context){return EditSubtask();},
+        '/myTeamLSelector':(context){return TeamLSelector();},
+        '/selectToEditSubtask':(context){return  TeamLSelectorEdit();},
+        '/NotificationsScre':(context)=>NotificationsScre(),
+        '/myTeamM':(context){return TeamM();},
+
+//did not complete this one yet
+        '/comments':(context){return const Comments();},
+
+//Member**************************************
+        '/DashboardMember':(context)=>DashboardMember(),
+        '/MTaskScr':(context)=>MTaskScr(),
+        '/MStatisticsScre':(context)=>MStatisticsScre(),
+        '/msubtask':(context){return MemSubTask();},
       },
       theme: ThemeData(
         primarySwatch: pur,

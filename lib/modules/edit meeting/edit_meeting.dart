@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:tracker/controllers/edit_meeting_controller.dart';
-import 'package:tracker/modules/selectUsers.dart';
+import 'package:tracker/modules/edit_meeting/selectUsers.dart';
 import 'package:tracker/shared/components.dart';
 
 import '../../shared/constants.dart';

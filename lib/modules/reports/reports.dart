@@ -19,10 +19,10 @@ class Reports extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
 
-            onPressed: () {
-              Navigator.pushReplacementNamed(
-                  context, '/Dashboard');
-            },
+              onPressed: (){
+                Navigator.pop(context);
+
+              }
           ),
           title:  Text('Reports',style: trackerStyle,),
           automaticallyImplyLeading: false,

@@ -8,9 +8,10 @@ import '../../controllers/show_subtask_controlller.dart';
 import '../../models/subtask_model.dart';
 import '../../models/user_model.dart';
 import '../../shared/constants.dart';
-
 class MemSubTask extends StatelessWidget {
-  const MemSubTask({Key? key}) : super(key: key);
+
+  var id;
+  MemSubTask({this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class MemSubTask extends StatelessWidget {
     ShowSubtaskController showSubtaskController=ShowSubtaskController();
     return Scaffold(
       body: SafeArea(child: FutureBuilder<ModelSubTask>(
-          future: showSubtaskController.fetchSubtask(6),
+          future: showSubtaskController.fetchSubtask(id),
           builder: (context,snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return SingleChildScrollView(
@@ -106,57 +107,63 @@ class MemSubTask extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment
                                       .spaceBetween,
                                   children: [
-                                    CircleAvatar(
-                                      radius: 18,
-                                      backgroundColor: Colors.grey[100],
-                                      child: Icon(
-                                          Icons.arrow_back_ios_outlined,
-                                          color: Colors.black, size: 20),
+                                    GestureDetector(
+                                      onTap: (){
+
+                                        Navigator.pop(context);
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 18,
+                                        backgroundColor: Colors.grey[100],
+                                        child: Icon(
+                                            Icons.arrow_back_ios_outlined,
+                                            color: Colors.black, size: 20),
+                                      ),
                                     ),
                                     Text('SubTask Details',
                                         style: GoogleFonts.chewy(textStyle:const TextStyle(fontWeight: FontWeight.w100,color: myGray,fontSize: 27, letterSpacing: .5))
                                     ),
 
-                                        Padding(
-                                          padding:  EdgeInsets.only(left:size.width*0.027),
-                                          child: RaisedButton(
-                                            child: Text("edit"),
-                                            onPressed: () {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext context) {
-                                                    return AlertDialog(
-                                                      scrollable: true,
-                                                      title: Text('edit subtask'),
-                                                      content: Padding(
-                                                        padding: const EdgeInsets.all(8.0),
-                                                        child: Form(
-                                                          child: Column(
-                                                            children: <Widget>[
-                                                              TextFormField(
-                                                                controller:status,
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'status id',
-                                                                  icon: Icon(Icons.account_box),
-                                                                ),
-                                                              ),
-
-                                                            ],
+                                    Padding(
+                                      padding:  EdgeInsets.only(left:size.width*0.027),
+                                      child: RaisedButton(
+                                        child: Text("edit"),
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  scrollable: true,
+                                                  title: Text('edit subtask'),
+                                                  content: Padding(
+                                                    padding: const EdgeInsets.all(8.0),
+                                                    child: Form(
+                                                      child: Column(
+                                                        children: <Widget>[
+                                                          TextFormField(
+                                                            controller:status,
+                                                            decoration: InputDecoration(
+                                                              labelText: 'status id',
+                                                              icon: Icon(Icons.account_box),
+                                                            ),
                                                           ),
-                                                        ),
+
+                                                        ],
                                                       ),
-                                                      actions: [
-                                                        RaisedButton(
-                                                            child: Text("Submit"),
-                                                            onPressed: () {
-                                                              // your code
-                                                            })
-                                                      ],
-                                                    );
-                                                  });
-                                            },
-                                          ),
-                                        )
+                                                    ),
+                                                  ),
+                                                  actions: [
+                                                    RaisedButton(
+                                                        child: Text("Submit"),
+                                                        onPressed: () {
+                                                          // your code
+                                                        })
+                                                  ],
+                                                );
+                                              });
+                                        },
+                                      ),
+                                    )
 
 
                                   ],

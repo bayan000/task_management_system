@@ -10,6 +10,7 @@ import '../services/subtask_service.dart';
 class EditSubtaskProvider extends ChangeNotifier{
   List<User> list_of_Users = [];
   ModelSubTask? modelSubTask;
+  var subtaskuId;
   //priority id to name
   var priorities;
   //status id to name
@@ -65,8 +66,10 @@ class EditSubtaskProvider extends ChangeNotifier{
     return end;
   }
   //for leader***********************
-  Future onEditS()async{
+  Future onEditS(var taskId,var subId)async{
     ModelSubTask modelSubTask=ModelSubTask(
+        task_id: taskId,
+        id: subId,
         start_at: start,
         end_at: end,
         title: title.text,

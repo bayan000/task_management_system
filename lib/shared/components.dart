@@ -27,7 +27,7 @@ Widget defaultTextFormField({
   required TextInputType type,
   void Function(String)? onSubmit,
 //required Function() onChanged,
-  required String? Function(String?)? validate,
+  String? Function(String?)? validate,
 //required Function validate,
   required String hint,
   required String label,

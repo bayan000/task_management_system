@@ -296,7 +296,7 @@ class Acheivers extends StatelessWidget {
         ],
       ):
       Container(
-        height: size.height*0.04,
+        height: size.height*0.02,
         width: size.width,
         color: appFo,
         child: Center(
